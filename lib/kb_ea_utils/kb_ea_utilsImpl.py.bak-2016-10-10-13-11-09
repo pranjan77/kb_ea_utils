@@ -31,8 +31,8 @@ class kb_ea_utils:
     # the latter method is running.
     #########################################
     VERSION = "0.0.1"
-    GIT_URL = "git@github.com:pranjan77/kb_ea_utils.git"
-    GIT_COMMIT_HASH = "0a259b9c0941bfe579b9c94580c6f989b09956c8"
+    GIT_URL = ""
+    GIT_COMMIT_HASH = ""
     
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
@@ -116,14 +116,14 @@ class kb_ea_utils:
         This function should be used for getting statistics on fastq files.
         The results are returned as a string.
         :param input_params: instance of type
-           "get_fastq_ea_utils_stats_params" (This module has methods to  get
-           fastq statistics 2. KBaseAssembly.PairedEndLibrary to
-           KBaseFile.PairedEndLibrary workspace_name    - the name of the
-           workspace for input/output read_library_name - the name of the
-           KBaseAssembly.SingleEndLibrary or KBaseAssembly.PairedEndLibrary
-           or KBaseFile.SingleEndLibrary or KBaseFile.PairedEndLibrary) ->
-           structure: parameter "workspace_name" of String, parameter
-           "read_library_name" of String
+           "get_fastq_ea_utils_stats_params" (This module has methods to
+           convert legacy KBaseAssembly types to KBaseFile types. 1.
+           KBaseAssembly.SingleEndLibrary to KBaseFile.SingleEndLibrary 2.
+           KBaseAssembly.PairedEndLibrary to KBaseFile.PairedEndLibrary
+           workspace_name    - the name of the workspace for input/output
+           read_library_name - the name of the KBaseAssembly.SingleEndLibrary
+           or KBaseAssembly.PairedEndLibrary) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_name" of String
         :returns: instance of String
         """
         # ctx is the context object

@@ -14,13 +14,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * <p>Original spec-file type: get_fastq_ea_utils_stats_params</p>
  * <pre>
- * This module has methods to convert legacy KBaseAssembly types to 
- *                 KBaseFile types.
- *                 1. KBaseAssembly.SingleEndLibrary to KBaseFile.SingleEndLibrary
+ * This module has methods to  get fastq statistics
  *                 2. KBaseAssembly.PairedEndLibrary to KBaseFile.PairedEndLibrary
  *                 workspace_name    - the name of the workspace for input/output
  *                 read_library_name - the name of the KBaseAssembly.SingleEndLibrary or 
- *                         KBaseAssembly.PairedEndLibrary
+ *                         KBaseAssembly.PairedEndLibrary or
+ *                         KBaseFile.SingleEndLibrary or
+ *                         KBaseFile.PairedEndLibrary
  * </pre>
  * 
  */

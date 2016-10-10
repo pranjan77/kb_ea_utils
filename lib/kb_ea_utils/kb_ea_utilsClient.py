@@ -38,14 +38,14 @@ class kb_ea_utils(object):
         This function should be used for getting statistics on fastq files.
         The results are returned as a string.
         :param input_params: instance of type
-           "get_fastq_ea_utils_stats_params" (This module has methods to
-           convert legacy KBaseAssembly types to KBaseFile types. 1.
-           KBaseAssembly.SingleEndLibrary to KBaseFile.SingleEndLibrary 2.
-           KBaseAssembly.PairedEndLibrary to KBaseFile.PairedEndLibrary
-           workspace_name    - the name of the workspace for input/output
-           read_library_name - the name of the KBaseAssembly.SingleEndLibrary
-           or KBaseAssembly.PairedEndLibrary) -> structure: parameter
-           "workspace_name" of String, parameter "read_library_name" of String
+           "get_fastq_ea_utils_stats_params" (This module has methods to  get
+           fastq statistics 2. KBaseAssembly.PairedEndLibrary to
+           KBaseFile.PairedEndLibrary workspace_name    - the name of the
+           workspace for input/output read_library_name - the name of the
+           KBaseAssembly.SingleEndLibrary or KBaseAssembly.PairedEndLibrary
+           or KBaseFile.SingleEndLibrary or KBaseFile.PairedEndLibrary) ->
+           structure: parameter "workspace_name" of String, parameter
+           "read_library_name" of String
         :returns: instance of String
         """
         return self._client.call_method(

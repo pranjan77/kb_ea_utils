@@ -24,8 +24,8 @@
 	"behavior" : {
 		"service-mapping" : {
 			"url" : "",
-			"name" : "legacy_reads_conversion",
-			"method" : "run_legacy_reads_conversion",
+			"name" : "kb_ea_utils",
+			"method" : "run_app_fastq_ea_utils_stats",
 			"input_mapping" : [
 				{
 					"narrative_system_variable": "workspace",
