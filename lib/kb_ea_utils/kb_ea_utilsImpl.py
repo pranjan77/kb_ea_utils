@@ -42,7 +42,7 @@ class kb_ea_utils:
         sys.stdout.flush()
 
 
-    def get_report_string (self, report, fastq_file):
+    def get_report_string (self, fastq_file):
       cmd_string = " ".join (("fastq-stats", fastq_file));
       cmd_process = subprocess.Popen(cmd_string, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
       outputlines = []
@@ -51,8 +51,9 @@ class kb_ea_utils:
          line = cmd_process.stdout.readline()
          outputlines.append(line)
          if not line: break
-         self.log(console, line.replace('\n', ''))
+         #self.log(console, line.replace('\n', ''))
 
+      report = '====' + fastq_file + '====' + "\n"
       report += "".join(outputlines)
       return report
 
@@ -71,23 +72,19 @@ class kb_ea_utils:
 
       #case of interleaved
       if (otype == 'interleaved'):
-          report += '====' + fwd_file + '====' + "\n"
-          report += self.get_report_string (report, fwd_file)
-
+          report += self.get_report_string (fwd_file)
+          
       #case of separate pair 
       if (otype == 'paired'):
-         report += '====' + fwd_file + '====' + "\n"
-         report += self.get_report_string (report, fwd_file)
+         report += self.get_report_string (fwd_file)
 
          rev_file    =  x['files'][ref[0]]['files']['rev']
-         report += '====' + rev_file + '====' + "\n"
-         report += self.get_report_string (report, rev_file)
+         report += self.get_report_string (rev_file)
 
       #case of single end 
       if (otype == 'single'):
-         report += '====' + fwd_file + '====' + "\n"
-         report += self.get_report_string (report, fwd_file)
-
+         report += self.get_report_string (fwd_file)
+      #print report
       return report
 
     #END_CLASS_HEADER
@@ -176,11 +173,11 @@ class kb_ea_utils:
         #ref=['11802/9/1']
         callbackURL = self.callbackURL
         input_reads_ref = str(input_params['workspace_name']) + '/' + str(input_params['read_library_name'])
-        report1 = ''
-        report1 = self.get_ea_utils_result (input_reads_ref, callbackURL, input_params)
+        report = ''
+        report = self.get_ea_utils_result (input_reads_ref, callbackURL, input_params)
         reportObj = {
             'objects_created':[],
-            'text_message':report1
+            'text_message':report
         }
 
         reportName = 'run_fastq_stats_'+str(uuid.uuid4())
@@ -200,7 +197,7 @@ class kb_ea_utils:
         
         report = { "report_name" : reportName,"report_ref" : str(report_info[6]) + '/' + str(report_info[0]) + '/' + str(report_info[4]) }
 
-        print (report)
+        #print (report)
         #END run_app_fastq_ea_utils_stats
 
         # At some point might do deeper type checking...

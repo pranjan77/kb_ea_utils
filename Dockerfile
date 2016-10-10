@@ -15,7 +15,9 @@ RUN chmod 777 /kb/module
 
 #RUN git clone https://github.com/earonesty/ea-utils && cd ea-utils/clipper && make && cp fastq-stats /usr/local/bin
 
-RUN sh /kb/module/third_party/install_ea_utils.sh
+
+#RUN sh /kb/module/third_party/install_ea_utils.sh
+RUN perl /kb/module/third_party/install_ea_utils.pl
 
 WORKDIR /kb/module
 
