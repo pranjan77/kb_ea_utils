@@ -1,0 +1,47 @@
+#
+# Define basic display information
+#
+name     : Get Fastq Statistics
+tooltip  : |
+    Get fastq statistics 
+
+screenshots :
+    []
+
+icon: 
+
+replacement-text : Get fastq statistics
+
+#
+# Define the set of other narrative methods that should be suggested to the user.
+#
+suggestions :
+    apps:
+        related :
+            []
+        next :
+            []
+    methods:
+        related :
+            []
+        next :
+            []
+
+
+#
+# Configure the display and description of the parameters
+#
+parameters :
+    read_library_name:
+        ui-name : |
+            Read Library
+        short-hint : |
+            Name of read library
+
+
+description : |
+   <p>This method generates fastq statistics report
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
+    Priya Ranjan</p>
+    
+publications :

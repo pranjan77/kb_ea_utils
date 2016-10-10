@@ -1,0 +1,64 @@
+{
+	"ver" : "1.0.1",
+	"authors" : [ ],
+	"contact" : "help@kbase.us",
+	"visible" : true,
+	"categories" : ["active"],
+	"widgets" : {
+		"input" : null,
+		"output" : "no-display"
+	},
+	"parameters" : [ 
+		{
+			"id" : "read_library_name",
+			"optional" : false,
+			"advanced" : false,
+			"allow_multiple" : false,
+			"default_values" : [ "" ],
+			"field_type" : "text",
+			"text_options" : {
+				"valid_ws_types" : [ "KBaseAssembly.SingleEndLibrary", "KBaseAssembly.PairedEndLibrary", "KBaseFile.SingleEndLibrary", "KBaseFile.PairedEndLibrary"  ]
+			}
+		}
+	],
+	"behavior" : {
+		"service-mapping" : {
+			"url" : "",
+			"name" : "legacy_reads_conversion",
+			"method" : "run_legacy_reads_conversion",
+			"input_mapping" : [
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
+				},
+				{
+					"input_parameter": "read_library_name",
+					"target_property": "read_library_name"
+				}
+			],
+
+			"output_mapping": [
+				{
+					"service_method_output_path": [0,"report_name"],
+					"target_property": "report_name"
+				},
+				{
+					"service_method_output_path": [0,"report_ref"],
+					"target_property": "report_ref"
+				},
+				{
+					"constant_value": "20",
+					"target_property": "report_window_line_height"
+				},
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
+				}
+			]
+		}
+	},
+	"job_id_output_field": "docker"
+}
+
+
+
