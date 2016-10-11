@@ -165,7 +165,7 @@ public class KbEaUtilsClient {
     /**
      * <p>Original spec-file function name: get_fastq_ea_utils_stats</p>
      * <pre>
-     * This function should be used for getting statistics on fastq files.
+     * This function should be used for getting statistics on read library object types 
      * The results are returned as a string.
      * </pre>
      * @param   inputParams   instance of type {@link us.kbase.kbeautils.GetFastqEaUtilsStatsParams GetFastqEaUtilsStatsParams} (original type "get_fastq_ea_utils_stats_params")
@@ -184,7 +184,7 @@ public class KbEaUtilsClient {
     /**
      * <p>Original spec-file function name: run_app_fastq_ea_utils_stats</p>
      * <pre>
-     * This function should be used for getting statistics on fastq files.
+     * This function should be used for getting statistics on read library object type.
      * The results are returned as a report type object.
      * </pre>
      * @param   inputParams   instance of type {@link us.kbase.kbeautils.RunAppFastqEaUtilsStatsParams RunAppFastqEaUtilsStatsParams} (original type "run_app_fastq_ea_utils_stats_params")
@@ -197,6 +197,24 @@ public class KbEaUtilsClient {
         args.add(inputParams);
         TypeReference<List<Report>> retType = new TypeReference<List<Report>>() {};
         List<Report> res = caller.jsonrpcCall("kb_ea_utils.run_app_fastq_ea_utils_stats", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: get_ea_utils_stats</p>
+     * <pre>
+     * This function should be used for getting statistics on fastq files. Input is string of file path
+     * </pre>
+     * @param   inputParams   instance of type {@link us.kbase.kbeautils.EaUtilsParams EaUtilsParams} (original type "ea_utils_params")
+     * @return   parameter "report" of String
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public String getEaUtilsStats(EaUtilsParams inputParams, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(inputParams);
+        TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
+        List<String> res = caller.jsonrpcCall("kb_ea_utils.get_ea_utils_stats", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

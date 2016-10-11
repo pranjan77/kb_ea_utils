@@ -337,6 +337,10 @@ class Application(object):
                              name='kb_ea_utils.run_app_fastq_ea_utils_stats',
                              types=[dict])
         self.method_authentication['kb_ea_utils.run_app_fastq_ea_utils_stats'] = 'required'
+        self.rpc_service.add(impl_kb_ea_utils.get_ea_utils_stats,
+                             name='kb_ea_utils.get_ea_utils_stats',
+                             types=[dict])
+        self.method_authentication['kb_ea_utils.get_ea_utils_stats'] = 'required'
         self.rpc_service.add(impl_kb_ea_utils.status,
                              name='kb_ea_utils.status',
                              types=[dict])

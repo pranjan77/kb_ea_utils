@@ -79,7 +79,21 @@ class kb_ea_utilsTest(unittest.TestCase):
         ws_id = "pranjan77:1475663060070"
         ws_obj_id = "rhodobacter.art.q10.PE.reads"
         input_params={'workspace_name': ws_id, 'read_library_name': ws_obj_id}
-        ret = self.getImpl().run_app_fastq_ea_utils_stats(self.getContext(), input_params)
+        #ret = self.getImpl().run_app_fastq_ea_utils_stats(self.getContext(), input_params)
+        # Run your method by
+        # ret = self.getImpl().your_method(self.getContext(), parameters...)
+        #
+        # Check returned data with
+        # self.assertEqual(ret[...], ...) or other unittest methods
+        pass
+
+    def test_ea_utils2(self):
+        fastq_file = "/kb/module/data/6e9a3750-db21-49d9-a199-6df094e6b953.fwd.fastq";
+        input_params={'read_library_path': fastq_file}
+
+        report = self.getImpl().get_ea_utils_stats(self.getContext(), input_params)
+        print report
+
         # Run your method by
         # ret = self.getImpl().your_method(self.getContext(), parameters...)
         #

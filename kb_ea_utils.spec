@@ -25,7 +25,7 @@ typedef structure {
 
 
 /*
- This function should be used for getting statistics on fastq files.
+ This function should be used for getting statistics on read library object types 
  The results are returned as a string.
 */
 
@@ -46,7 +46,7 @@ typedef structure {
 } run_app_fastq_ea_utils_stats_params;
 
 /*
- This function should be used for getting statistics on fastq files.
+ This function should be used for getting statistics on read library object type.
  The results are returned as a report type object.
 */
 
@@ -54,5 +54,26 @@ typedef structure {
 funcdef run_app_fastq_ea_utils_stats (run_app_fastq_ea_utils_stats_params input_params)
         returns (Report report)
 authentication required; 
+
+
+/*
+    read_library_path : absolute path of fastq files
+*/
+
+typedef structure {
+		string read_library_path;
+} ea_utils_params;
+
+/*
+ This function should be used for getting statistics on fastq files. Input is string of file path
+*/
+
+funcdef get_ea_utils_stats (ea_utils_params input_params)
+        returns (string report)
+authentication required; 
+
+
+
+
 
 };

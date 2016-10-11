@@ -35,7 +35,7 @@ class kb_ea_utils(object):
 
     def get_fastq_ea_utils_stats(self, input_params, context=None):
         """
-        This function should be used for getting statistics on fastq files.
+        This function should be used for getting statistics on read library object types 
         The results are returned as a string.
         :param input_params: instance of type
            "get_fastq_ea_utils_stats_params" (This module has methods to  get
@@ -54,7 +54,7 @@ class kb_ea_utils(object):
 
     def run_app_fastq_ea_utils_stats(self, input_params, context=None):
         """
-        This function should be used for getting statistics on fastq files.
+        This function should be used for getting statistics on read library object type.
         The results are returned as a report type object.
         :param input_params: instance of type
            "run_app_fastq_ea_utils_stats_params" -> structure: parameter
@@ -64,6 +64,18 @@ class kb_ea_utils(object):
         """
         return self._client.call_method(
             'kb_ea_utils.run_app_fastq_ea_utils_stats',
+            [input_params], self._service_ver, context)
+
+    def get_ea_utils_stats(self, input_params, context=None):
+        """
+        This function should be used for getting statistics on fastq files. Input is string of file path
+        :param input_params: instance of type "ea_utils_params"
+           (read_library_path : absolute path of fastq files) -> structure:
+           parameter "read_library_path" of String
+        :returns: instance of String
+        """
+        return self._client.call_method(
+            'kb_ea_utils.get_ea_utils_stats',
             [input_params], self._service_ver, context)
 
     def status(self, context=None):

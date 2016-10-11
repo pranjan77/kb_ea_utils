@@ -143,7 +143,7 @@ get_fastq_ea_utils_stats_params is a reference to a hash where the following key
 
 =item Description
 
-This function should be used for getting statistics on fastq files.
+This function should be used for getting statistics on read library object types 
 The results are returned as a string.
 
 =back
@@ -238,7 +238,7 @@ Report is a reference to a hash where the following keys are defined:
 
 =item Description
 
-This function should be used for getting statistics on fastq files.
+This function should be used for getting statistics on read library object type.
 The results are returned as a report type object.
 
 =back
@@ -291,6 +291,92 @@ The results are returned as a report type object.
     }
 }
  
+
+
+=head2 get_ea_utils_stats
+
+  $report = $obj->get_ea_utils_stats($input_params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$input_params is a kb_ea_utils.ea_utils_params
+$report is a string
+ea_utils_params is a reference to a hash where the following keys are defined:
+	read_library_path has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$input_params is a kb_ea_utils.ea_utils_params
+$report is a string
+ea_utils_params is a reference to a hash where the following keys are defined:
+	read_library_path has a value which is a string
+
+
+=end text
+
+=item Description
+
+This function should be used for getting statistics on fastq files. Input is string of file path
+
+=back
+
+=cut
+
+ sub get_ea_utils_stats
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function get_ea_utils_stats (received $n, expecting 1)");
+    }
+    {
+	my($input_params) = @args;
+
+	my @_bad_arguments;
+        (ref($input_params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"input_params\" (value was \"$input_params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to get_ea_utils_stats:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'get_ea_utils_stats');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_ea_utils.get_ea_utils_stats",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'get_ea_utils_stats',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method get_ea_utils_stats",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'get_ea_utils_stats',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -334,16 +420,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'run_app_fastq_ea_utils_stats',
+                method_name => 'get_ea_utils_stats',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method run_app_fastq_ea_utils_stats",
+            error => "Error invoking method get_ea_utils_stats",
             status_line => $self->{client}->status_line,
-            method_name => 'run_app_fastq_ea_utils_stats',
+            method_name => 'get_ea_utils_stats',
         );
     }
 }
@@ -480,6 +566,41 @@ read_library_name has a value which is a string
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_name has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 ea_utils_params
+
+=over 4
+
+
+
+=item Description
+
+read_library_path : absolute path of fastq files
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+read_library_path has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+read_library_path has a value which is a string
 
 
 =end text
