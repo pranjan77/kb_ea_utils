@@ -203,7 +203,8 @@ public class KbEaUtilsClient {
     /**
      * <p>Original spec-file function name: get_ea_utils_stats</p>
      * <pre>
-     * This function should be used for getting statistics on fastq files. Input is string of file path
+     * This function should be used for getting statistics on fastq files. Input is string of file path.
+     * Output is a report string.
      * </pre>
      * @param   inputParams   instance of type {@link us.kbase.kbeautils.EaUtilsParams EaUtilsParams} (original type "ea_utils_params")
      * @return   parameter "report" of String
@@ -215,6 +216,25 @@ public class KbEaUtilsClient {
         args.add(inputParams);
         TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
         List<String> res = caller.jsonrpcCall("kb_ea_utils.get_ea_utils_stats", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: calculate_fastq_stats</p>
+     * <pre>
+     * This function should be used for getting statistics on fastq files. Input is string of file path.
+     * Output is a data structure with different fields.
+     * </pre>
+     * @param   inputParams   instance of type {@link us.kbase.kbeautils.EaUtilsParams EaUtilsParams} (original type "ea_utils_params")
+     * @return   parameter "ea_stats" of type {@link us.kbase.kbeautils.EaReport EaReport} (original type "ea_report")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public EaReport calculateFastqStats(EaUtilsParams inputParams, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(inputParams);
+        TypeReference<List<EaReport>> retType = new TypeReference<List<EaReport>>() {};
+        List<EaReport> res = caller.jsonrpcCall("kb_ea_utils.calculate_fastq_stats", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

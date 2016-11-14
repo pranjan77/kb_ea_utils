@@ -92,8 +92,22 @@ class kb_ea_utilsTest(unittest.TestCase):
         input_params={'read_library_path': fastq_file}
 
         report = self.getImpl().get_ea_utils_stats(self.getContext(), input_params)
-        print report
+        print len (report)
+        
 
+        # Run your method by
+        # ret = self.getImpl().your_method(self.getContext(), parameters...)
+        #
+        # Check returned data with
+        # self.assertEqual(ret[...], ...) or other unittest methods
+        pass
+
+    def test_calculate_fastq_stats(self):
+        fastq_file = "/kb/module/data/6e9a3750-db21-49d9-a199-6df094e6b953.fwd.fastq";
+        input_params={'read_library_path': fastq_file}
+
+        ea_stats = self.getImpl().calculate_fastq_stats(self.getContext(), input_params)
+        self.assertEqual(ea_stats[0]['total_bases'], 38610800)
         # Run your method by
         # ret = self.getImpl().your_method(self.getContext(), parameters...)
         #

@@ -112,7 +112,7 @@ authentication required;
 */
 
 funcdef calculate_fastq_stats (ea_utils_params input_params)
-        returns (ea_report out)
+        returns (ea_report ea_stats)
 authentication required;
 
 

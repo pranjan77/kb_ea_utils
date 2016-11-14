@@ -325,7 +325,8 @@ ea_utils_params is a reference to a hash where the following keys are defined:
 
 =item Description
 
-This function should be used for getting statistics on fastq files. Input is string of file path
+This function should be used for getting statistics on fastq files. Input is string of file path.
+Output is a report string.
 
 =back
 
@@ -377,6 +378,119 @@ This function should be used for getting statistics on fastq files. Input is str
     }
 }
  
+
+
+=head2 calculate_fastq_stats
+
+  $ea_stats = $obj->calculate_fastq_stats($input_params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$input_params is a kb_ea_utils.ea_utils_params
+$ea_stats is a kb_ea_utils.ea_report
+ea_utils_params is a reference to a hash where the following keys are defined:
+	read_library_path has a value which is a string
+ea_report is a reference to a hash where the following keys are defined:
+	read_count has a value which is an int
+	total_bases has a value which is an int
+	gc_content has a value which is a float
+	read_length_mean has a value which is a float
+	read_length_stdev has a value which is a float
+	phred_type has a value which is a string
+	number_of_duplicates has a value which is an int
+	qual_min has a value which is a float
+	qual_max has a value which is a float
+	qual_mean has a value which is a float
+	qual_stdev has a value which is a float
+	base_percentages has a value which is a reference to a hash where the key is a string and the value is a float
+
+</pre>
+
+=end html
+
+=begin text
+
+$input_params is a kb_ea_utils.ea_utils_params
+$ea_stats is a kb_ea_utils.ea_report
+ea_utils_params is a reference to a hash where the following keys are defined:
+	read_library_path has a value which is a string
+ea_report is a reference to a hash where the following keys are defined:
+	read_count has a value which is an int
+	total_bases has a value which is an int
+	gc_content has a value which is a float
+	read_length_mean has a value which is a float
+	read_length_stdev has a value which is a float
+	phred_type has a value which is a string
+	number_of_duplicates has a value which is an int
+	qual_min has a value which is a float
+	qual_max has a value which is a float
+	qual_mean has a value which is a float
+	qual_stdev has a value which is a float
+	base_percentages has a value which is a reference to a hash where the key is a string and the value is a float
+
+
+=end text
+
+=item Description
+
+This function should be used for getting statistics on fastq files. Input is string of file path.
+Output is a data structure with different fields.
+
+=back
+
+=cut
+
+ sub calculate_fastq_stats
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function calculate_fastq_stats (received $n, expecting 1)");
+    }
+    {
+	my($input_params) = @args;
+
+	my @_bad_arguments;
+        (ref($input_params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"input_params\" (value was \"$input_params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to calculate_fastq_stats:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'calculate_fastq_stats');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_ea_utils.calculate_fastq_stats",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'calculate_fastq_stats',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method calculate_fastq_stats",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'calculate_fastq_stats',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -420,16 +534,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'get_ea_utils_stats',
+                method_name => 'calculate_fastq_stats',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method get_ea_utils_stats",
+            error => "Error invoking method calculate_fastq_stats",
             status_line => $self->{client}->status_line,
-            method_name => 'get_ea_utils_stats',
+            method_name => 'calculate_fastq_stats',
         );
     }
 }
@@ -475,12 +589,8 @@ sub _validate_version {
 =item Description
 
 This module has methods to  get fastq statistics
-                2. KBaseAssembly.PairedEndLibrary to KBaseFile.PairedEndLibrary
-
                 workspace_name    - the name of the workspace for input/output
-                read_library_name - the name of the KBaseAssembly.SingleEndLibrary or 
-                        KBaseAssembly.PairedEndLibrary or
-                        KBaseFile.SingleEndLibrary or
+                read_library_name - the name of  KBaseFile.SingleEndLibrary or
                         KBaseFile.PairedEndLibrary
 
 
@@ -601,6 +711,74 @@ read_library_path has a value which is a string
 
 a reference to a hash where the following keys are defined:
 read_library_path has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 ea_report
+
+=over 4
+
+
+
+=item Description
+
+read_count - the number of reads in the this dataset
+   total_bases - the total number of bases for all the the reads in this library.
+   gc_content - the GC content of the reads.
+   read_length_mean - The average read length size
+   read_length_stdev - The standard deviation read lengths
+   phred_type - The scale of phred scores
+   number_of_duplicates - The number of reads that are duplicates
+   qual_min - min quality scores
+   qual_max - max quality scores
+   qual_mean - mean quality scores
+   qual_stdev - stdev of quality scores
+   base_percentages - The per base percentage breakdown
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+read_count has a value which is an int
+total_bases has a value which is an int
+gc_content has a value which is a float
+read_length_mean has a value which is a float
+read_length_stdev has a value which is a float
+phred_type has a value which is a string
+number_of_duplicates has a value which is an int
+qual_min has a value which is a float
+qual_max has a value which is a float
+qual_mean has a value which is a float
+qual_stdev has a value which is a float
+base_percentages has a value which is a reference to a hash where the key is a string and the value is a float
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+read_count has a value which is an int
+total_bases has a value which is an int
+gc_content has a value which is a float
+read_length_mean has a value which is a float
+read_length_stdev has a value which is a float
+phred_type has a value which is a string
+number_of_duplicates has a value which is an int
+qual_min has a value which is a float
+qual_max has a value which is a float
+qual_mean has a value which is a float
+qual_stdev has a value which is a float
+base_percentages has a value which is a reference to a hash where the key is a string and the value is a float
 
 
 =end text

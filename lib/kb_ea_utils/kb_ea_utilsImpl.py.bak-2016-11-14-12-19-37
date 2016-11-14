@@ -281,62 +281,16 @@ class kb_ea_utils:
            mapping from String to Double
         """
         # ctx is the context object
-        # return variables are: ea_stats
+        # return variables are: out
         #BEGIN calculate_fastq_stats
-        read_library_path = input_params['read_library_path']
-        ea_report = self.get_report_string (read_library_path)
-        ea_stats = {}
-        report_lines = ea_report.splitlines()
-        report_to_object_mappings = {'reads': 'read_count',
-                                     'total bases': 'total_bases',
-                                     'len mean': 'read_length_mean',
-                                     'len stdev': 'read_length_stdev',
-                                     'phred': 'phred_type',
-                                     'dups': 'number_of_duplicates',
-                                     'qual min': 'qual_min',
-                                     'qual max': 'qual_max',
-                                     'qual mean': 'qual_mean',
-                                     'qual stdev': 'qual_stdev'}
-        integer_fields = ['read_count', 'total_bases', 'number_of_duplicates']
-        for line in report_lines:
-            line_elements = line.split()
-            line_value = line_elements.pop()
-            line_key = " ".join(line_elements)
-            line_key = line_key.strip()
-            if line_key in report_to_object_mappings:
-                # print ":{}: = :{}:".format(report_to_object_mappings[line_key],line_value)
-                value_to_use = None
-                if line_key == 'phred':
-                    value_to_use = line_value.strip()
-                elif report_to_object_mappings[line_key] in integer_fields:
-                    value_to_use = int(line_value.strip())
-                else:
-                    value_to_use = float(line_value.strip())
-                ea_stats[report_to_object_mappings[line_key]] = value_to_use
-            elif line_key.startswith("%") and not line_key.startswith("%dup"):
-                if 'base_percentages' not in ea_stats:
-                    ea_stats['base_percentages'] = dict()
-                dict_key = line_key.strip("%")
-                ea_stats['base_percentages'][dict_key] = float(line_value.strip())
-        # populate the GC content (as a value betwwen 0 and 1)
-        if 'base_percentages' in ea_stats:
-            gc_content = 0
-            if "G" in ea_stats['base_percentages']:
-                gc_content += ea_stats['base_percentages']["G"]
-            if "C" in ea_stats['base_percentages']:
-                gc_content += ea_stats['base_percentages']["C"]
-            ea_stats["gc_content"] = gc_content / 100
-        # set number of dups if no dups, but read_count
-        if 'read_count' in ea_stats and 'number_of_duplicates' not in ea_stats:
-            ea_stats["number_of_duplicates"] = 0
         #END calculate_fastq_stats
 
         # At some point might do deeper type checking...
-        if not isinstance(ea_stats, dict):
+        if not isinstance(out, dict):
             raise ValueError('Method calculate_fastq_stats return value ' +
-                             'ea_stats is not type dict as required.')
+                             'out is not type dict as required.')
         # return the results
-        return [ea_stats]
+        return [out]
 
     def status(self, ctx):
         #BEGIN_STATUS
