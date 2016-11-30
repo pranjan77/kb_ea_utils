@@ -13,6 +13,15 @@ module kb_ea_utils {
 
 */
 
+/*
+** Common types
+*/
+typedef string workspace_name;
+typedef string data_obj_ref;
+typedef string data_obj_name;
+typedef string textarea_str;
+
+
 
 /* if read_library_ref is set, then workspace_name and read_library_name are ignored */
 typedef structure {
@@ -117,6 +126,91 @@ authentication required;
 funcdef calculate_fastq_stats (ea_utils_params input_params)
         returns (ea_report ea_stats)
 authentication required;
+
+
+/* run_Fastq_Multx()
+**
+** demultiplex read libraries to readsSet
+*/
+typedef structure {
+    workspace_name workspace_name;
+    
+    textarea_str  index_info;
+    string        barcode_mode;  /* explicit_index, barcode_seq_lib, pick_from_common */
+    data_obj_ref  input_reads_ref;  /* PairedEndLibrary or SingleEndLibrary */
+    data_obj_ref  input_index_ref;  /* PairedEndLibrary or SingleEndLibrary */
+    data_obj_name output_reads_name;
+} run_Fastq_Multx_Input;
+
+typedef structure {
+    string report_name;
+    string report_ref;
+} run_Fastq_Multx_Output;
+
+funcdef run_Fastq_Multx(run_Fastq_Multx_Input params) 
+    returns (run_Fastq_Multx_Output returnVal) 
+    authentication required;
+
+
+/* run_Fastq_Join()
+**
+** merge overlapping mate pairs into SingleEnd Lib.  This sub interacts with Narrative
+*/
+typedef structure {
+    workspace_name workspace_name;
+    data_obj_ref  input_reads_ref;  /* PairedEndLibrary or PairedEnd ReadsSet */
+    data_obj_name output_reads_name;
+} run_Fastq_Join_Input;
+
+typedef structure {
+    string report_name;
+    string report_ref;
+} run_Fastq_Join_Output;
+
+funcdef run_Fastq_Join(run_Fastq_Join_Input params) 
+    returns (run_Fastq_Join_Output returnVal) 
+    authentication required;
+
+
+/* exec_Fastq_Join()
+**
+** merge overlapping mate pairs into SingleEnd Lib.  This routine creates readsSets
+*/
+typedef structure {
+    workspace_name workspace_name;
+    data_obj_ref  input_reads_ref;  /* PairedEndLibrary or PairedEnd ReadsSet */
+    data_obj_name output_reads_name;
+} exec_Fastq_Join_Input;
+
+typedef structure {
+    data_obj_ref output_reads_ref;
+} exec_Fastq_Join_Output;
+
+funcdef exec_Fastq_Join(exec_Fastq_Join_Input params) 
+    returns (exec_Fastq_Join_Output returnVal) 
+    authentication required;
+
+funcdef exec_Fastq_Join_OneLibrary(exec_Fastq_Join_Input params) 
+    returns (exec_Fastq_Join_Output returnVal) 
+    authentication required;
+
+
+/* exec_Determine_Phred()
+**
+** determine qual score regime.  Either "phred33" or "phred64"
+*/
+typedef structure {
+    workspace_name workspace_name;
+    data_obj_ref  input_reads_ref;  /* PairedEndLibrary or SingleEndLibrary */
+} exec_Determine_Phred_Input;
+
+typedef structure {
+    string qual_regime;
+} exec_Determine_Phred_Output;
+
+funcdef exec_Determine_Phred(exec_Determine_Phred_Input params) 
+    returns (exec_Determine_Phred_Output returnVal) 
+    authentication required;
 
 
 
