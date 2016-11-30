@@ -13,14 +13,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * <p>Original spec-file type: run_app_fastq_ea_utils_stats_params</p>
- * 
+ * <pre>
+ * if read_library_ref is set, then workspace_name and read_library_name are ignored
+ * </pre>
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "read_library_name"
+    "read_library_name",
+    "read_library_ref"
 })
 public class RunAppFastqEaUtilsStatsParams {
 
@@ -28,6 +31,8 @@ public class RunAppFastqEaUtilsStatsParams {
     private String workspaceName;
     @JsonProperty("read_library_name")
     private String readLibraryName;
+    @JsonProperty("read_library_ref")
+    private String readLibraryRef;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -60,6 +65,21 @@ public class RunAppFastqEaUtilsStatsParams {
         return this;
     }
 
+    @JsonProperty("read_library_ref")
+    public String getReadLibraryRef() {
+        return readLibraryRef;
+    }
+
+    @JsonProperty("read_library_ref")
+    public void setReadLibraryRef(String readLibraryRef) {
+        this.readLibraryRef = readLibraryRef;
+    }
+
+    public RunAppFastqEaUtilsStatsParams withReadLibraryRef(String readLibraryRef) {
+        this.readLibraryRef = readLibraryRef;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -72,7 +92,7 @@ public class RunAppFastqEaUtilsStatsParams {
 
     @Override
     public String toString() {
-        return ((((((("RunAppFastqEaUtilsStatsParams"+" [workspaceName=")+ workspaceName)+", readLibraryName=")+ readLibraryName)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("RunAppFastqEaUtilsStatsParams"+" [workspaceName=")+ workspaceName)+", readLibraryName=")+ readLibraryName)+", readLibraryRef=")+ readLibraryRef)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

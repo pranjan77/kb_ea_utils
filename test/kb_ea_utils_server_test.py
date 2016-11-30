@@ -75,11 +75,20 @@ class kb_ea_utilsTest(unittest.TestCase):
     def test_ea_utils(self):
         # Prepare test objects in workspace if needed using 
         # self.getWsClient().save_objects({'workspace': self.getWsName(), 'objects': []})
-        #
+        #13139/22/6
+
+        # TODO: preload this test data to the WS before running tests
         ws_id = "pranjan77:1475663060070"
         ws_obj_id = "rhodobacter.art.q10.PE.reads"
-        input_params={'workspace_name': ws_id, 'read_library_name': ws_obj_id}
+        #input_params={'workspace_name': ws_id, 'read_library_name': ws_obj_id}
         #ret = self.getImpl().run_app_fastq_ea_utils_stats(self.getContext(), input_params)
+        #print(ret)
+
+        #ws_obj_ref = ws_id + '/' + ws_obj_id
+        #input_params={'workspace_name': ws_id, 'read_library_ref': ws_obj_ref}
+        #ret = self.getImpl().run_app_fastq_ea_utils_stats(self.getContext(), input_params)
+        #print(ret)
+
         # Run your method by
         # ret = self.getImpl().your_method(self.getContext(), parameters...)
         #

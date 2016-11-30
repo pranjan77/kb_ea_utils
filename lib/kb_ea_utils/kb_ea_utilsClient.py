@@ -38,12 +38,11 @@ class kb_ea_utils(object):
         This function should be used for getting statistics on read library object types 
         The results are returned as a string.
         :param input_params: instance of type
-           "get_fastq_ea_utils_stats_params" (This module has methods to  get
-           fastq statistics workspace_name    - the name of the workspace for
-           input/output read_library_name - the name of 
-           KBaseFile.SingleEndLibrary or KBaseFile.PairedEndLibrary) ->
+           "get_fastq_ea_utils_stats_params" (if read_library_ref is set,
+           then workspace_name and read_library_name are ignored) ->
            structure: parameter "workspace_name" of String, parameter
-           "read_library_name" of String
+           "read_library_name" of String, parameter "read_library_ref" of
+           String
         :returns: instance of String
         """
         return self._client.call_method(
@@ -55,8 +54,11 @@ class kb_ea_utils(object):
         This function should be used for getting statistics on read library object type.
         The results are returned as a report type object.
         :param input_params: instance of type
-           "run_app_fastq_ea_utils_stats_params" -> structure: parameter
-           "workspace_name" of String, parameter "read_library_name" of String
+           "run_app_fastq_ea_utils_stats_params" (if read_library_ref is set,
+           then workspace_name and read_library_name are ignored) ->
+           structure: parameter "workspace_name" of String, parameter
+           "read_library_name" of String, parameter "read_library_ref" of
+           String
         :returns: instance of type "Report" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """

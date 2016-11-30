@@ -14,9 +14,11 @@ module kb_ea_utils {
 */
 
 
+/* if read_library_ref is set, then workspace_name and read_library_name are ignored */
 typedef structure {
 		string workspace_name;
 		string read_library_name;
+    string read_library_ref;
 } get_fastq_ea_utils_stats_params;
 
 typedef structure {
@@ -24,10 +26,11 @@ typedef structure {
 		string report_ref;
 } Report;
 
-
+/* if read_library_ref is set, then workspace_name and read_library_name are ignored */
 typedef structure {
 		string workspace_name;
 		string read_library_name;
+    string read_library_ref;
 } run_app_fastq_ea_utils_stats_params;
 
 
