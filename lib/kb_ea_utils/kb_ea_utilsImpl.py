@@ -41,6 +41,16 @@ class kb_ea_utils:
         print(message)
         sys.stdout.flush()
 
+    def get_reads_ref_from_params(self, params):
+        if 'read_library_ref' in params:
+            return params['read_library_ref']
+
+        if 'workspace_name' not in params:
+            raise ValueError('Either "read_library_ref" or "workspace_name" with ' +
+                             '"read_library_name" fields are required.')
+
+        return str(params['workspace_name']) + '/' + str(params['read_library_name'])
+
 
     def get_report_string (self, fastq_file):
       cmd_string = " ".join (("fastq-stats", fastq_file));
@@ -61,10 +71,10 @@ class kb_ea_utils:
       return report
 
 
-    def get_ea_utils_result (self,refid, callbackURL, input_params):
+    def get_ea_utils_result (self,refid, input_params):
       ref = [refid] 
       DownloadReadsParams={'read_libraries':ref}
-      dfUtil = ReadsUtils(callbackURL)
+      dfUtil = ReadsUtils(self.callbackURL)
       x=dfUtil.download_reads(DownloadReadsParams)
       report = ''
       fwd_file = None 
@@ -127,28 +137,21 @@ class kb_ea_utils:
         # return variables are: ea_utils_stats
         #BEGIN get_fastq_ea_utils_stats
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
-        provenance = [{}]
-        if 'provenance' in ctx:
-            provenance = ctx['provenance']
+        wsClient = workspaceService(self.workspaceURL)
         # add additional info to provenance here, in this case the input data object reference
-        workspace_name = input_params['workspace_name']
-        provenance[0]['input_ws_objects']=[workspace_name+'/'+input_params['read_library_name']]
+        input_reads_ref = self.get_reads_ref_from_params(input_params)
 
         info = None
         readLibrary = None
         try:
-            readLibrary = wsClient.get_objects([{'name': input_params['read_library_name'],
-                                                 'workspace' : input_params['workspace_name']}])[0]
+            readLibrary = wsClient.get_objects([{'ref': input_reads_ref}])[0]
             info = readLibrary['info']
             readLibrary = readLibrary['data']
         except Exception as e:
-            raise ValueError('Unable to get read library object from workspace: (' + str(input_params['workspace_name'])+ '/' + str(input_params['read_library_name']) +')' + str(e))
-        callbackURL = self.callbackURL
-        input_reads_ref = str(input_params['workspace_name']) + '/' + str(input_params['read_library_name'])
+            raise ValueError('Unable to get read library object from workspace: (' + input_reads_ref + ')' + str(e))
+
         ea_utils_stats = ''
-        ea_utils_stats = self.get_ea_utils_result (input_reads_ref, callbackURL, input_params)
+        ea_utils_stats = self.get_ea_utils_result(input_reads_ref, input_params)
 
         #END get_fastq_ea_utils_stats
 
@@ -177,31 +180,28 @@ class kb_ea_utils:
         #BEGIN run_app_fastq_ea_utils_stats
         print (input_params)
 
-        token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        wsClient = workspaceService(self.workspaceURL)
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
         # add additional info to provenance here, in this case the input data object reference
+        input_reads_ref = self.get_reads_ref_from_params(input_params)
+        if 'workspace_name' not in input_params:
+            raise ValueError('"workspace_name" field is required to run this App"')
         workspace_name = input_params['workspace_name']
-        provenance[0]['input_ws_objects']=[workspace_name+'/'+input_params['read_library_name']]
+        provenance[0]['input_ws_objects'] = [input_reads_ref]
 
         info = None
         readLibrary = None
         try:
-            readLibrary = wsClient.get_objects([{'name': input_params['read_library_name'],
-                                                 'workspace' : input_params['workspace_name']}])[0]
+            readLibrary = wsClient.get_objects([{'ref': input_reads_ref}])[0]
             info = readLibrary['info']
             readLibrary = readLibrary['data']
         except Exception as e:
-            raise ValueError('Unable to get read library object from workspace: (' + str(input_params['workspace_name'])+ '/' + str(input_params['read_library_name']) +')' + str(e))
+            raise ValueError('Unable to get read library object from workspace: (' + input_reads_ref + ')' + str(e))
 #        ref=['11665/5/2', '11665/10/7', '11665/11/1' ]
         #ref=['11802/9/1']
-        callbackURL = self.callbackURL
-        input_reads_ref = str(input_params['workspace_name']) + '/' + str(input_params['read_library_name'])
-        report = ''
-        report = self.get_ea_utils_result (input_reads_ref, callbackURL, input_params)
+        report = self.get_ea_utils_result(input_reads_ref, input_params)
         reportObj = {
             'objects_created':[],
             'text_message':report
