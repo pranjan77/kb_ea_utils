@@ -10,11 +10,12 @@ MAINTAINER KBase Developer
 # -----------------------------------------
 RUN pwd
 
-COPY ./ /kb/module
-RUN perl /kb/module/third_party/install_ea_utils.pl
 RUN mkdir -p /kb/module/work
 RUN chmod 777 /kb/module
 
+RUN perl /kb/module/third_party/install_ea_utils.pl
+
+COPY ./ /kb/module
 
 WORKDIR /kb/module
 
