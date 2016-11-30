@@ -45,7 +45,7 @@ class kb_ea_utils:
         if 'read_library_ref' in params:
             return params['read_library_ref']
 
-        if 'workspace_name' not in params:
+        if 'workspace_name' not in params and 'read_library_name' not in params:
             raise ValueError('Either "read_library_ref" or "workspace_name" with ' +
                              '"read_library_name" fields are required.')
 
@@ -144,7 +144,7 @@ class kb_ea_utils:
         info = None
         readLibrary = None
         try:
-            readLibrary = wsClient.get_objects([{'ref': input_reads_ref}])[0]
+            readLibrary = wsClient.get_objects2({'objects':[{'ref': input_reads_ref}]})['data'][0]
             info = readLibrary['info']
             readLibrary = readLibrary['data']
         except Exception as e:
