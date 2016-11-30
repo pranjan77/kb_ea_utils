@@ -1,16 +1,15 @@
 #
 # Define basic display information
 #
-name     : Get Fastq Statistics
+name     : Compute Simple Read Library Stats with ea-utils
 tooltip  : |
-    Get fastq statistics 
+    Run the ea-utils program fastq-stats to compute and print basic summary stats.
 
 screenshots :
     []
 
 icon: 
 
-replacement-text : Get fastq statistics
 
 #
 # Define the set of other narrative methods that should be suggested to the user.
@@ -32,15 +31,15 @@ suggestions :
 # Configure the display and description of the parameters
 #
 parameters :
-    read_library_name:
+    read_library_ref:
         ui-name : |
             Read Library
         short-hint : |
-            Name of read library
+            The read library (Single or Paired end) to analyze
 
 
 description : |
-   <p>This method generates fastq statistics report
+   <p>This method generates a fastq statistics report using the EA Utils package: https://expressionanalysis.github.io/ea-utils/</p>
    <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
     Priya Ranjan</p>
     
