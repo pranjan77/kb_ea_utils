@@ -24,16 +24,16 @@ class kb_ea_utils:
     Utilities for converting KBaseAssembly types to KBaseFile types
     '''
 
-    ######## WARNING FOR GEVENT USERS #######
+    ######## WARNING FOR GEVENT USERS ####### noqa
     # Since asynchronous IO can lead to methods - even the same method -
     # interrupting each other, you must be *very* careful when using global
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
-    #########################################
-    VERSION = "0.0.1"
-    GIT_URL = "git@github.com:pranjan77/kb_ea_utils"
-    GIT_COMMIT_HASH = "e15121829c86fa67b3332ffcbf2cd36bd1ab0cb3"
-    
+    ######################################### noqa
+    VERSION = "1.0.0"
+    GIT_URL = "git@github.com:msneddon/kb_ea_utils"
+    GIT_COMMIT_HASH = "e642d722169c442856846ecf813ccd0565d761a3"
+
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
         if target is not None:
@@ -109,19 +109,18 @@ class kb_ea_utils:
             os.makedirs(self.scratch)
         #END_CONSTRUCTOR
         pass
-    
+
 
     def get_fastq_ea_utils_stats(self, ctx, input_params):
         """
         This function should be used for getting statistics on read library object types 
         The results are returned as a string.
         :param input_params: instance of type
-           "get_fastq_ea_utils_stats_params" (This module has methods to  get
-           fastq statistics workspace_name    - the name of the workspace for
-           input/output read_library_name - the name of 
-           KBaseFile.SingleEndLibrary or KBaseFile.PairedEndLibrary) ->
+           "get_fastq_ea_utils_stats_params" (if read_library_ref is set,
+           then workspace_name and read_library_name are ignored) ->
            structure: parameter "workspace_name" of String, parameter
-           "read_library_name" of String
+           "read_library_name" of String, parameter "read_library_ref" of
+           String
         :returns: instance of String
         """
         # ctx is the context object
@@ -165,8 +164,11 @@ class kb_ea_utils:
         This function should be used for getting statistics on read library object type.
         The results are returned as a report type object.
         :param input_params: instance of type
-           "run_app_fastq_ea_utils_stats_params" -> structure: parameter
-           "workspace_name" of String, parameter "read_library_name" of String
+           "run_app_fastq_ea_utils_stats_params" (if read_library_ref is set,
+           then workspace_name and read_library_name are ignored) ->
+           structure: parameter "workspace_name" of String, parameter
+           "read_library_name" of String, parameter "read_library_ref" of
+           String
         :returns: instance of type "Report" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """
@@ -337,7 +339,6 @@ class kb_ea_utils:
                              'ea_stats is not type dict as required.')
         # return the results
         return [ea_stats]
-
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK", 'message': "", 'version': self.VERSION, 

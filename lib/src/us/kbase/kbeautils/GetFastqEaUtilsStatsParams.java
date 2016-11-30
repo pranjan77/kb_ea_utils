@@ -14,10 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * <p>Original spec-file type: get_fastq_ea_utils_stats_params</p>
  * <pre>
- * This module has methods to  get fastq statistics
- *                 workspace_name    - the name of the workspace for input/output
- *                 read_library_name - the name of  KBaseFile.SingleEndLibrary or
- *                         KBaseFile.PairedEndLibrary
+ * if read_library_ref is set, then workspace_name and read_library_name are ignored
  * </pre>
  * 
  */
@@ -25,7 +22,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "read_library_name"
+    "read_library_name",
+    "read_library_ref"
 })
 public class GetFastqEaUtilsStatsParams {
 
@@ -33,6 +31,8 @@ public class GetFastqEaUtilsStatsParams {
     private String workspaceName;
     @JsonProperty("read_library_name")
     private String readLibraryName;
+    @JsonProperty("read_library_ref")
+    private String readLibraryRef;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -65,6 +65,21 @@ public class GetFastqEaUtilsStatsParams {
         return this;
     }
 
+    @JsonProperty("read_library_ref")
+    public String getReadLibraryRef() {
+        return readLibraryRef;
+    }
+
+    @JsonProperty("read_library_ref")
+    public void setReadLibraryRef(String readLibraryRef) {
+        this.readLibraryRef = readLibraryRef;
+    }
+
+    public GetFastqEaUtilsStatsParams withReadLibraryRef(String readLibraryRef) {
+        this.readLibraryRef = readLibraryRef;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -77,7 +92,7 @@ public class GetFastqEaUtilsStatsParams {
 
     @Override
     public String toString() {
-        return ((((((("GetFastqEaUtilsStatsParams"+" [workspaceName=")+ workspaceName)+", readLibraryName=")+ readLibraryName)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("GetFastqEaUtilsStatsParams"+" [workspaceName=")+ workspaceName)+", readLibraryName=")+ readLibraryName)+", readLibraryRef=")+ readLibraryRef)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

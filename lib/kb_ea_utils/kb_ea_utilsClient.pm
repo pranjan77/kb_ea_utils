@@ -125,6 +125,7 @@ $ea_utils_stats is a string
 get_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_name has a value which is a string
+	read_library_ref has a value which is a string
 
 </pre>
 
@@ -137,6 +138,7 @@ $ea_utils_stats is a string
 get_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_name has a value which is a string
+	read_library_ref has a value which is a string
 
 
 =end text
@@ -214,6 +216,7 @@ $report is a kb_ea_utils.Report
 run_app_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_name has a value which is a string
+	read_library_ref has a value which is a string
 Report is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -229,6 +232,7 @@ $report is a kb_ea_utils.Report
 run_app_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_name has a value which is a string
+	read_library_ref has a value which is a string
 Report is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -588,10 +592,7 @@ sub _validate_version {
 
 =item Description
 
-This module has methods to  get fastq statistics
-                workspace_name    - the name of the workspace for input/output
-                read_library_name - the name of  KBaseFile.SingleEndLibrary or
-                        KBaseFile.PairedEndLibrary
+if read_library_ref is set, then workspace_name and read_library_name are ignored
 
 
 =item Definition
@@ -602,6 +603,7 @@ This module has methods to  get fastq statistics
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_name has a value which is a string
+read_library_ref has a value which is a string
 
 </pre>
 
@@ -612,6 +614,7 @@ read_library_name has a value which is a string
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_name has a value which is a string
+read_library_ref has a value which is a string
 
 
 =end text
@@ -658,6 +661,11 @@ report_ref has a value which is a string
 
 
 
+=item Description
+
+if read_library_ref is set, then workspace_name and read_library_name are ignored
+
+
 =item Definition
 
 =begin html
@@ -666,6 +674,7 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_name has a value which is a string
+read_library_ref has a value which is a string
 
 </pre>
 
@@ -676,6 +685,7 @@ read_library_name has a value which is a string
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_name has a value which is a string
+read_library_ref has a value which is a string
 
 
 =end text
