@@ -1,7 +1,7 @@
-SERVICE = kb_ea_utils
-SERVICE_CAPS = kb_ea_utils
-SPEC_FILE = kb_ea_utils.spec
-URL = https://kbase.us/services/kb_ea_utils
+SERVICE = kb_ea_utils_dev
+SERVICE_CAPS = kb_ea_utils_dev
+SPEC_FILE = kb_ea_utils_dev.spec
+URL = https://kbase.us/services/kb_ea_utils_dev
 DIR = $(shell pwd)
 LIB_DIR = lib
 SCRIPTS_DIR = scripts
