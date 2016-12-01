@@ -30,9 +30,13 @@ class kb_ea_utils_dev:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.0.0"
+    VERSION = "0.0.1"
     GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
     GIT_COMMIT_HASH = "48fa9860efe955d9519051ef558104a81dd48e3c"
+
+    FASTQ_MULTX     = "/usr/local/bin/fastq-multx"
+    FASTQ_JOIN      = "/usr/local/bin/fastq-join"
+    DETERMINE_PHRED = "/usr/local/bin/determine-phred"
 
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
@@ -447,6 +451,79 @@ class kb_ea_utils_dev:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN exec_Determine_Phred
+        console = []
+        report = ''
+        self.log(console, 'Running KButil_Split_Reads() with parameters: ')
+        self.log(console, "\n"+pformat(params))
+        
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+        
+        SERVICE_VER = 'dev'  # DEBUG
+
+        # param checks
+        required_params = [ 'input_reads_ref' ]
+        for required_param in required_params:
+            if required_param not in params or params[required_param] == None:
+                raise ValueError ("Must define required param: '"+required_param+"'")
+            
+        # Determine whether read library is of correct type
+        try:
+            # object_info tuple
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
+            
+            input_reads_ref = params['input_reads_ref']
+            input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_reads_ref}]})[0]
+            input_reads_obj_type = input_reads_obj_info[TYPE_I]
+            input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
+            #input_reads_obj_version = input_reads_obj_info[VERSION_I]  # this is object version, not type version
+
+        except Exception as e:
+            raise ValueError('Unable to get read library object info from workspace: (' + str(input_reads_ref) +')' + str(e))
+
+        acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
+        if input_reads_obj_type not in acceptable_types:
+            raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
+
+
+        # Download Reads
+        self.log (console, "DOWNLOADING READS")  # DEBUG
+        try:
+            readsUtils_Client = ReadsUtils (url=self.callbackURL, token=ctx['token'])  # SDK local
+        except Exception as e:
+            raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
+        try:
+            readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
+                                                             'interleaved': 'false'
+                                                             })
+        except Exception as e:
+            raise ValueError('Unable to download read library sequences from workspace: (' + str(input_reads_ref) +")\n" + str(e))
+        
+        this_input_fwd_path = readsLibrary['files'][this_input_reads_ref]['files']['fwd']
+
+        
+        # Run determine-phred
+        determine_phred_cmd = []
+        determine_phred_cmd.append(self.DETERMINE_PHRED])
+        determine_phred_cmd.append(this_input_fwd_path])
+        print('running determine-phred:')
+        print('    '+' '.join(determine_phred_cmd))
+        p = subprocess.Popen(determine_phred_cmd, cwd=self.scratch, shell=False)
+        phred_regime = p.stdout.readline()
+        phred_regime.replace('\n', ''))
+        p.stdout.close()
+
+        retcode = p.wait()
+        print('Return code: ' + str(retcode))
+        if p.returncode != 0:
+            raise ValueError('Error running Determine_Phred(), return code: ' +
+                             str(retcode) + '\n')        
+
+        
+        returnVal = { 'qual_regime': phred_regime }
         #END exec_Determine_Phred
 
         # At some point might do deeper type checking...

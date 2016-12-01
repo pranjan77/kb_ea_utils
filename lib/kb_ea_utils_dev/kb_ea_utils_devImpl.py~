@@ -15,10 +15,10 @@ from ReadsUtils.ReadsUtilsClient import ReadsUtils as ReadsUtils
 #END_HEADER
 
 
-class kb_ea_utils:
+class kb_ea_utils_dev:
     '''
     Module Name:
-    kb_ea_utils
+    kb_ea_utils_dev
 
     Module Description:
     Utilities for converting KBaseAssembly types to KBaseFile types
@@ -31,7 +31,7 @@ class kb_ea_utils:
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.0.0"
-    GIT_URL = "https://github.com/dcchivian/kb_ea_utils"
+    GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
     GIT_COMMIT_HASH = "48fa9860efe955d9519051ef558104a81dd48e3c"
 
     #BEGIN_CLASS_HEADER
