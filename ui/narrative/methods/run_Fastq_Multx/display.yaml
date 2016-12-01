@@ -69,7 +69,62 @@ parameters :
 			Base name for output read library or read library set object
 		long-hint : |
 			Base name for output read library or read library set object
-
+	use_header_barcode :
+		ui-name : |
+			Barcode in Fastq header (Optional)
+		short-hint : |
+			Use barcode in header instead of sequence row
+		long-hint  : |
+			Use barcode in header instead of sequence row
+	force_beg :
+		ui-name : |
+			Force 5'
+		short-hint : |
+			Require that there are no bases before barcode at Beginning
+		long-hint  : |
+			Require that there are no bases before barcode at Beginning
+	force_end :
+		ui-name : |
+			Force 3'
+		short-hint : |
+			Require that there are no bases after barcode at End
+		long-hint  : |
+			Require that there are no bases after barcode at End
+	trim_barcode :
+		ui-name : |
+			Trim barcode
+		short-hint : |
+			Remove barcode from output sequence
+		long-hint  : |
+			Remove barcode from output sequence
+	suggest_barcodes :
+		ui-name : |
+			Suggest barcodes
+		short-hint : |
+			Don't actually run demultiplex, just detect barcodes
+		long-hint  : |
+			Don't actually run demultiplex, just detect barcodes
+	mismatch_max :
+		ui-name : |
+			Mismatch max
+		short-hint : |
+			Maximum mismatches in barcode to accept
+		long-hint  : |
+			Maximum mismatches in barcode to accept
+	edit_dist_min :
+		ui-name : |
+			Edit distance min
+		short-hint : |
+			Minimum sequence distance between barcodes
+		long-hint  : |
+			Minimum sequence distance between barcodes
+	barcode_base_qual_score_min :
+		ui-name : |
+			Qual score min
+		short-hint : |
+			Minimum qual score for a barcode base to accept
+		long-hint  : |
+			Minimum qual score for a barcode base to accept
 
 #
 # Desc
