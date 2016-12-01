@@ -360,6 +360,228 @@ class kb_ea_utils_dev:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN run_Fastq_Multx
+        console = []
+        report = ''
+        self.log(console, 'Running run_Fastq_Multx() with parameters: ')
+        self.log(console, "\n"+pformat(params))
+        
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+        
+        SERVICE_VER = 'dev'  # DEBUG
+
+        # param checks
+        required_params = ['workspace_name',
+                           'input_reads_ref',
+                           'index_mode',
+                           'output_reads_name'
+                           ]
+        for required_param in required_params:
+            if required_param not in params or params[required_param] == None:
+                raise ValueError ("Must define required param: '"+required_param+"'")
+            
+        # combined param requirements
+        if params['index_mode'] == 'auto-detect' || params['index_mode'] == 'manual':
+            if 'index_info' not in params or params['index_info'] == None or params['index_info'] == '':
+                raise ValueError ("Must have index_info if index_mode is 'auto-detect' or 'manual'")
+        elsif params['index_mode'] == 'index-lane':
+            if 'input_index_ref' not in params or params['input_index_ref'] == None or params['input_index_ref'] == '':
+                raise ValueError ("Must have input_index_ref if index_mode is 'index-lane'")
+
+        # and param defaults
+        defaults = { 'use_header_barcode': 0,
+                     'force_beg': 0,
+                     'force_end': 0,
+                     'trim_barcode': 1,
+                     'suggest_barcodes': 0,
+                     'mismatch_max': 1,
+                     'edit_dist_min': 2,
+                     'barcode_base_qual_score_min': 0
+                   }
+        for arg in defaults.keys():
+            if arg not in params or params[arg] == None or params[arg] == '':
+                params[arg] = defaults[arg]
+
+
+        # Set path to default barcodes
+        #
+        master_barcodes_path = "/kb/modules/kb_ea_utils_dev/data/master-barcodes.txt"
+
+
+        # load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        provenance[0]['input_ws_objects']=[str(params['input_reads_ref'])]
+
+        # Determine whether read library is of correct type
+        #
+        try:
+            # object_info tuple
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
+            
+            input_reads_ref = params['input_reads_ref']
+            input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_reads_ref}]})[0]
+            input_reads_obj_type = input_reads_obj_info[TYPE_I]
+            input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
+            #input_reads_obj_version = input_reads_obj_info[VERSION_I]  # this is object version, not type version
+
+        except Exception as e:
+            raise ValueError('Unable to get read library object info from workspace: (' + str(input_reads_ref) +')' + str(e))
+
+
+        acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
+        if input_reads_obj_type not in acceptable_types:
+            raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
+
+
+        # Download Reads
+        #
+        self.log (console, "DOWNLOADING READS")  # DEBUG
+        try:
+            readsUtils_Client = ReadsUtils (url=self.callbackURL, token=ctx['token'])  # SDK local
+        except Exception as e:
+            raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
+        try:
+            readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
+                                                             'interleaved': 'false'
+                                                             })
+        except Exception as e:
+            raise ValueError('Unable to download read library sequences from workspace: (' + str(input_reads_ref) +")\n" + str(e))
+
+        input_fwd_file_path = readsLibrary['files'][input_reads_ref]['files']['fwd']
+#        input_fwd_path = re.sub ("\.fq$", "", input_fwd_file_path)
+#        input_fwd_path = re.sub ("\.FQ$", "", input_fwd_path)
+#        input_fwd_path = re.sub ("\.fastq$", "", input_fwd_path)
+#        input_fwd_path = re.sub ("\.FASTQ$", "", input_fwd_path)
+
+        if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
+            input_rev_file_path = readsLibrary['files'][input_reads_ref]['files']['rev']
+#            input_rev_path = re.sub ("\.fq$", "", input_rev_file_path)
+#            input_rev_path = re.sub ("\.FQ$", "", input_rev_path)
+#            input_rev_path = re.sub ("\.fastq$", "", input_rev_path)
+#            input_rev_path = re.sub ("\.FASTQ$", "", input_rev_path)
+
+        sequencing_tech = 'N/A'
+        if 'sequencing_tech' in readsLibrary['files'][input_reads_ref]:
+            sequencing_tech = readsLibrary['files'][input_reads_ref]['sequencing_tech']
+
+        phred_type = None
+        if 'phred_type' in readsLibrary['files'][input_reads_ref]:
+            phred_type = readsLibrary['files'][input_reads_ref]['phred_type']
+        else:
+            phred_type = self.exec_Determine_Phred (ctx, {'input_reads_file':input_fwd_file_path})['phred_type']
+
+
+        # Download index reads
+        #
+        if input_index_ref in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
+            try:
+                indexLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_index_ref],
+                                                                  'interleaved': 'false'
+                                                                  })
+            except Exception as e:
+                raise ValueError('Unable to download index read library sequences from workspace: (' + str(input_index_ref) +")\n" + str(e))
+        input_index_fwd_file_path = indexLibrary['files'][input_index_ref]['files']['fwd']
+        input_index_rev_file_path = indexLibrary['files'][input_index_ref]['files']['rev']
+
+
+        # Set the output dir
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+
+
+        # clean up index_info
+        #
+        index_info_path = None
+        if 'index_info' in params and params['index_info'] != None and params['index_info'] != '':
+            
+            index_info_path = os.path.join(output_dir, 'index_info.txt')
+            index_info_buf = []
+            
+            for line in params['index_info'].split("\n"):
+                row = "\t".join(line.split())+"\n"
+                index_info_buf.append(row)
+            index_info_handle = open(index_info_path, 'w', 0)
+            index_info_handle.writelines(index_info_buf)
+            index_info_handle.close()
+
+
+        # Prep vars
+        #
+        multx_cmd = []
+        multx_cmd.append(self.FASTQ_MULTX])
+        
+        if params['index_mode'] == 'auto-detect':
+            multx_cmd.append('-l')
+            multx_cmd.append(master_barcodes_path)
+        elif params['index_mode'] == 'manual':
+            multx_cmd.append('-B')
+            multx_cmd.append(index_info_path)
+        elif params['index_mode'] == 'index-lane':
+            multx_cmd.append('-g')
+            multx_cmd.append(index_index_fwd_file_path)
+            # what about reverse barcode lane?
+
+        if 'use_header_barcode' in params and params['use_header_barcode'] == 1:
+            multx_cmd.append('-H')
+        if 'force_beg' in params and params['force_beg'] == 1:
+            multx_cmd.append('-b')
+        if 'force_end' in params and params['force_end'] == 1:
+            multx_cmd.append('-e')
+
+        if 'trim_barcode' in params and params['trim_barcode'] == 0:
+            multx_cmd.append('-x')
+        if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
+            multx_cmd.append('-n')
+
+        if 'mismatch_max' in params and params['mismatch_max'] != None and parmas['mimatch_max'] != '':
+            multx_cmd.append('-m')
+            multx_cmd.append(int(params['mismatch_max']))
+        if 'edit_dist_min' in params and params['edit_dist_min'] != None and parmas['mimatch_max'] != '':
+            multx_cmd.append('-d')
+            multx_cmd.append(int(params['edit_dist_min']))
+        if 'barcode_base_qual_score_min' in params and params['barcode_base_qual_score_min'] != None and parmas['mimatch_max'] != '':
+            multx_cmd.append('-q')
+            multx_cmd.append(int(params['barcode_base_qual_score_min']))
+
+        # add input and output files
+        out_pattern = output_dir+'/'+'fwd.%.fq'
+        multx_cmd.append(input_fwd_file_path)
+        multx_cmd.append('-o')
+        multx_cmd.append(out_pattern)
+        if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
+           out_pattern = output_dir+'/'+'rev.%.fq'
+           multx_cmd.append(input_rev_file_path)
+           multx_cmd.append('-o')
+           multx_cmd.append(out_pattern)
+
+
+        # Run
+        #
+        print('running fastq-multx:')
+        print('    '+' '.join(multx_cmd))
+        outputlines = []
+        p = subprocess.Popen(multx_cmd, cwd=self.scratch, shell=False)
+        while True:
+            line = p.stdout.readline()
+            outputlines.append(line)
+            if not line: break
+            self.log(console, line.replace('\n', ''))
+
+        p.stdout.close()
+        retcode = p.wait()
+        print('Return code: ' + str(retcode))
+        if p.returncode != 0:
+            raise ValueError('Error running fastq-multx, return code: ' +
+                             str(retcode) + '\n')        
+
+
+# HERE
+
         #END run_Fastq_Multx
 
         # At some point might do deeper type checking...
@@ -465,50 +687,52 @@ class kb_ea_utils_dev:
         SERVICE_VER = 'dev'  # DEBUG
 
         # param checks
-        required_params = [ 'input_reads_ref' ]
-        for required_param in required_params:
-            if required_param not in params or params[required_param] == None:
-                raise ValueError ("Must define required param: '"+required_param+"'")
+        if 'input_reads_ref' not in params and 'input_reads_file' not in params:
+            raise ValueError ("Must define either param: 'input_reads_ref' or 'input_reads_file'")
             
-        # Determine whether read library is of correct type
-        try:
-            # object_info tuple
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
-            
-            input_reads_ref = params['input_reads_ref']
-            input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_reads_ref}]})[0]
-            input_reads_obj_type = input_reads_obj_info[TYPE_I]
-            input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
+        # get file
+        if 'input_reads_file' in params:
+            this_input_fwd_path = params['input_reads_file']
+        else:
+            # Determine whether read library is of correct type
+            try:
+                # object_info tuple
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
+                
+                input_reads_ref = params['input_reads_ref']
+                input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_reads_ref}]})[0]
+                input_reads_obj_type = input_reads_obj_info[TYPE_I]
+                input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
             #input_reads_obj_version = input_reads_obj_info[VERSION_I]  # this is object version, not type version
+                
+            except Exception as e:
+                raise ValueError('Unable to get read library object info from workspace: (' + str(input_reads_ref) +')' + str(e))
+            
+            acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
+            if input_reads_obj_type not in acceptable_types:
+                raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
 
-        except Exception as e:
-            raise ValueError('Unable to get read library object info from workspace: (' + str(input_reads_ref) +')' + str(e))
 
-        acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
-        if input_reads_obj_type not in acceptable_types:
-            raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
-
-
-        # Download Reads
-        self.log (console, "DOWNLOADING READS")  # DEBUG
-        try:
-            readsUtils_Client = ReadsUtils (url=self.callbackURL, token=ctx['token'])  # SDK local
-        except Exception as e:
-            raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
-        try:
-            readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
-                                                             'interleaved': 'false'
-                                                             })
-        except Exception as e:
-            raise ValueError('Unable to download read library sequences from workspace: (' + str(input_reads_ref) +")\n" + str(e))
-        
-        this_input_fwd_path = readsLibrary['files'][this_input_reads_ref]['files']['fwd']
+            # Download Reads
+            self.log (console, "DOWNLOADING READS")  # DEBUG
+            try:
+                readsUtils_Client = ReadsUtils (url=self.callbackURL, token=ctx['token'])  # SDK local
+            except Exception as e:
+                raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
+            try:
+                readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
+                                                                  'interleaved': 'false'
+                                                                  })
+            except Exception as e:
+                raise ValueError('Unable to download read library sequences from workspace: (' + str(input_reads_ref) +")\n" + str(e))
+            
+            this_input_fwd_path = readsLibrary['files'][this_input_reads_ref]['files']['fwd']
 
         
         # Run determine-phred
         determine_phred_cmd = []
-        determine_phred_cmd.append(self.DETERMINE_PHRED])
-        determine_phred_cmd.append(this_input_fwd_path])
+        determine_phred_cmd.append(self.DETERMINE_PHRED)
+        determine_phred_cmd.append(this_input_fwd_path)
         print('running determine-phred:')
         print('    '+' '.join(determine_phred_cmd))
         p = subprocess.Popen(determine_phred_cmd, cwd=self.scratch, shell=False)
@@ -522,8 +746,7 @@ class kb_ea_utils_dev:
             raise ValueError('Error running Determine_Phred(), return code: ' +
                              str(retcode) + '\n')        
 
-        
-        returnVal = { 'qual_regime': phred_regime }
+        returnVal = { 'phred_type': phred_regime }
         #END exec_Determine_Phred
 
         # At some point might do deeper type checking...

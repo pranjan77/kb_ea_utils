@@ -20,7 +20,7 @@ typedef string workspace_name;
 typedef string data_obj_ref;
 typedef string data_obj_name;
 typedef string textarea_str;
-
+typedef int    bool;
 
 
 /* if read_library_ref is set, then workspace_name and read_library_name are ignored */
@@ -140,6 +140,15 @@ typedef structure {
     data_obj_ref  input_reads_ref;  /* PairedEndLibrary or SingleEndLibrary */
     data_obj_ref  input_index_ref;  /* PairedEndLibrary or SingleEndLibrary */
     data_obj_name output_reads_name;
+
+    bool use_header_barcode;
+    bool force_beg;
+    bool force_end;
+    bool trim_barcode;
+    bool suggest_barcodes;
+    int mismatch_max;
+    int edit_dist_min;
+    int barcode_base_qual_score_min;
 } run_Fastq_Multx_Input;
 
 typedef structure {
@@ -202,10 +211,11 @@ funcdef exec_Fastq_Join_OneLibrary(exec_Fastq_Join_Input params)
 typedef structure {
     workspace_name workspace_name;
     data_obj_ref  input_reads_ref;  /* PairedEndLibrary or SingleEndLibrary */
+    file_path     input_reads_file;
 } exec_Determine_Phred_Input;
 
 typedef structure {
-    string qual_regime;
+    string phred_type;
 } exec_Determine_Phred_Output;
 
 funcdef exec_Determine_Phred(exec_Determine_Phred_Input params) 
