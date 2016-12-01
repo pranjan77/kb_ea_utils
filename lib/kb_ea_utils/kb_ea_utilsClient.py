@@ -108,6 +108,82 @@ class kb_ea_utils(object):
             'kb_ea_utils.calculate_fastq_stats',
             [input_params], self._service_ver, context)
 
+    def run_Fastq_Multx(self, params, context=None):
+        """
+        :param params: instance of type "run_Fastq_Multx_Input"
+           (run_Fastq_Multx() ** ** demultiplex read libraries to readsSet)
+           -> structure: parameter "workspace_name" of type "workspace_name"
+           (** Common types), parameter "index_info" of type "textarea_str",
+           parameter "index_mode" of String, parameter "input_reads_ref" of
+           type "data_obj_ref", parameter "input_index_ref" of type
+           "data_obj_ref", parameter "output_reads_name" of type
+           "data_obj_name"
+        :returns: instance of type "run_Fastq_Multx_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method(
+            'kb_ea_utils.run_Fastq_Multx',
+            [params], self._service_ver, context)
+
+    def run_Fastq_Join(self, params, context=None):
+        """
+        :param params: instance of type "run_Fastq_Join_Input"
+           (run_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This sub interacts with Narrative) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_reads_ref" of type "data_obj_ref",
+           parameter "output_reads_name" of type "data_obj_name"
+        :returns: instance of type "run_Fastq_Join_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method(
+            'kb_ea_utils.run_Fastq_Join',
+            [params], self._service_ver, context)
+
+    def exec_Fastq_Join(self, params, context=None):
+        """
+        :param params: instance of type "exec_Fastq_Join_Input"
+           (exec_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This routine creates readsSets) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_reads_ref" of type "data_obj_ref",
+           parameter "output_reads_name" of type "data_obj_name"
+        :returns: instance of type "exec_Fastq_Join_Output" -> structure:
+           parameter "output_reads_ref" of type "data_obj_ref"
+        """
+        return self._client.call_method(
+            'kb_ea_utils.exec_Fastq_Join',
+            [params], self._service_ver, context)
+
+    def exec_Fastq_Join_OneLibrary(self, params, context=None):
+        """
+        :param params: instance of type "exec_Fastq_Join_Input"
+           (exec_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This routine creates readsSets) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_reads_ref" of type "data_obj_ref",
+           parameter "output_reads_name" of type "data_obj_name"
+        :returns: instance of type "exec_Fastq_Join_Output" -> structure:
+           parameter "output_reads_ref" of type "data_obj_ref"
+        """
+        return self._client.call_method(
+            'kb_ea_utils.exec_Fastq_Join_OneLibrary',
+            [params], self._service_ver, context)
+
+    def exec_Determine_Phred(self, params, context=None):
+        """
+        :param params: instance of type "exec_Determine_Phred_Input"
+           (exec_Determine_Phred() ** ** determine qual score regime.  Either
+           "phred33" or "phred64") -> structure: parameter "workspace_name"
+           of type "workspace_name" (** Common types), parameter
+           "input_reads_ref" of type "data_obj_ref"
+        :returns: instance of type "exec_Determine_Phred_Output" ->
+           structure: parameter "qual_regime" of String
+        """
+        return self._client.call_method(
+            'kb_ea_utils.exec_Determine_Phred',
+            [params], self._service_ver, context)
+
     def status(self, context=None):
         return self._client.call_method('kb_ea_utils.status',
                                         [], self._service_ver, context)

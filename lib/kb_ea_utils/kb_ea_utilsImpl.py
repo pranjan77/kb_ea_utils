@@ -31,8 +31,8 @@ class kb_ea_utils:
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.0.0"
-    GIT_URL = "git@github.com:msneddon/kb_ea_utils"
-    GIT_COMMIT_HASH = "e642d722169c442856846ecf813ccd0565d761a3"
+    GIT_URL = "https://github.com/dcchivian/kb_ea_utils"
+    GIT_COMMIT_HASH = "48fa9860efe955d9519051ef558104a81dd48e3c"
 
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
@@ -339,6 +339,122 @@ class kb_ea_utils:
                              'ea_stats is not type dict as required.')
         # return the results
         return [ea_stats]
+
+    def run_Fastq_Multx(self, ctx, params):
+        """
+        :param params: instance of type "run_Fastq_Multx_Input"
+           (run_Fastq_Multx() ** ** demultiplex read libraries to readsSet)
+           -> structure: parameter "workspace_name" of type "workspace_name"
+           (** Common types), parameter "index_info" of type "textarea_str",
+           parameter "index_mode" of String, parameter "input_reads_ref" of
+           type "data_obj_ref", parameter "input_index_ref" of type
+           "data_obj_ref", parameter "output_reads_name" of type
+           "data_obj_name"
+        :returns: instance of type "run_Fastq_Multx_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: returnVal
+        #BEGIN run_Fastq_Multx
+        #END run_Fastq_Multx
+
+        # At some point might do deeper type checking...
+        if not isinstance(returnVal, dict):
+            raise ValueError('Method run_Fastq_Multx return value ' +
+                             'returnVal is not type dict as required.')
+        # return the results
+        return [returnVal]
+
+    def run_Fastq_Join(self, ctx, params):
+        """
+        :param params: instance of type "run_Fastq_Join_Input"
+           (run_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This sub interacts with Narrative) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_reads_ref" of type "data_obj_ref",
+           parameter "output_reads_name" of type "data_obj_name"
+        :returns: instance of type "run_Fastq_Join_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: returnVal
+        #BEGIN run_Fastq_Join
+        #END run_Fastq_Join
+
+        # At some point might do deeper type checking...
+        if not isinstance(returnVal, dict):
+            raise ValueError('Method run_Fastq_Join return value ' +
+                             'returnVal is not type dict as required.')
+        # return the results
+        return [returnVal]
+
+    def exec_Fastq_Join(self, ctx, params):
+        """
+        :param params: instance of type "exec_Fastq_Join_Input"
+           (exec_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This routine creates readsSets) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_reads_ref" of type "data_obj_ref",
+           parameter "output_reads_name" of type "data_obj_name"
+        :returns: instance of type "exec_Fastq_Join_Output" -> structure:
+           parameter "output_reads_ref" of type "data_obj_ref"
+        """
+        # ctx is the context object
+        # return variables are: returnVal
+        #BEGIN exec_Fastq_Join
+        #END exec_Fastq_Join
+
+        # At some point might do deeper type checking...
+        if not isinstance(returnVal, dict):
+            raise ValueError('Method exec_Fastq_Join return value ' +
+                             'returnVal is not type dict as required.')
+        # return the results
+        return [returnVal]
+
+    def exec_Fastq_Join_OneLibrary(self, ctx, params):
+        """
+        :param params: instance of type "exec_Fastq_Join_Input"
+           (exec_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This routine creates readsSets) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_reads_ref" of type "data_obj_ref",
+           parameter "output_reads_name" of type "data_obj_name"
+        :returns: instance of type "exec_Fastq_Join_Output" -> structure:
+           parameter "output_reads_ref" of type "data_obj_ref"
+        """
+        # ctx is the context object
+        # return variables are: returnVal
+        #BEGIN exec_Fastq_Join_OneLibrary
+        #END exec_Fastq_Join_OneLibrary
+
+        # At some point might do deeper type checking...
+        if not isinstance(returnVal, dict):
+            raise ValueError('Method exec_Fastq_Join_OneLibrary return value ' +
+                             'returnVal is not type dict as required.')
+        # return the results
+        return [returnVal]
+
+    def exec_Determine_Phred(self, ctx, params):
+        """
+        :param params: instance of type "exec_Determine_Phred_Input"
+           (exec_Determine_Phred() ** ** determine qual score regime.  Either
+           "phred33" or "phred64") -> structure: parameter "workspace_name"
+           of type "workspace_name" (** Common types), parameter
+           "input_reads_ref" of type "data_obj_ref"
+        :returns: instance of type "exec_Determine_Phred_Output" ->
+           structure: parameter "qual_regime" of String
+        """
+        # ctx is the context object
+        # return variables are: returnVal
+        #BEGIN exec_Determine_Phred
+        #END exec_Determine_Phred
+
+        # At some point might do deeper type checking...
+        if not isinstance(returnVal, dict):
+            raise ValueError('Method exec_Determine_Phred return value ' +
+                             'returnVal is not type dict as required.')
+        # return the results
+        return [returnVal]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK", 'message': "", 'version': self.VERSION, 

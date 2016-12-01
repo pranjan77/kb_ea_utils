@@ -345,6 +345,26 @@ class Application(object):
                              name='kb_ea_utils.calculate_fastq_stats',
                              types=[dict])
         self.method_authentication['kb_ea_utils.calculate_fastq_stats'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.run_Fastq_Multx,
+                             name='kb_ea_utils.run_Fastq_Multx',
+                             types=[dict])
+        self.method_authentication['kb_ea_utils.run_Fastq_Multx'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.run_Fastq_Join,
+                             name='kb_ea_utils.run_Fastq_Join',
+                             types=[dict])
+        self.method_authentication['kb_ea_utils.run_Fastq_Join'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.exec_Fastq_Join,
+                             name='kb_ea_utils.exec_Fastq_Join',
+                             types=[dict])
+        self.method_authentication['kb_ea_utils.exec_Fastq_Join'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.exec_Fastq_Join_OneLibrary,
+                             name='kb_ea_utils.exec_Fastq_Join_OneLibrary',
+                             types=[dict])
+        self.method_authentication['kb_ea_utils.exec_Fastq_Join_OneLibrary'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.exec_Determine_Phred,
+                             name='kb_ea_utils.exec_Determine_Phred',
+                             types=[dict])
+        self.method_authentication['kb_ea_utils.exec_Determine_Phred'] = 'required' # noqa
         self.rpc_service.add(impl_kb_ea_utils.status,
                              name='kb_ea_utils.status',
                              types=[dict])

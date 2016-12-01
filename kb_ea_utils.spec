@@ -136,7 +136,7 @@ typedef structure {
     workspace_name workspace_name;
     
     textarea_str  index_info;
-    string        barcode_mode;  /* explicit_index, barcode_seq_lib, pick_from_common */
+    string        index_mode;  /* explicit_index, barcode_seq_lib, pick_from_common */
     data_obj_ref  input_reads_ref;  /* PairedEndLibrary or SingleEndLibrary */
     data_obj_ref  input_index_ref;  /* PairedEndLibrary or SingleEndLibrary */
     data_obj_name output_reads_name;
