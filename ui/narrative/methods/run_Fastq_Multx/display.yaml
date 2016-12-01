@@ -1,0 +1,88 @@
+#
+# Define basic display information
+#
+name     : Demultiplex with ea-utils FASTQ-MULTX
+tooltip  : |
+    Run the ea-utils program fastq-multx to demultiplex reads library into reads set
+
+screenshots :
+    []
+
+icon: ea-utils-pink.png
+
+
+#
+# Define the set of other narrative methods that should be suggested to the user.
+#
+suggestions :
+    apps:
+        related :
+            []
+        next :
+            []
+    methods:
+        related :
+            []
+        next :
+            []
+
+
+#
+# Configure the display and description of the parameters
+#
+#
+# Configure the display and description of parameters
+#
+parameters :
+	index_mode :
+		ui-name : |
+			Barcode Mode
+		short-hint : |
+			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
+		long-hint  : |
+			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
+	index_info :
+		ui-name : |
+			Barcode Map
+		short-hint : |
+			The Read Group to Barcode Mapping
+		long-hint  : |
+			Barcodes to Read Group (if 2 barcodes, hyphenate them), space delimited
+	input_reads_ref :
+		ui-name : |
+			Read library
+		short-hint : |
+			The read library to examine
+		long-hint  : |
+			The read library for which you want to de-barcode
+	input_index_ref :
+		ui-name : |
+			Index library (Optional)
+		short-hint : |
+			The index read library with the barcodes
+		long-hint  : |
+			The index read library with which you want to de-barcode
+	output_reads_name :
+		ui-name : |
+			Output ReadsSet
+		short-hint : |
+			Base name for output read library or read library set object
+		long-hint : |
+			Base name for output read library or read library set object
+
+
+#
+# Desc
+#
+description : |
+   <p>This method demultiplexes a reads library into a reads set using the FASTQ-MULTX program in the ea-utils package: https://expressionanalysis.github.io/ea-utils/</p>
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
+    Dylan Chivian</p>
+
+
+   <p>fastq-multx - Demultiplexes a fastq. Capable of auto-determining barcode id's based on a master set fields. Keeps multiple reads in-sync during demultiplexing. Can verify that the reads are in-sync as well, and fail if they're not.</p>
+
+#
+# Pubs
+#
+publications :

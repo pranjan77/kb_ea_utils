@@ -1,0 +1,65 @@
+#
+# Define basic display information
+#
+name     : Join Overlapping Mate Pairs
+tooltip  : |
+    Run the ea-utils program fastq-join to join overlapping mate pairs
+
+screenshots :
+    []
+
+icon: ea-utils-pink.png
+
+
+#
+# Define the set of other narrative methods that should be suggested to the user.
+#
+suggestions :
+    apps:
+        related :
+            []
+        next :
+            []
+    methods:
+        related :
+            []
+        next :
+            []
+
+
+#
+# Configure the display and description of the parameters
+#
+#
+# Configure the display and description of parameters
+#
+parameters :
+	input_reads_ref :
+		ui-name : |
+			Read library
+		short-hint : |
+			The read library to examine
+		long-hint  : |
+			The read library for which you want to de-barcode
+	output_reads_name :
+		ui-name : |
+			Output ReadsSet
+		short-hint : |
+			Base name for output read library or read library set object
+		long-hint : |
+			Base name for output read library or read library set object
+
+
+#
+# Desc
+#
+description : |
+   <p>This method joins overlapping mate pairs into single reads using the FASTQ-JOIN program in the ea-utils package: https://expressionanalysis.github.io/ea-utils/</p>
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
+    Dylan Chivian</p>
+
+
+#
+# Pubs
+#
+publications :
