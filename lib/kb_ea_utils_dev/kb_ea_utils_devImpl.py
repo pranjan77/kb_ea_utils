@@ -469,11 +469,13 @@ class kb_ea_utils_dev:
         if 'sequencing_tech' in readsLibrary['files'][input_reads_ref]:
             sequencing_tech = readsLibrary['files'][input_reads_ref]['sequencing_tech']
 
-        phred_type = None
-        if 'phred_type' in readsLibrary['files'][input_reads_ref]:
-            phred_type = readsLibrary['files'][input_reads_ref]['phred_type']
-        else:
-            phred_type = self.exec_Determine_Phred (ctx, {'input_reads_file':input_fwd_file_path})['phred_type']
+
+        # don't need phred_type after all
+#        phred_type = None
+#        if 'phred_type' in readsLibrary['files'][input_reads_ref]:
+#            phred_type = readsLibrary['files'][input_reads_ref]['phred_type']
+#        else:
+#            phred_type = self.exec_Determine_Phred (ctx, {'input_reads_file':input_fwd_file_path})['phred_type']
 
 
         # Download index reads
@@ -496,6 +498,7 @@ class kb_ea_utils_dev:
 
         # clean up index_info
         #
+        group_id_order = []
         index_info_path = None
         if 'index_info' in params and params['index_info'] != None and params['index_info'] != '':
             
@@ -503,8 +506,15 @@ class kb_ea_utils_dev:
             index_info_buf = []
             
             for line in params['index_info'].split("\n"):
-                row = "\t".join(line.split())+"\n"
-                index_info_buf.append(row)
+                line = line.strip()
+                if line == '':
+                    continue
+                row = line.split()
+                if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
+                    continue
+                group_id_order.append(row[0])
+                row_str = "\t".join(row)+"\n"
+                index_info_buf.append(row_str)
             index_info_handle = open(index_info_path, 'w', 0)
             index_info_handle.writelines(index_info_buf)
             index_info_handle.close()
@@ -579,8 +589,12 @@ class kb_ea_utils_dev:
             raise ValueError('Error running fastq-multx, return code: ' +
                              str(retcode) + '\n')        
 
+        report += "\n".outputlines
 
-# HERE
+
+        # Collect output files and upload
+
+
 
         #END run_Fastq_Multx
 
@@ -675,7 +689,7 @@ class kb_ea_utils_dev:
         #BEGIN exec_Determine_Phred
         console = []
         report = ''
-        self.log(console, 'Running KButil_Split_Reads() with parameters: ')
+        self.log(console, 'Running KButil_Determine_Phred() with parameters: ')
         self.log(console, "\n"+pformat(params))
         
         token = ctx['token']
