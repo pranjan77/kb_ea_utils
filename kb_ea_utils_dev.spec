@@ -20,6 +20,7 @@ typedef string workspace_name;
 typedef string data_obj_ref;
 typedef string data_obj_name;
 typedef string textarea_str;
+typedef string file_path;
 typedef int    bool;
 
 
