@@ -1,7 +1,7 @@
 #
 # Define basic display information
 #
-name     : Join Overlapping Mate Pairs
+name     : Join Overlapping Mate Pairs with ea-utils FASTQ-JOIN
 tooltip  : |
     Run the ea-utils program fastq-join to join overlapping mate pairs
 
