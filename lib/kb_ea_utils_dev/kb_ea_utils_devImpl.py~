@@ -32,11 +32,7 @@ class kb_ea_utils_dev:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
-    GIT_COMMIT_HASH = "48fa9860efe955d9519051ef558104a81dd48e3c"
-
-    FASTQ_MULTX     = "/usr/local/bin/fastq-multx"
-    FASTQ_JOIN      = "/usr/local/bin/fastq-join"
-    DETERMINE_PHRED = "/usr/local/bin/determine-phred"
+    GIT_COMMIT_HASH = "2522867e4128d3462dd2b568986cf79143932340"
 
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
@@ -353,7 +349,12 @@ class kb_ea_utils_dev:
            parameter "index_mode" of String, parameter "input_reads_ref" of
            type "data_obj_ref", parameter "input_index_ref" of type
            "data_obj_ref", parameter "output_reads_name" of type
-           "data_obj_name"
+           "data_obj_name", parameter "use_header_barcode" of type "bool",
+           parameter "force_beg" of type "bool", parameter "force_end" of
+           type "bool", parameter "trim_barcode" of type "bool", parameter
+           "suggest_barcodes" of type "bool", parameter "mismatch_max" of
+           Long, parameter "edit_dist_min" of Long, parameter
+           "barcode_base_qual_score_min" of Long
         :returns: instance of type "run_Fastq_Multx_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -499,13 +500,31 @@ class kb_ea_utils_dev:
         # clean up index_info
         #
         group_id_order = []
-        index_info_path = None
-        if 'index_info' in params and params['index_info'] != None and params['index_info'] != '':
+        if params['index_mode'] != 'auto-detect':
+            index_info_path = None
+            if 'index_info' in params and params['index_info'] != None and params['index_info'] != '':
+                index_info_path = os.path.join(output_dir, 'index_info.txt')
+                index_info_buf = []
             
-            index_info_path = os.path.join(output_dir, 'index_info.txt')
-            index_info_buf = []
-            
-            for line in params['index_info'].split("\n"):
+                for line in params['index_info'].split("\n"):
+                    line = line.strip()
+                    if line == '':
+                        continue
+                    row = line.split()
+                    if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
+                        continue
+                    group_id_order.append(row[0])
+
+                    row_str = "\t".join(row)+"\n"
+                    index_info_buf.append(row_str)
+                    index_info_handle = open(index_info_path, 'w', 0)
+                    index_info_handle.writelines(index_info_buf)
+                    index_info_handle.close()
+            else:
+                raise Value ("missing index_info")
+        else:
+            master_barcodes_handle = open (master_barcodes_path, 'r', 0)
+            for line in master_barcodes_handle.readlines():
                 line = line.strip()
                 if line == '':
                     continue
@@ -513,11 +532,6 @@ class kb_ea_utils_dev:
                 if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
                     continue
                 group_id_order.append(row[0])
-                row_str = "\t".join(row)+"\n"
-                index_info_buf.append(row_str)
-            index_info_handle = open(index_info_path, 'w', 0)
-            index_info_handle.writelines(index_info_buf)
-            index_info_handle.close()
 
 
         # Prep vars
@@ -526,8 +540,8 @@ class kb_ea_utils_dev:
         multx_cmd.append(self.FASTQ_MULTX])
         
         if params['index_mode'] == 'auto-detect':
-            multx_cmd.append('-l')
-            multx_cmd.append(master_barcodes_path)
+             multx_cmd.append('-l')
+             multx_cmd.append(master_barcodes_path)
         elif params['index_mode'] == 'manual':
             multx_cmd.append('-B')
             multx_cmd.append(index_info_path)
@@ -559,15 +573,17 @@ class kb_ea_utils_dev:
             multx_cmd.append(int(params['barcode_base_qual_score_min']))
 
         # add input and output files
-        out_pattern = output_dir+'/'+'fwd.%.fq'
+        out_fwd_base_pattern = output_dir+'/'+'fwd.'
+        out_fwd_pattern      = out_base_pattern+'%.fq'
         multx_cmd.append(input_fwd_file_path)
         multx_cmd.append('-o')
-        multx_cmd.append(out_pattern)
+        multx_cmd.append(out_fwd_pattern)
         if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
-           out_pattern = output_dir+'/'+'rev.%.fq'
-           multx_cmd.append(input_rev_file_path)
-           multx_cmd.append('-o')
-           multx_cmd.append(out_pattern)
+            out_rev_base_pattern = output_dir+'/'+'rev.'
+            out_rev_pattern      = out_base_pattern+'%.fq'
+            multx_cmd.append(input_rev_file_path)
+            multx_cmd.append('-o')
+            multx_cmd.append(out_rev_pattern)
 
 
         # Run
@@ -589,13 +605,255 @@ class kb_ea_utils_dev:
             raise ValueError('Error running fastq-multx, return code: ' +
                              str(retcode) + '\n')        
 
-        report += "\n".outputlines
+        report += "\n".join(outputlines)
+        self.log (console, "\n".join(outputlines))
 
 
         # Collect output files and upload
+        #
+        paired_fwd_files   = dict()
+        paired_rev_files   = dict()
+        unpaired_fwd_files = dict()
+        unpaired_rev_files = dict()
+        unmatched_fwd_file = None
+        unmatched_rev_file = None
+ 
+        if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
+            pass
+        else:
+            for group_id in group_id_order:
+
+                output_fwd_file_path = output_fwd_base_pattern + str(group_id) + '.fq'
+                fwd_file_exists = os.path.isfile (output_fwd_file_path) \
+                                      and os.path.getsize (output_fwd_file_path) != 0
+
+                output_rev_file_path = output_rev_base_pattern + str(group_id) + '.fq'
+                rev_file_exists = os.path.isfile (output_rev_file_path) \
+                                      and os.path.getsize (output_rev_file_path) != 0
+                
+                if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
+
+                    if fwd_file_exists and rev_file_exists:
+                        paired_fwd_files[group_id] = output_fwd_file_path
+                        paired_rev_files[group_id] = output_rev_file_path
+                    elif fwd_file_exists:
+                        unpaired_fwd_files[group_id] = output_fwd_file_path
+                    elif rev_file_exists:
+                        unpaired_rev_files[group_id] = output_rev_file_path
+                else:
+                    if fwd_file_exists:
+                        paired_fwd_files[group_id] = output_fwd_file_path
+
+                # add unmatched
+                group_id = 'unmatched'
+                output_fwd_file_path = output_fwd_base_pattern + str(group_id) + '.fq'
+                fwd_file_exists = os.path.isfile (output_fwd_file_path) \
+                                      and os.path.getsize (output_fwd_file_path) != 0
+
+                output_rev_file_path = output_rev_base_pattern + str(group_id) + '.fq'
+                rev_file_exists = os.path.isfile (output_rev_file_path) \
+                                      and os.path.getsize (output_rev_file_path) != 0
+
+                if fwd_file_exists:
+                    unmatched_fwd_file = output_fwd_file_path
+                if rev_file_exists:
+                    unmatched_rev_file = output_rev_file_path
 
 
+        #
+        # DO PAIRED LIB HYGEINE?
+        #
 
+            
+        # upload reads
+        #
+        if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
+            pass
+        else:
+
+            self.log (console, "UPLOAD READS LIBS")  # DEBUG
+            paired_obj_refs = []
+            paired_group_ids = []
+            unpaired_fwd_obj_refs = []
+            unpaired_fwd_group_ids = []
+            unpaired_rev_obj_refs = []
+            unpaired_rev_group_ids = []
+            unmatched_fwd_obj_ref = None
+            unmatched_rev_obj_ref = None
+
+            for group_id in group_id_order:
+
+                # paired reads
+                try:
+                    output_fwd_paired_file_path = paired_fwd_files[group_id]
+                    output_rev_paired_file_path = paired_rev_files[group_id]
+
+                    output_obj_name = params['output_reads_name']+'_paired-'+str(group_id)
+                    self.log(console, 'Uploading paired reads: '+output_obj_name)
+                    paired_group_ids.append (group_id)
+                    paired_obj_refs.append (readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
+                                                                              'name': output_obj_name,
+                                                                              'sequencing_tech': sequencing_tech,
+                                                                             'fwd_file': output_fwd_paired_file_path,
+                                                                              'rev_file': output_rev_paired_file_path
+                                                                              })['obj_ref'])
+                except:
+                    pass
+
+                # unpaired fwd
+                try:
+                    output_fwd_unpaired_file_path = unpaired_fwd_files[group_id]
+
+                    output_obj_name = params['output_reads_name']+'_unpaired_fwd-'+str(group_id)
+                    self.log(console, 'Uploading unpaired fwd reads: '+output_obj_name)
+                    unpaired_fwd_group_ids.append (group_id)
+                    unpaired_fwd_obj_refs.append (readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
+                                                                                    'name': output_obj_name,
+                                                                                    'sequencing_tech': sequencing_tech,
+                                                                                    'fwd_file': output_fwd_unpaired_file_path
+                                                                              })['obj_ref'])
+                except:
+                    pass
+
+                # unpaired rev
+                try:
+                    output_rev_unpaired_file_path = unpaired_rev_files[group_id]
+
+                    output_obj_name = params['output_reads_name']+'_unpaired_rev-'+str(group_id)
+                    self.log(console, 'Uploading unpaired rev reads: '+output_obj_name)
+                    unpaired_rev_group_ids.append (group_id)
+                    unpaired_rev_obj_refs.append (readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
+                                                                                    'name': output_obj_name,
+                                                                                    'sequencing_tech': sequencing_tech,
+                                                                                    'fwd_file': output_rev_unpaired_file_path
+                                                                              })['obj_ref'])
+                except:
+                    pass
+
+            # unmatched fwd
+            if unmatched_fwd_file != None:
+                output_fwd_unmatched_file_path = unmatched_fwd_file
+                
+                output_obj_name = params['output_reads_name']+'_unmatched_fwd'
+                self.log(console, 'Uploading unmatched fwd reads: '+output_obj_name)
+                unmatched_fwd_obj_ref = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
+                                                                          'name': output_obj_name,
+                                                                          'sequencing_tech': sequencing_tech,
+                                                                          'fwd_file': output_fwd_unmatched_file_path
+                                                                              })['obj_ref']
+
+
+            # unmatched rev
+            if unmatched_rev_file != None:
+                output_rev_unmatched_file_path = unmatched_rev_file
+                
+                output_obj_name = params['output_reads_name']+'_unmatched_rev'
+                self.log(console, 'Uploading unmatched rev reads: '+output_obj_name)
+                unmatched_rev_obj_ref = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
+                                                                          'name': output_obj_name,
+                                                                          'sequencing_tech': sequencing_tech,
+                                                                          'fwd_file': output_rev_unmatched_file_path
+                                                                              })['obj_ref']
+
+
+        # create readsSets
+        #
+        if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
+            pass
+        else:
+            self.log (console, "CREATING READS SETS")  # DEBUG
+            setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
+
+            # paired end
+            self.log (console, "creating paired end readsSet")  # DEBUG
+            items = []
+            for lib_i,lib_ref in enumerate(paired_obj_refs):
+                label = params['output_reads_name']+'-'+str(paired_group_ids[lib_i])
+                items.append({'ref': lib_ref,
+                              'label': label
+                              #'data_attachment': ,
+                              #'info':
+                             })
+            description = params['desc']
+            output_readsSet_obj = { 'description': params['desc'],
+                                    'items': items
+                                  }
+            output_readsSet_name = str(params['output_reads_name'])
+            paired_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                                                                    'output_object_name': output_readsSet_name,
+                                                                    'data': output_readsSet_obj
+                                                                    })['set_ref']
+
+            # unpaired fwd
+            self.log (console, "creating unpaired fwd readsSet")  # DEBUG
+            items = []
+            for lib_i,lib_ref in enumerate(unpaired_fwd_obj_refs):
+                label = params['output_reads_name']+'-'+str(unpaired_fwd_group_ids[lib_i])
+                items.append({'ref': lib_ref,
+                              'label': label
+                              #'data_attachment': ,
+                              #'info':
+                             })
+            description = params['desc']+" UNPAIRED FWD"
+            output_readsSet_obj = { 'description': params['desc'],
+                                    'items': items
+                                  }
+            output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_FWD")
+            unpaired_fwd_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                                                                          'output_object_name': output_readsSet_name,
+                                                                          'data': output_readsSet_obj
+                                                                          })['set_ref']
+
+            # unpaired rev
+            self.log (console, "creating unpaired rev readsSet")  # DEBUG
+            items = []
+            for lib_i,lib_ref in enumerate(unpaired_rev_obj_refs):
+                label = params['output_reads_name']+'-'+str(unpaired_rev_group_ids[lib_i])
+                items.append({'ref': lib_ref,
+                              'label': label
+                              #'data_attachment': ,
+                              #'info':
+                             })
+            description = params['desc']+" UNPAIRED REV"
+            output_readsSet_obj = { 'description': params['desc'],
+                                    'items': items
+                                  }
+            output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_REV")
+            unpaired_rev_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                                                                          'output_object_name': output_readsSet_name,
+                                                                          'data': output_readsSet_obj
+                                                                          })['set_ref']
+
+
+        # build report
+        #
+        self.log (console, "SAVING REPORT")  # DEBUG        
+        reportObj = {'objects_created':[], 
+                     'text_message': report}
+
+        if paired_readsSet_ref != None:
+            reportObj['objects_created'].append({'ref':paired_readsSet_ref,
+                                                 'description':params['desc']})
+
+        if unpaired_fwd_readsSet_ref != None:
+            reportObj['objects_created'].append({'ref':unpaired_fwd_readsSet_ref,
+                                                 'description':params['desc']+" UNPAIRED FWD"})
+        if unpaired_rev_readsSet_ref != None:
+            reportObj['objects_created'].append({'ref':unpaired_rev_readsSet_ref,
+                                                 'description':params['desc']+" UNPAIRED REV"})
+        if unmatched_fwd_obj_ref != None:
+            reportObj['objects_created'].append({'ref':unmatched_fwd_obj_ref,
+                                                 'description':params['desc']+" UNMATCHED FWD"})
+        if unmatched_rev_obj_ref != None:
+            reportObj['objects_created'].append({'ref':unmatched_rev_obj_ref,
+                                                 'description':params['desc']+" UNMATCHED REV"})
+
+        # save report object
+        #
+        report = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
+
+        returnVal = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
         #END run_Fastq_Multx
 
         # At some point might do deeper type checking...
@@ -680,9 +938,10 @@ class kb_ea_utils_dev:
            (exec_Determine_Phred() ** ** determine qual score regime.  Either
            "phred33" or "phred64") -> structure: parameter "workspace_name"
            of type "workspace_name" (** Common types), parameter
-           "input_reads_ref" of type "data_obj_ref"
+           "input_reads_ref" of type "data_obj_ref", parameter
+           "input_reads_file" of type "file_path"
         :returns: instance of type "exec_Determine_Phred_Output" ->
-           structure: parameter "qual_regime" of String
+           structure: parameter "phred_type" of String
         """
         # ctx is the context object
         # return variables are: returnVal
