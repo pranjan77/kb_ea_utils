@@ -32,11 +32,7 @@ class kb_ea_utils_dev:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
-    GIT_COMMIT_HASH = "48fa9860efe955d9519051ef558104a81dd48e3c"
-
-    FASTQ_MULTX     = "/usr/local/bin/fastq-multx"
-    FASTQ_JOIN      = "/usr/local/bin/fastq-join"
-    DETERMINE_PHRED = "/usr/local/bin/determine-phred"
+    GIT_COMMIT_HASH = "2522867e4128d3462dd2b568986cf79143932340"
 
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
@@ -353,7 +349,12 @@ class kb_ea_utils_dev:
            parameter "index_mode" of String, parameter "input_reads_ref" of
            type "data_obj_ref", parameter "input_index_ref" of type
            "data_obj_ref", parameter "output_reads_name" of type
-           "data_obj_name"
+           "data_obj_name", parameter "use_header_barcode" of type "bool",
+           parameter "force_beg" of type "bool", parameter "force_end" of
+           type "bool", parameter "trim_barcode" of type "bool", parameter
+           "suggest_barcodes" of type "bool", parameter "mismatch_max" of
+           Long, parameter "edit_dist_min" of Long, parameter
+           "barcode_base_qual_score_min" of Long
         :returns: instance of type "run_Fastq_Multx_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -937,9 +938,10 @@ class kb_ea_utils_dev:
            (exec_Determine_Phred() ** ** determine qual score regime.  Either
            "phred33" or "phred64") -> structure: parameter "workspace_name"
            of type "workspace_name" (** Common types), parameter
-           "input_reads_ref" of type "data_obj_ref"
+           "input_reads_ref" of type "data_obj_ref", parameter
+           "input_reads_file" of type "file_path"
         :returns: instance of type "exec_Determine_Phred_Output" ->
-           structure: parameter "qual_regime" of String
+           structure: parameter "phred_type" of String
         """
         # ctx is the context object
         # return variables are: returnVal

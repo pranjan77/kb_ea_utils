@@ -517,10 +517,19 @@ run_Fastq_Multx_Input is a reference to a hash where the following keys are defi
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	use_header_barcode has a value which is a kb_ea_utils_dev.bool
+	force_beg has a value which is a kb_ea_utils_dev.bool
+	force_end has a value which is a kb_ea_utils_dev.bool
+	trim_barcode has a value which is a kb_ea_utils_dev.bool
+	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+	mismatch_max has a value which is an int
+	edit_dist_min has a value which is an int
+	barcode_base_qual_score_min has a value which is an int
 workspace_name is a string
 textarea_str is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 run_Fastq_Multx_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -540,10 +549,19 @@ run_Fastq_Multx_Input is a reference to a hash where the following keys are defi
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	use_header_barcode has a value which is a kb_ea_utils_dev.bool
+	force_beg has a value which is a kb_ea_utils_dev.bool
+	force_end has a value which is a kb_ea_utils_dev.bool
+	trim_barcode has a value which is a kb_ea_utils_dev.bool
+	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+	mismatch_max has a value which is an int
+	edit_dist_min has a value which is an int
+	barcode_base_qual_score_min has a value which is an int
 workspace_name is a string
 textarea_str is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 run_Fastq_Multx_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -925,10 +943,12 @@ $returnVal is a kb_ea_utils_dev.exec_Determine_Phred_Output
 exec_Determine_Phred_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	input_reads_file has a value which is a kb_ea_utils_dev.file_path
 workspace_name is a string
 data_obj_ref is a string
+file_path is a string
 exec_Determine_Phred_Output is a reference to a hash where the following keys are defined:
-	qual_regime has a value which is a string
+	phred_type has a value which is a string
 
 </pre>
 
@@ -941,10 +961,12 @@ $returnVal is a kb_ea_utils_dev.exec_Determine_Phred_Output
 exec_Determine_Phred_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	input_reads_file has a value which is a kb_ea_utils_dev.file_path
 workspace_name is a string
 data_obj_ref is a string
+file_path is a string
 exec_Determine_Phred_Output is a reference to a hash where the following keys are defined:
-	qual_regime has a value which is a string
+	phred_type has a value which is a string
 
 
 =end text
@@ -1201,6 +1223,58 @@ a string
 
 
 
+=head2 file_path
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 bool
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+an int
+</pre>
+
+=end html
+
+=begin text
+
+an int
+
+=end text
+
+=back
+
+
+
 =head2 get_fastq_ea_utils_stats_params
 
 =over 4
@@ -1439,6 +1513,14 @@ index_mode has a value which is a string
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+use_header_barcode has a value which is a kb_ea_utils_dev.bool
+force_beg has a value which is a kb_ea_utils_dev.bool
+force_end has a value which is a kb_ea_utils_dev.bool
+trim_barcode has a value which is a kb_ea_utils_dev.bool
+suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+mismatch_max has a value which is an int
+edit_dist_min has a value which is an int
+barcode_base_qual_score_min has a value which is an int
 
 </pre>
 
@@ -1453,6 +1535,14 @@ index_mode has a value which is a string
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+use_header_barcode has a value which is a kb_ea_utils_dev.bool
+force_beg has a value which is a kb_ea_utils_dev.bool
+force_end has a value which is a kb_ea_utils_dev.bool
+trim_barcode has a value which is a kb_ea_utils_dev.bool
+suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+mismatch_max has a value which is an int
+edit_dist_min has a value which is an int
+barcode_base_qual_score_min has a value which is an int
 
 
 =end text
@@ -1658,6 +1748,7 @@ exec_Determine_Phred()
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+input_reads_file has a value which is a kb_ea_utils_dev.file_path
 
 </pre>
 
@@ -1668,6 +1759,7 @@ input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+input_reads_file has a value which is a kb_ea_utils_dev.file_path
 
 
 =end text
@@ -1688,7 +1780,7 @@ input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 <pre>
 a reference to a hash where the following keys are defined:
-qual_regime has a value which is a string
+phred_type has a value which is a string
 
 </pre>
 
@@ -1697,7 +1789,7 @@ qual_regime has a value which is a string
 =begin text
 
 a reference to a hash where the following keys are defined:
-qual_regime has a value which is a string
+phred_type has a value which is a string
 
 
 =end text
