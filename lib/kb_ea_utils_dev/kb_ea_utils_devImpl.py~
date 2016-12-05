@@ -388,7 +388,7 @@ class kb_ea_utils_dev:
         if params['index_mode'] == 'auto-detect' or params['index_mode'] == 'manual':
             if 'index_info' not in params or params['index_info'] == None or params['index_info'] == '':
                 raise ValueError ("Must have index_info if index_mode is 'auto-detect' or 'manual'")
-        elsif params['index_mode'] == 'index-lane':
+        elif params['index_mode'] == 'index-lane':
             if 'input_index_ref' not in params or params['input_index_ref'] == None or params['input_index_ref'] == '':
                 raise ValueError ("Must have input_index_ref if index_mode is 'index-lane'")
 

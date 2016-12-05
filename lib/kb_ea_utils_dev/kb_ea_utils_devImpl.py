@@ -35,6 +35,12 @@ class kb_ea_utils_dev:
     GIT_COMMIT_HASH = "2522867e4128d3462dd2b568986cf79143932340"
 
     #BEGIN_CLASS_HEADER
+    FASTQ_STATS     = "/usr/local/bin/fastq-stats"
+    FASTQ_MULTX     = "/usr/local/bin/fastq-multx"
+    FASTQ_JOIN      = "/usr/local/bin/fastq-join"
+    DETERMINE_PHRED = "/usr/local/bin/determine-phred"
+
+
     def log(self, target, message):
         if target is not None:
             target.append(message)
@@ -537,7 +543,7 @@ class kb_ea_utils_dev:
         # Prep vars
         #
         multx_cmd = []
-        multx_cmd.append(self.FASTQ_MULTX])
+        multx_cmd.append(self.FASTQ_MULTX)
         
         if params['index_mode'] == 'auto-detect':
              multx_cmd.append('-l')
