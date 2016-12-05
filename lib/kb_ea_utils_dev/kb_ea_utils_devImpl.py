@@ -1016,7 +1016,7 @@ class kb_ea_utils_dev:
         print('    '+' '.join(determine_phred_cmd))
         p = subprocess.Popen(determine_phred_cmd, cwd=self.scratch, shell=False)
         phred_regime = p.stdout.readline()
-        phred_regime.replace('\n', ''))
+        phred_regime.replace('\n', '')
         p.stdout.close()
 
         retcode = p.wait()
