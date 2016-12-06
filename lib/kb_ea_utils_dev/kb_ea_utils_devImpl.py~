@@ -510,23 +510,25 @@ class kb_ea_utils_dev:
         if params['index_mode'] != 'auto-detect':
             index_info_path = None
             if 'index_info' in params and params['index_info'] != None and params['index_info'] != '':
-                index_info_path = os.path.join(output_dir, 'index_info.txt')
+
                 index_info_buf = []
-            
                 for line in params['index_info'].split("\n"):
                     line = line.strip()
                     if line == '':
                         continue
                     row = line.split()
-                    if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
+                    if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#"): 
                         continue
                     group_id_order.append(row[0])
 
                     row_str = "\t".join(row)+"\n"
                     index_info_buf.append(row_str)
-                    index_info_handle = open(index_info_path, 'w', 0)
-                    index_info_handle.writelines(index_info_buf)
-                    index_info_handle.close()
+
+                # write index_info
+                index_info_path = os.path.join(output_dir, 'index_info.txt')
+                index_info_handle = open(index_info_path, 'w', 0)
+                index_info_handle.writelines(index_info_buf)
+                index_info_handle.close()
             else:
                 raise Value ("missing index_info")
         else:
