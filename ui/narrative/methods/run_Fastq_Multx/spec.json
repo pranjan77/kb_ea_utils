@@ -67,12 +67,6 @@
                                 "dropdown_options": {
                                         "options": [
                                                 {
-                                                        "value": "auto-detect",
-                                                        "display": "Auto Detect from Standard Barcodes",
-                                                        "id": "auto-detect",
-                                                        "ui-name": "auto-detect"
-                                                },
-                                                {
                                                         "value": "manual",
                                                         "display": "Manual Configuration",
                                                         "id": "manual",
@@ -83,6 +77,12 @@
                                                         "display": "Index Read Lane Library",
                                                         "id": "index-lane",
                                                         "ui-name": "index-lane"
+                                                },
+                                                {
+                                                        "value": "auto-detect",
+                                                        "display": "Auto Detect from Standard Barcodes",
+                                                        "id": "auto-detect",
+                                                        "ui-name": "auto-detect"
                                                 }
                                         ]
                                 }
