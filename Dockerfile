@@ -12,12 +12,9 @@ RUN pwd
 
 RUN mkdir -p /kb/module/work
 RUN mkdir -p /kb/module/third_party
-RUN mkdir -p /kb/module/data
 RUN chmod 777 /kb/module
-RUN chmod 777 /kb/module/data
 
 COPY ./third_party /kb/module/third_party
-COPY ./data/master-barcodes.txt /kb/module/data/master-barcodes.txt
 RUN perl /kb/module/third_party/install_ea_utils.pl
 
 # update installed WS client (will now include get_objects2)
