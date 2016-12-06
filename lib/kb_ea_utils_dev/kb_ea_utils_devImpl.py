@@ -487,7 +487,7 @@ class kb_ea_utils_dev:
 
         # Download index reads
         #
-        if input_index_ref in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
+        if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
             try:
                 indexLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_index_ref],
                                                                   'interleaved': 'false'
