@@ -97,7 +97,7 @@ class kb_ea_utilsTest(unittest.TestCase):
         pass
 
     def test_ea_utils2(self):
-        fastq_file = "/kb/module/data/6e9a3750-db21-49d9-a199-6df094e6b953.fwd.fastq";
+        fastq_file = "/kb/module/test_local/data/6e9a3750-db21-49d9-a199-6df094e6b953.fwd.fastq";
         input_params={'read_library_path': fastq_file}
 
         report = self.getImpl().get_ea_utils_stats(self.getContext(), input_params)
