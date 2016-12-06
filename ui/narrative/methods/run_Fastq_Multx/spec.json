@@ -62,7 +62,7 @@
                         "optional": false,
                         "advanced": false,
                         "allow_multiple": false,
-                        "default_values": [ "auto-detect" ],
+                        "default_values": [ "manual" ],
                         "field_type": "dropdown",
                                 "dropdown_options": {
                                         "options": [

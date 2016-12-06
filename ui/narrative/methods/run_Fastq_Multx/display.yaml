@@ -43,7 +43,7 @@ parameters :
 			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
 	index_info :
 		ui-name : |
-			Barcode Map
+			Barcode Map (or Auto-detect or Index Library)
 		short-hint : |
 			The Read Group to Barcode Mapping
 		long-hint  : |
@@ -57,7 +57,7 @@ parameters :
 			The read library for which you want to de-barcode
 	input_index_ref :
 		ui-name : |
-			Index library (Optional)
+			Index library (or Auto-detect or Barcode Map)
 		short-hint : |
 			The index read library with the barcodes
 		long-hint  : |
@@ -71,35 +71,35 @@ parameters :
 			Base name for output read library or read library set object
 	use_header_barcode :
 		ui-name : |
-			Barcode in Fastq header (Optional)
+			Seek Barcode in Fastq header
 		short-hint : |
 			Use barcode in header instead of sequence row
 		long-hint  : |
 			Use barcode in header instead of sequence row
 	force_beg :
 		ui-name : |
-			Force 5'
+			Require 5' start for barcode
 		short-hint : |
 			Require that there are no bases before barcode at Beginning
 		long-hint  : |
 			Require that there are no bases before barcode at Beginning
 	force_end :
 		ui-name : |
-			Force 3'
+			Require 3' end for barcode
 		short-hint : |
 			Require that there are no bases after barcode at End
 		long-hint  : |
 			Require that there are no bases after barcode at End
 	trim_barcode :
 		ui-name : |
-			Trim barcode
+			Trim barcode from output reads
 		short-hint : |
 			Remove barcode from output sequence
 		long-hint  : |
 			Remove barcode from output sequence
 	suggest_barcodes :
 		ui-name : |
-			Suggest barcodes
+			Suggest barcodes but don't demultiplex
 		short-hint : |
 			Don't actually run demultiplex, just detect barcodes
 		long-hint  : |
