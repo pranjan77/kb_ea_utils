@@ -36,42 +36,42 @@ suggestions :
 parameters :
 	index_mode :
 		ui-name : |
-			Barcode Mode
+			Barcode mode
 		short-hint : |
 			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
 		long-hint  : |
 			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
 	index_info :
 		ui-name : |
-			Barcode Map (or Auto-detect or Index Library)
+			Manual barcode pap (or Auto-detect or Index lane library)
 		short-hint : |
 			The Read Group to Barcode Mapping
 		long-hint  : |
 			Barcodes to Read Group (if 2 barcodes, hyphenate them), space delimited
 	input_reads_ref :
 		ui-name : |
-			Read library
+			Input read library
 		short-hint : |
 			The read library to examine
 		long-hint  : |
 			The read library for which you want to de-barcode
 	input_index_ref :
 		ui-name : |
-			Index library (or Auto-detect or Barcode Map)
+			Index lane library (or Auto-detect or Manual Barcode map)
 		short-hint : |
 			The index read library with the barcodes
 		long-hint  : |
 			The index read library with which you want to de-barcode
 	output_reads_name :
 		ui-name : |
-			Output ReadsSet
+			Output readsSet
 		short-hint : |
 			Base name for output read library or read library set object
 		long-hint : |
 			Base name for output read library or read library set object
 	use_header_barcode :
 		ui-name : |
-			Seek Barcode in Fastq header
+			Find barcode in each fastq record header
 		short-hint : |
 			Use barcode in header instead of sequence row
 		long-hint  : |
@@ -106,7 +106,7 @@ parameters :
 			Don't actually run demultiplex, just detect barcodes
 	mismatch_max :
 		ui-name : |
-			Mismatch max
+			Barcode mismatch max
 		short-hint : |
 			Maximum mismatches in barcode to accept
 		long-hint  : |
