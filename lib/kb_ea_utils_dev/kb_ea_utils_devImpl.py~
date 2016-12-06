@@ -580,10 +580,10 @@ class kb_ea_utils_dev:
             multx_cmd.append(int(params['mismatch_max']))
         if 'edit_dist_min' in params and params['edit_dist_min'] != None and params['edit_dist_min'] != '':
             multx_cmd.append('-d')
-            multx_cmd.append(int(params['edit_dist_min']))
+            multx_cmd.append(str(params['edit_dist_min']))
         if 'barcode_base_qual_score_min' in params and params['barcode_base_qual_score_min'] != None and params['barcode_base_qual_score_min'] != '':
             multx_cmd.append('-q')
-            multx_cmd.append(int(params['barcode_base_qual_score_min']))
+            multx_cmd.append(str(params['barcode_base_qual_score_min']))
 
         # add input and output files
         out_fwd_base_pattern = output_dir+'/'+'fwd.'

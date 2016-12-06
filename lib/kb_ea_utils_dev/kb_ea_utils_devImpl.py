@@ -577,7 +577,7 @@ class kb_ea_utils_dev:
 
         if 'mismatch_max' in params and params['mismatch_max'] != None and params['mismatch_max'] != '':
             multx_cmd.append('-m')
-            multx_cmd.append(int(params['mismatch_max']))
+            multx_cmd.append(str(params['mismatch_max']))
         if 'edit_dist_min' in params and params['edit_dist_min'] != None and params['edit_dist_min'] != '':
             multx_cmd.append('-d')
             multx_cmd.append(str(params['edit_dist_min']))
