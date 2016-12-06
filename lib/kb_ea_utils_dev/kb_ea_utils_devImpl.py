@@ -494,8 +494,8 @@ class kb_ea_utils_dev:
                                                                   })
             except Exception as e:
                 raise ValueError('Unable to download index read library sequences from workspace: (' + str(input_index_ref) +")\n" + str(e))
-        input_index_fwd_file_path = indexLibrary['files'][input_index_ref]['files']['fwd']
-        input_index_rev_file_path = indexLibrary['files'][input_index_ref]['files']['rev']
+            input_index_fwd_file_path = indexLibrary['files'][input_index_ref]['files']['fwd']
+            input_index_rev_file_path = indexLibrary['files'][input_index_ref]['files']['rev']
 
 
         # Set the output dir
