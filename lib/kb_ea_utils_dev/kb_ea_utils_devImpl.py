@@ -587,13 +587,13 @@ class kb_ea_utils_dev:
 
         # add input and output files
         out_fwd_base_pattern = output_dir+'/'+'fwd.'
-        out_fwd_pattern      = out_base_pattern+'%.fq'
+        out_fwd_pattern      = out_fwd_base_pattern+'%.fq'
         multx_cmd.append(input_fwd_file_path)
         multx_cmd.append('-o')
         multx_cmd.append(out_fwd_pattern)
         if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
             out_rev_base_pattern = output_dir+'/'+'rev.'
-            out_rev_pattern      = out_base_pattern+'%.fq'
+            out_rev_pattern      = out_rev_base_pattern+'%.fq'
             multx_cmd.append(input_rev_file_path)
             multx_cmd.append('-o')
             multx_cmd.append(out_rev_pattern)
