@@ -416,7 +416,7 @@ class kb_ea_utils_dev:
 
         # Set path to default barcodes
         #
-        master_barcodes_path = "/kb/modules/kb_ea_utils_dev/data/master-barcodes.txt"
+        master_barcodes_path = "/kb/modules/data/master-barcodes.txt"
 
 
         # load provenance
