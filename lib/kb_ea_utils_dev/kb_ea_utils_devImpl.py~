@@ -116,6 +116,7 @@ class kb_ea_utils_dev:
         self.workspaceURL = config['workspace-url']
         self.shockURL = config['shock-url']
         self.scratch = os.path.abspath(config['scratch'])
+        self.data = os.path.abspath(config['data'])
         self.handleURL = config['handle-service-url']
 
         self.callbackURL = os.environ.get('SDK_CALLBACK_URL')
@@ -124,6 +125,8 @@ class kb_ea_utils_dev:
 
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
+        if not os.path.exists(self.data):
+            os.makedirs(self.data)
         #END_CONSTRUCTOR
         pass
 
@@ -416,7 +419,7 @@ class kb_ea_utils_dev:
 
         # Set path to default barcodes
         #
-        master_barcodes_path = "/kb/modules/data/master-barcodes.txt"
+        master_barcodes_path = os.path.join(self.data, "master-barcodes.txt")
 
 
         # load provenance
@@ -502,7 +505,8 @@ class kb_ea_utils_dev:
         # Set the output dir
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
-
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
         # clean up index_info
         #

@@ -575,13 +575,13 @@ class kb_ea_utils_dev:
         if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
             multx_cmd.append('-n')
 
-        if 'mismatch_max' in params and params['mismatch_max'] != None and parmas['mimatch_max'] != '':
+        if 'mismatch_max' in params and params['mismatch_max'] != None and params['mimatch_max'] != '':
             multx_cmd.append('-m')
             multx_cmd.append(int(params['mismatch_max']))
-        if 'edit_dist_min' in params and params['edit_dist_min'] != None and parmas['mimatch_max'] != '':
+        if 'edit_dist_min' in params and params['edit_dist_min'] != None and params['mimatch_max'] != '':
             multx_cmd.append('-d')
             multx_cmd.append(int(params['edit_dist_min']))
-        if 'barcode_base_qual_score_min' in params and params['barcode_base_qual_score_min'] != None and parmas['mimatch_max'] != '':
+        if 'barcode_base_qual_score_min' in params and params['barcode_base_qual_score_min'] != None and params['mimatch_max'] != '':
             multx_cmd.append('-q')
             multx_cmd.append(int(params['barcode_base_qual_score_min']))
 
