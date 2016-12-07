@@ -585,16 +585,19 @@ class kb_ea_utils_dev:
             multx_cmd.append('-q')
             multx_cmd.append(str(params['barcode_base_qual_score_min']))
 
-        # add input and output files
+        # add input files
+        multx_cmd.append(input_fwd_file_path)
+        if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
+            multx_cmd.append(input_rev_file_path)
+
+        # add output files
         out_fwd_base_pattern = output_dir+'/'+'fwd.'
         out_fwd_pattern      = out_fwd_base_pattern+'%.fq'
-        multx_cmd.append(input_fwd_file_path)
         multx_cmd.append('-o')
         multx_cmd.append(out_fwd_pattern)
         if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
             out_rev_base_pattern = output_dir+'/'+'rev.'
             out_rev_pattern      = out_rev_base_pattern+'%.fq'
-            multx_cmd.append(input_rev_file_path)
             multx_cmd.append('-o')
             multx_cmd.append(out_rev_pattern)
 
