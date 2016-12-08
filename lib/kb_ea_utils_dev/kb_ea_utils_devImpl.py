@@ -616,9 +616,9 @@ class kb_ea_utils_dev:
         outputlines = []
         while True:
             line = p.stdout.readline()
+            line = line.strip()
             outputlines.append(line)
             if not line: break
-            self.log(console, line.replace('\n', ''))
 
         p.stdout.close()
         retcode = p.wait()
