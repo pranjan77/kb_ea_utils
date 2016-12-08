@@ -14,7 +14,7 @@
 	"parameters": [
 	        {
             	"id": "index_info",
-            	"optional": false,
+            	"optional": true,
             	"advanced": false,
 		"allow_multiple": false,
             	"default_values": [ "" ],
@@ -36,7 +36,7 @@
 		},
 		{
 			"id": "input_index_ref",
-			"optional": false,
+			"optional": true,
 			"advanced": false,
 			"allow_multiple": false,
 			"default_values": [ "" ],
@@ -89,7 +89,7 @@
                 },
 		{
 			"id": "use_header_barcode",
-			"optional": false,
+			"optional": true,
 			"advanced": true,
 			"allow_multiple": false,
 			"default_values": [ "0" ],
@@ -101,7 +101,7 @@
 		},
 		{
 			"id": "force_beg",
-			"optional": false,
+			"optional": true,
 			"advanced": true,
 			"allow_multiple": false,
 			"default_values": [ "0" ],
@@ -113,7 +113,7 @@
 		},
 		{
 			"id": "force_end",
-			"optional": false,
+			"optional": true,
 			"advanced": true,
 			"allow_multiple": false,
 			"default_values": [ "0" ],
@@ -125,7 +125,7 @@
 		},
 		{
 			"id": "trim_barcode",
-			"optional": false,
+			"optional": true,
 			"advanced": true,
 			"allow_multiple": false,
 			"default_values": [ "1" ],
@@ -137,7 +137,7 @@
 		},
 		{
 			"id": "suggest_barcodes",
-			"optional": false,
+			"optional": true,
 			"advanced": true,
 			"allow_multiple": false,
 			"default_values": [ "0" ],
