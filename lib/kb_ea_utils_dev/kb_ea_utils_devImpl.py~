@@ -607,25 +607,27 @@ class kb_ea_utils_dev:
         print('running fastq-multx:')
         print('    '+' '.join(multx_cmd))
         try:
-            outputlines = []
-            p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=False)
-            while True:
-                line = p.stdout.readline()
-                outputlines.append(line)
-                if not line: break
-                self.log(console, line.replace('\n', ''))
-
-            p.stdout.close()
-            retcode = p.wait()
-            print('Return code: ' + str(retcode))
-            if p.returncode != 0:
-                raise ValueError('Error running fastq-multx, return code: ' +
-                                 str(retcode) + '\n')        
-
-            report += "\n".join(outputlines)
-            self.log (console, "\n".join(outputlines))
+            #p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=False)
+            p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=True)
         except:
             raise ValueError('Error starting subprocess for fastq-multx')
+
+        outputlines = []
+        while True:
+            line = p.stdout.readline()
+            outputlines.append(line)
+            if not line: break
+            self.log(console, line.replace('\n', ''))
+
+        p.stdout.close()
+        retcode = p.wait()
+        print('Return code: ' + str(retcode))
+        if p.returncode != 0:
+            raise ValueError('Error running fastq-multx, return code: ' +
+                             str(retcode) + '\n')        
+
+        report += "\n".join(outputlines)
+        self.log (console, "\n".join(outputlines))
 
 
         # Collect output files and upload
@@ -1027,7 +1029,8 @@ class kb_ea_utils_dev:
         determine_phred_cmd.append(this_input_fwd_path)
         print('running determine-phred:')
         print('    '+' '.join(determine_phred_cmd))
-        p = subprocess.Popen(determine_phred_cmd, cwd=self.scratch, shell=False)
+        #p = subprocess.Popen(" ".join(determine_phred_cmd), cwd=self.scratch, shell=True)
+        p = subprocess.Popen(" ".join(determine_phred_cmd), cwd=self.scratch, shell=False)
         phred_regime = p.stdout.readline()
         phred_regime.replace('\n', '')
         p.stdout.close()
