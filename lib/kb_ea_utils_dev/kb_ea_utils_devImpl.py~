@@ -11,8 +11,10 @@ import re
 from datetime import datetime
 from pprint import pprint, pformat
 import uuid
-from ReadsUtils.ReadsUtilsClient import ReadsUtils as ReadsUtils
 
+from ReadsUtils.ReadsUtilsClient import ReadsUtils as ReadsUtils
+from SetAPI.SetAPIClient import SetAPI
+from KBaseReport.KBaseReportClient import KBaseReport
 #END_HEADER
 
 
@@ -608,16 +610,17 @@ class kb_ea_utils_dev:
         print('    '+' '.join(multx_cmd))
         try:
             #p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=False)
-            p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=True)
+            #p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=True)
+            p = subprocess.Popen(" ".join(multx_cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.scratch, shell=True)
         except:
             raise ValueError('Error starting subprocess for fastq-multx')
 
         outputlines = []
         while True:
             line = p.stdout.readline()
+            line = line.strip()
             outputlines.append(line)
             if not line: break
-            self.log(console, line.replace('\n', ''))
 
         p.stdout.close()
         retcode = p.wait()
@@ -644,11 +647,11 @@ class kb_ea_utils_dev:
         else:
             for group_id in group_id_order:
 
-                output_fwd_file_path = output_fwd_base_pattern + str(group_id) + '.fq'
+                output_fwd_file_path = out_fwd_base_pattern + str(group_id) + '.fq'
                 fwd_file_exists = os.path.isfile (output_fwd_file_path) \
                                       and os.path.getsize (output_fwd_file_path) != 0
 
-                output_rev_file_path = output_rev_base_pattern + str(group_id) + '.fq'
+                output_rev_file_path = out_rev_base_pattern + str(group_id) + '.fq'
                 rev_file_exists = os.path.isfile (output_rev_file_path) \
                                       and os.path.getsize (output_rev_file_path) != 0
                 
@@ -667,11 +670,11 @@ class kb_ea_utils_dev:
 
                 # add unmatched
                 group_id = 'unmatched'
-                output_fwd_file_path = output_fwd_base_pattern + str(group_id) + '.fq'
+                output_fwd_file_path = out_fwd_base_pattern + str(group_id) + '.fq'
                 fwd_file_exists = os.path.isfile (output_fwd_file_path) \
                                       and os.path.getsize (output_fwd_file_path) != 0
 
-                output_rev_file_path = output_rev_base_pattern + str(group_id) + '.fq'
+                output_rev_file_path = out_rev_base_pattern + str(group_id) + '.fq'
                 rev_file_exists = os.path.isfile (output_rev_file_path) \
                                       and os.path.getsize (output_rev_file_path) != 0
 
@@ -1030,7 +1033,8 @@ class kb_ea_utils_dev:
         print('running determine-phred:')
         print('    '+' '.join(determine_phred_cmd))
         #p = subprocess.Popen(" ".join(determine_phred_cmd), cwd=self.scratch, shell=True)
-        p = subprocess.Popen(" ".join(determine_phred_cmd), cwd=self.scratch, shell=False)
+        #p = subprocess.Popen(" ".join(determine_phred_cmd), cwd=self.scratch, shell=False)
+        p = subprocess.Popen(" ".join(determine_phred_cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.scratch, shell=True)
         phred_regime = p.stdout.readline()
         phred_regime.replace('\n', '')
         p.stdout.close()
