@@ -645,11 +645,11 @@ class kb_ea_utils_dev:
         else:
             for group_id in group_id_order:
 
-                output_fwd_file_path = output_fwd_base_pattern + str(group_id) + '.fq'
+                output_fwd_file_path = out_fwd_base_pattern + str(group_id) + '.fq'
                 fwd_file_exists = os.path.isfile (output_fwd_file_path) \
                                       and os.path.getsize (output_fwd_file_path) != 0
 
-                output_rev_file_path = output_rev_base_pattern + str(group_id) + '.fq'
+                output_rev_file_path = out_rev_base_pattern + str(group_id) + '.fq'
                 rev_file_exists = os.path.isfile (output_rev_file_path) \
                                       and os.path.getsize (output_rev_file_path) != 0
                 
@@ -668,11 +668,11 @@ class kb_ea_utils_dev:
 
                 # add unmatched
                 group_id = 'unmatched'
-                output_fwd_file_path = output_fwd_base_pattern + str(group_id) + '.fq'
+                output_fwd_file_path = out_fwd_base_pattern + str(group_id) + '.fq'
                 fwd_file_exists = os.path.isfile (output_fwd_file_path) \
                                       and os.path.getsize (output_fwd_file_path) != 0
 
-                output_rev_file_path = output_rev_base_pattern + str(group_id) + '.fq'
+                output_rev_file_path = out_rev_base_pattern + str(group_id) + '.fq'
                 rev_file_exists = os.path.isfile (output_rev_file_path) \
                                       and os.path.getsize (output_rev_file_path) != 0
 
