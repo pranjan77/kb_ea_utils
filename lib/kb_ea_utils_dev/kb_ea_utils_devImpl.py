@@ -606,23 +606,26 @@ class kb_ea_utils_dev:
         #
         print('running fastq-multx:')
         print('    '+' '.join(multx_cmd))
-        outputlines = []
-        p = subprocess.Popen(multx_cmd, cwd=self.scratch, shell=False)
-        while True:
-            line = p.stdout.readline()
-            outputlines.append(line)
-            if not line: break
-            self.log(console, line.replace('\n', ''))
+        try:
+            outputlines = []
+            p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=False)
+            while True:
+                line = p.stdout.readline()
+                outputlines.append(line)
+                if not line: break
+                self.log(console, line.replace('\n', ''))
 
-        p.stdout.close()
-        retcode = p.wait()
-        print('Return code: ' + str(retcode))
-        if p.returncode != 0:
-            raise ValueError('Error running fastq-multx, return code: ' +
-                             str(retcode) + '\n')        
+            p.stdout.close()
+            retcode = p.wait()
+            print('Return code: ' + str(retcode))
+            if p.returncode != 0:
+                raise ValueError('Error running fastq-multx, return code: ' +
+                                 str(retcode) + '\n')        
 
-        report += "\n".join(outputlines)
-        self.log (console, "\n".join(outputlines))
+            report += "\n".join(outputlines)
+            self.log (console, "\n".join(outputlines))
+        except:
+            raise ValueError('Error starting subprocess for fastq-multx')
 
 
         # Collect output files and upload
