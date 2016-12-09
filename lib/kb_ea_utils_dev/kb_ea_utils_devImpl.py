@@ -807,7 +807,7 @@ class kb_ea_utils_dev:
             base_desc = 'DEMULTIPLEXED READSSET'  # FIX
             
             # get SetAPI Client
-            setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
+            setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # for dynamic service
 
             # paired end
             self.log (console, "creating paired end readsSet")  # DEBUG
