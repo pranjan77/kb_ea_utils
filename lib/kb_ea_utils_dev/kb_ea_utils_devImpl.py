@@ -611,7 +611,8 @@ class kb_ea_utils_dev:
         try:
             #p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=False)
             #p = subprocess.Popen(" ".join(multx_cmd), cwd=self.scratch, shell=True)
-            p = subprocess.Popen(" ".join(multx_cmd), stdout=subprocess.PIPE, stderr=subprocess.STDERR, cwd=self.scratch, shell=True)
+#            p = subprocess.Popen(" ".join(multx_cmd), stdout=subprocess.PIPE, stderr=subprocess.STDERR, cwd=self.scratch, shell=True)
+            p = subprocess.Popen(" ".join(multx_cmd), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=self.scratch, shell=True)
         except:
             raise ValueError('Error starting subprocess for fastq-multx')
 
