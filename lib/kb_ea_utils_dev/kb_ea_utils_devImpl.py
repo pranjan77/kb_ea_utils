@@ -120,6 +120,7 @@ class kb_ea_utils_dev:
         self.scratch = os.path.abspath(config['scratch'])
         self.data = os.path.abspath(config['data'])
         self.handleURL = config['handle-service-url']
+        self.serviceWizardURL = config['service-wizard-url']
 
         self.callbackURL = os.environ.get('SDK_CALLBACK_URL')
         if self.callbackURL == None:
