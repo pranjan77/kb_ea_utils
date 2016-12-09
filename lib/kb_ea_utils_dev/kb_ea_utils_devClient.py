@@ -114,15 +114,16 @@ class kb_ea_utils_dev(object):
            (run_Fastq_Multx() ** ** demultiplex read libraries to readsSet)
            -> structure: parameter "workspace_name" of type "workspace_name"
            (** Common types), parameter "index_info" of type "textarea_str",
-           parameter "index_mode" of String, parameter "input_reads_ref" of
-           type "data_obj_ref", parameter "input_index_ref" of type
-           "data_obj_ref", parameter "output_reads_name" of type
-           "data_obj_name", parameter "use_header_barcode" of type "bool",
-           parameter "force_beg" of type "bool", parameter "force_end" of
-           type "bool", parameter "trim_barcode" of type "bool", parameter
-           "suggest_barcodes" of type "bool", parameter "mismatch_max" of
-           Long, parameter "edit_dist_min" of Long, parameter
-           "barcode_base_qual_score_min" of Long
+           parameter "desc" of String, parameter "index_mode" of String,
+           parameter "input_reads_ref" of type "data_obj_ref", parameter
+           "input_index_ref" of type "data_obj_ref", parameter
+           "output_reads_name" of type "data_obj_name", parameter
+           "use_header_barcode" of type "bool", parameter "force_beg" of type
+           "bool", parameter "force_end" of type "bool", parameter
+           "trim_barcode" of type "bool", parameter "suggest_barcodes" of
+           type "bool", parameter "mismatch_max" of Long, parameter
+           "edit_dist_min" of Long, parameter "barcode_base_qual_score_min"
+           of Long
         :returns: instance of type "run_Fastq_Multx_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """

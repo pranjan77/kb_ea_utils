@@ -513,6 +513,7 @@ $returnVal is a kb_ea_utils_dev.run_Fastq_Multx_Output
 run_Fastq_Multx_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	index_info has a value which is a kb_ea_utils_dev.textarea_str
+	desc has a value which is a string
 	index_mode has a value which is a string
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
@@ -545,6 +546,7 @@ $returnVal is a kb_ea_utils_dev.run_Fastq_Multx_Output
 run_Fastq_Multx_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	index_info has a value which is a kb_ea_utils_dev.textarea_str
+	desc has a value which is a string
 	index_mode has a value which is a string
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
@@ -1509,6 +1511,7 @@ run_Fastq_Multx()
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 index_info has a value which is a kb_ea_utils_dev.textarea_str
+desc has a value which is a string
 index_mode has a value which is a string
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
@@ -1531,6 +1534,7 @@ barcode_base_qual_score_min has a value which is an int
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 index_info has a value which is a kb_ea_utils_dev.textarea_str
+desc has a value which is a string
 index_mode has a value which is a string
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
