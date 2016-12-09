@@ -392,7 +392,7 @@ class kb_ea_utils_dev:
         required_params = ['workspace_name',
                            'input_reads_ref',
                            'index_mode',
-                           'desc',
+                           #'desc',  # FIX
                            'output_reads_name'
                            ]
         for required_param in required_params:
@@ -802,7 +802,10 @@ class kb_ea_utils_dev:
             unpaired_rev_readsSet_ref = None
             unmatched_fwd_obj_ref     = None
             unmatched_rev_obj_ref     = None
-
+            
+            #base_desc = params['desc']
+            base_desc = 'DEMULTIPLEXED READSSET'  # FIX
+            
             # get SetAPI Client
             setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
 
@@ -816,8 +819,8 @@ class kb_ea_utils_dev:
                               #'data_attachment': ,
                               #'info':
                              })
-            description = params['desc']
-            output_readsSet_obj = { 'description': params['desc'],
+            desc = base_desc
+            output_readsSet_obj = { 'description': desc,
                                     'items': items
                                   }
             output_readsSet_name = str(params['output_reads_name'])
@@ -837,8 +840,8 @@ class kb_ea_utils_dev:
                                   #'data_attachment': ,
                                   #'info':
                                       })
-                description = params['desc']+" UNPAIRED FWD"
-                output_readsSet_obj = { 'description': params['desc'],
+                desc = base_desc+" UNPAIRED FWD"
+                output_readsSet_obj = { 'description': desc,
                                         'items': items
                                         }
                 output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_FWD")
@@ -858,8 +861,8 @@ class kb_ea_utils_dev:
                                   #'data_attachment': ,
                                   #'info':
                                       })
-                description = params['desc']+" UNPAIRED REV"
-                output_readsSet_obj = { 'description': params['desc'],
+                desc = base_desc+" UNPAIRED REV"
+                output_readsSet_obj = { 'description': desc,
                                         'items': items
                                         }
                 output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_REV")
@@ -877,20 +880,19 @@ class kb_ea_utils_dev:
 
         if paired_readsSet_ref != None:
             reportObj['objects_created'].append({'ref':paired_readsSet_ref,
-                                                 'description':params['desc']})
-
+                                                 'description':base_desc})
         if unpaired_fwd_readsSet_ref != None:
             reportObj['objects_created'].append({'ref':unpaired_fwd_readsSet_ref,
-                                                 'description':params['desc']+" UNPAIRED FWD"})
+                                                 'description':base_desc+" UNPAIRED FWD"})
         if unpaired_rev_readsSet_ref != None:
             reportObj['objects_created'].append({'ref':unpaired_rev_readsSet_ref,
-                                                 'description':params['desc']+" UNPAIRED REV"})
+                                                 'description':base_desc+" UNPAIRED REV"})
         if unmatched_fwd_obj_ref != None:
             reportObj['objects_created'].append({'ref':unmatched_fwd_obj_ref,
-                                                 'description':params['desc']+" UNMATCHED FWD"})
+                                                 'description':base_desc+" UNMATCHED FWD"})
         if unmatched_rev_obj_ref != None:
             reportObj['objects_created'].append({'ref':unmatched_rev_obj_ref,
-                                                 'description':params['desc']+" UNMATCHED REV"})
+                                                 'description':base_desc+" UNMATCHED REV"})
 
         # save report object
         #
