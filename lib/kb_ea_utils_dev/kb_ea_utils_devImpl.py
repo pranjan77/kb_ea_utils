@@ -392,6 +392,7 @@ class kb_ea_utils_dev:
         required_params = ['workspace_name',
                            'input_reads_ref',
                            'index_mode',
+                           'desc',
                            'output_reads_name'
                            ]
         for required_param in required_params:

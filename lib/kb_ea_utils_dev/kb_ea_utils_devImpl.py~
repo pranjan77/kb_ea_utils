@@ -35,7 +35,7 @@ class kb_ea_utils_dev:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
-    GIT_COMMIT_HASH = "2522867e4128d3462dd2b568986cf79143932340"
+    GIT_COMMIT_HASH = "8cf40ba149f6535a3c402c9e3cb2f9e8d749384e"
 
     #BEGIN_CLASS_HEADER
     FASTQ_STATS     = "/usr/local/bin/fastq-stats"
@@ -359,15 +359,16 @@ class kb_ea_utils_dev:
            (run_Fastq_Multx() ** ** demultiplex read libraries to readsSet)
            -> structure: parameter "workspace_name" of type "workspace_name"
            (** Common types), parameter "index_info" of type "textarea_str",
-           parameter "index_mode" of String, parameter "input_reads_ref" of
-           type "data_obj_ref", parameter "input_index_ref" of type
-           "data_obj_ref", parameter "output_reads_name" of type
-           "data_obj_name", parameter "use_header_barcode" of type "bool",
-           parameter "force_beg" of type "bool", parameter "force_end" of
-           type "bool", parameter "trim_barcode" of type "bool", parameter
-           "suggest_barcodes" of type "bool", parameter "mismatch_max" of
-           Long, parameter "edit_dist_min" of Long, parameter
-           "barcode_base_qual_score_min" of Long
+           parameter "desc" of String, parameter "index_mode" of String,
+           parameter "input_reads_ref" of type "data_obj_ref", parameter
+           "input_index_ref" of type "data_obj_ref", parameter
+           "output_reads_name" of type "data_obj_name", parameter
+           "use_header_barcode" of type "bool", parameter "force_beg" of type
+           "bool", parameter "force_end" of type "bool", parameter
+           "trim_barcode" of type "bool", parameter "suggest_barcodes" of
+           type "bool", parameter "mismatch_max" of Long, parameter
+           "edit_dist_min" of Long, parameter "barcode_base_qual_score_min"
+           of Long
         :returns: instance of type "run_Fastq_Multx_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -795,6 +796,13 @@ class kb_ea_utils_dev:
             pass
         else:
             self.log (console, "CREATING READS SETS")  # DEBUG
+            paired_readsSet_ref       = None
+            unpaired_fwd_readsSet_ref = None
+            unpaired_rev_readsSet_ref = None
+            unmatched_fwd_obj_ref     = None
+            unmatched_rev_obj_ref     = None
+
+            # get SetAPI Client
             setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
 
             # paired end
@@ -818,44 +826,46 @@ class kb_ea_utils_dev:
                                                                     })['set_ref']
 
             # unpaired fwd
-            self.log (console, "creating unpaired fwd readsSet")  # DEBUG
-            items = []
-            for lib_i,lib_ref in enumerate(unpaired_fwd_obj_refs):
-                label = params['output_reads_name']+'-'+str(unpaired_fwd_group_ids[lib_i])
-                items.append({'ref': lib_ref,
-                              'label': label
-                              #'data_attachment': ,
-                              #'info':
-                             })
-            description = params['desc']+" UNPAIRED FWD"
-            output_readsSet_obj = { 'description': params['desc'],
-                                    'items': items
-                                  }
-            output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_FWD")
-            unpaired_fwd_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
-                                                                          'output_object_name': output_readsSet_name,
-                                                                          'data': output_readsSet_obj
-                                                                          })['set_ref']
+            if len(unpaired_fwd_obj_refs) > 0:
+                self.log (console, "creating unpaired fwd readsSet")  # DEBUG
+                items = []
+                for lib_i,lib_ref in enumerate(unpaired_fwd_obj_refs):
+                    label = params['output_reads_name']+'-'+str(unpaired_fwd_group_ids[lib_i])
+                    items.append({'ref': lib_ref,
+                                  'label': label
+                                  #'data_attachment': ,
+                                  #'info':
+                                      })
+                description = params['desc']+" UNPAIRED FWD"
+                output_readsSet_obj = { 'description': params['desc'],
+                                        'items': items
+                                        }
+                output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_FWD")
+                unpaired_fwd_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                                                                              'output_object_name': output_readsSet_name,
+                                                                              'data': output_readsSet_obj
+                                                                              })['set_ref']
 
             # unpaired rev
-            self.log (console, "creating unpaired rev readsSet")  # DEBUG
-            items = []
-            for lib_i,lib_ref in enumerate(unpaired_rev_obj_refs):
-                label = params['output_reads_name']+'-'+str(unpaired_rev_group_ids[lib_i])
-                items.append({'ref': lib_ref,
-                              'label': label
-                              #'data_attachment': ,
-                              #'info':
-                             })
-            description = params['desc']+" UNPAIRED REV"
-            output_readsSet_obj = { 'description': params['desc'],
-                                    'items': items
-                                  }
-            output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_REV")
-            unpaired_rev_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
-                                                                          'output_object_name': output_readsSet_name,
-                                                                          'data': output_readsSet_obj
-                                                                          })['set_ref']
+            if len(unpaired_rev_obj_refs) > 0:
+                self.log (console, "creating unpaired rev readsSet")  # DEBUG
+                items = []
+                for lib_i,lib_ref in enumerate(unpaired_rev_obj_refs):
+                    label = params['output_reads_name']+'-'+str(unpaired_rev_group_ids[lib_i])
+                    items.append({'ref': lib_ref,
+                                  'label': label
+                                  #'data_attachment': ,
+                                  #'info':
+                                      })
+                description = params['desc']+" UNPAIRED REV"
+                output_readsSet_obj = { 'description': params['desc'],
+                                        'items': items
+                                        }
+                output_readsSet_name = str(params['output_reads_name']+"-UNPAIRED_REV")
+                unpaired_rev_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                                                                              'output_object_name': output_readsSet_name,
+                                                                              'data': output_readsSet_obj
+                                                                              })['set_ref']
 
 
         # build report
