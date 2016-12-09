@@ -106,7 +106,7 @@ parameters :
 			Remove barcode from output sequence
 	suggest_barcodes :
 		ui-name : |
-			Suggest barcodes but don't demultiplex
+			Just suggest barcodes (but don't demultiplex)
 		short-hint : |
 			Don't actually run demultiplex, just detect barcodes
 		long-hint  : |
