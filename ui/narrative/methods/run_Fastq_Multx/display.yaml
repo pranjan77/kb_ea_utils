@@ -43,7 +43,7 @@ parameters :
 			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
 	index_info :
 		ui-name : |
-			Manual barcode pap (or Auto-detect or Index lane library)
+			Manual barcode map (or Auto-detect or Index lane library)
 		short-hint : |
 			The Read Group to Barcode Mapping
 		long-hint  : |
