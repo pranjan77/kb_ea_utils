@@ -617,13 +617,13 @@ class kb_ea_utils_dev:
             raise ValueError('Error starting subprocess for fastq-multx')
 
         outputlines = []
-        outputlines.append('STDERR')
-        while True:
-            line = p.stderr.readline()
-            line = line.strip()
-            outputlines.append(line)
-            if not line: break
-        outputlines.append('STDOUT')
+#        outputlines.append('STDERR')
+#        while True:
+#            line = p.stderr.readline()
+#            line = line.strip()
+#            outputlines.append(line)
+#            if not line: break
+#        outputlines.append('STDOUT')
         while True:
             line = p.stdout.readline()
             line = line.strip()
