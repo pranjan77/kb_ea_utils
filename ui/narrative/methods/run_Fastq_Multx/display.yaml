@@ -62,6 +62,13 @@ parameters :
 			The index read library with the barcodes
 		long-hint  : |
 			The index read library with which you want to de-barcode
+	desc :
+		ui-name : |
+			Output readsSet description
+		short-hint : |
+			Describe demultiplexed set of read libraries
+		long-hint  : |
+			Describe demultiplexed set of read libraries
 	output_reads_name :
 		ui-name : |
 			Output readsSet
