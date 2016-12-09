@@ -29,7 +29,9 @@
 			"advanced": false,
 			"allow_multiple": false,
 			"default_values": [ "" ],
-			"field_type": "text"
+			"field_type": "text",
+			"text_options": {
+			}
 		},
 		{
 			"id": "input_reads_ref",

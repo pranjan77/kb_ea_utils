@@ -35,7 +35,7 @@ class kb_ea_utils_dev:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
-    GIT_COMMIT_HASH = "8cf40ba149f6535a3c402c9e3cb2f9e8d749384e"
+    GIT_COMMIT_HASH = "8b4de96d3ee65d67add8f3ac9928ef386773cc4a"
 
     #BEGIN_CLASS_HEADER
     FASTQ_STATS     = "/usr/local/bin/fastq-stats"
