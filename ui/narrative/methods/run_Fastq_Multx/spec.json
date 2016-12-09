@@ -31,6 +31,7 @@
 			"default_values": [ "" ],
 			"field_type": "text",
 			"text_options": {
+				"is_output_name": false
 			}
 		},
 		{
