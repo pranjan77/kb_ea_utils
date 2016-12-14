@@ -803,8 +803,7 @@ class kb_ea_utils_dev:
             unmatched_fwd_obj_ref     = None
             unmatched_rev_obj_ref     = None
             
-            #base_desc = params['desc']
-            base_desc = 'DEMULTIPLEXED READSSET'  # FIX
+            base_desc = params['desc']
             
             # get SetAPI Client
             #setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # for dynamic service
@@ -823,13 +822,17 @@ class kb_ea_utils_dev:
                                   #'data_attachment': ,
                                   #'info':
                                  })
+                    self.log (console, "DEBUGGING: lib_i:'"+str(lib_i)+"' lib_ref:'"+str(lib_ref)+"' label:'"+str(label)+"'")  # DEBUG
+
                 desc = base_desc
                 output_readsSet_obj = { 'description': desc,
                                         'items': items
                                       }
-                self.log (console, "DEBUGGING: output_reads_name: '"+str(params['output_reads_name']))  # DEBUG
+                self.log (console, "DEBUGGING: workspace_name: '"+str(params['workspace_name'])+"'")  # DEBUG
+                self.log (console, "DEBUGGING: output_reads_name: '"+str(params['output_reads_name'])+"'")  # DEBUG
+                self.log (console, "DEBUGGING: output_readsSet_obj: '"+str(output_readsSet_obj)+"'")  # DEBUG
                 output_readsSet_name = str(params['output_reads_name'])
-                paired_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                paired_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': str(params['workspace_name']),
                                                                         'output_object_name': output_readsSet_name,
                                                                         'data': output_readsSet_obj
                                                                         })['set_ref']
