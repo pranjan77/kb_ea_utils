@@ -811,24 +811,28 @@ class kb_ea_utils_dev:
             setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
 
             # paired end
-            self.log (console, "creating paired end readsSet")  # DEBUG
-            items = []
-            for lib_i,lib_ref in enumerate(paired_obj_refs):
-                label = params['output_reads_name']+'-'+str(paired_group_ids[lib_i])
-                items.append({'ref': lib_ref,
-                              'label': label
-                              #'data_attachment': ,
-                              #'info':
-                             })
-            desc = base_desc
-            output_readsSet_obj = { 'description': desc,
-                                    'items': items
-                                  }
-            output_readsSet_name = str(params['output_reads_name'])
-            paired_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
-                                                                    'output_object_name': output_readsSet_name,
-                                                                    'data': output_readsSet_obj
-                                                                    })['set_ref']
+            if len(paired_obj_refs) == 0:
+                self.log (console, "No paired reads found with configured barcodes")
+            else:
+                self.log (console, "creating paired end readsSet")  # DEBUG
+                items = []
+                for lib_i,lib_ref in enumerate(paired_obj_refs):
+                    label = params['output_reads_name']+'-'+str(paired_group_ids[lib_i])
+                    items.append({'ref': lib_ref,
+                                  'label': label
+                                  #'data_attachment': ,
+                                  #'info':
+                                 })
+                desc = base_desc
+                output_readsSet_obj = { 'description': desc,
+                                        'items': items
+                                      }
+                self.log (console, "DEBUGGING: output_reads_name: '"+str(params['output_reads_name']))  # DEBUG
+                output_readsSet_name = str(params['output_reads_name'])
+                paired_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': params['workspace_name'],
+                                                                        'output_object_name': output_readsSet_name,
+                                                                        'data': output_readsSet_obj
+                                                                        })['set_ref']
 
             # unpaired fwd
             if len(unpaired_fwd_obj_refs) > 0:
