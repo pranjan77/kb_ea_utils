@@ -386,7 +386,12 @@ class kb_ea_utils_dev:
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
         
+
+        # Instantiate Set API Client and Report API Client as dynamic services
         SERVICE_VER = 'dev'  # DEBUG
+        setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # for dynamic service
+        reportAPI_Client = KBaseReport (self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+
 
         # param checks
         required_params = ['workspace_name',
@@ -806,8 +811,9 @@ class kb_ea_utils_dev:
             base_desc = params['desc']
             
             # get SetAPI Client
+            # Set API Client instantiated at beginning of method
             #setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # for dynamic service
-            setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
+            #setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
 
             # paired end
             if len(paired_obj_refs) == 0:
@@ -904,8 +910,8 @@ class kb_ea_utils_dev:
 
         # save report object
         #
-        report = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
-        report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
+        # report API Client instantiated at beginning of method
+        report_info = reportAPI_Client.create({'report':reportObj, 'workspace_name':params['workspace_name']})
 
         returnVal = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
         #END run_Fastq_Multx
