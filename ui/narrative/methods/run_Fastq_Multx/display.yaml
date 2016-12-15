@@ -146,7 +146,7 @@ parameter-groups:
 			Whether barcode must be 5' or 3' of the read
 		long-hint  : |
 			Whether barcode must be 5' or 3' of the read
-	dist_and_qual_options :
+	dist_and_qual_params :
 		ui-name : |
 			Match parameters
 		short-hint : |
