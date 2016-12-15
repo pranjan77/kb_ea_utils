@@ -427,6 +427,7 @@ class kb_ea_utils_dev:
                    }
         for param_group in defaults.keys():
             if param_group not in params or params[param_group] == None:
+                params[param_group] = dict()
                 for arg in defaults[param_group].keys():
                     params[param_group][arg] = defaults[param_group][arg]
             else:
