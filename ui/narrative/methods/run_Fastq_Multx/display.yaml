@@ -139,8 +139,6 @@ parameter-groups:
 			Barcode options
 		short-hint : |
 			Where to find and what to do with barcode
-		long-hint  : |
-			Where to find and what to do with barcode
 	force_edge_options :
 		ui-name : |
 			Require terminal barcode
@@ -152,8 +150,6 @@ parameter-groups:
 		ui-name : |
 			Match parameters
 		short-hint : |
-			Parameterization of match, edit distance, and qual score thresholds
-		long-hint  : |
 			Parameterization of match, edit distance, and qual score thresholds
 
 #
