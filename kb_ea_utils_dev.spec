@@ -129,6 +129,26 @@ funcdef calculate_fastq_stats (ea_utils_params input_params)
 authentication required;
 
 
+/* Parameter groups
+*/
+typedef structure {
+    bool use_header_barcode;
+    bool trim_barcode;
+    bool suggest_barcodes;
+} Barcode_Options;
+
+typedef structure {
+    bool force_beg;
+    bool force_end;
+} ForceEdge_Options;    
+
+typedef structure {
+    int mismatch_max;
+    int edit_dist_min;
+    int barcode_base_qual_score_min;
+} DistAndQual_Params;
+
+
 /* run_Fastq_Multx()
 **
 ** demultiplex read libraries to readsSet
@@ -143,14 +163,9 @@ typedef structure {
     data_obj_ref  input_index_ref;  /* PairedEndLibrary or SingleEndLibrary */
     data_obj_name output_reads_name;
 
-    bool use_header_barcode;
-    bool force_beg;
-    bool force_end;
-    bool trim_barcode;
-    bool suggest_barcodes;
-    int mismatch_max;
-    int edit_dist_min;
-    int barcode_base_qual_score_min;
+    Barcode_Options    barcode_options;
+    ForceEdge_Options  force_edge_options;
+    DistAndQual_Params dist_and_qual_params;
 } run_Fastq_Multx_Input;
 
 typedef structure {

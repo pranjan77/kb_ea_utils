@@ -30,9 +30,6 @@ suggestions :
 #
 # Configure the display and description of the parameters
 #
-#
-# Configure the display and description of parameters
-#
 parameters :
 	index_mode :
 		ui-name : |
@@ -132,6 +129,32 @@ parameters :
 			Minimum qual score for a barcode base to accept
 		long-hint  : |
 			Minimum qual score for a barcode base to accept
+
+#
+# Configure the display and description of parameters
+#
+parameter-groups:
+	barcode_options :
+		ui-name : |
+			Barcode options
+		short-hint : |
+			Where to find and what to do with barcode
+		long-hint  : |
+			Where to find and what to do with barcode
+	force_edge_options :
+		ui-name : |
+			Require terminal barcode
+		short-hint : |
+			Whether barcode must be 5' or 3' of the read
+		long-hint  : |
+			Whether barcode must be 5' or 3' of the read
+	dist_and_qual_options :
+		ui-name : |
+			Match parameters
+		short-hint : |
+			Parameterization of match, edit distance, and qual score thresholds
+		long-hint  : |
+			Parameterization of match, edit distance, and qual score thresholds
 
 #
 # Desc

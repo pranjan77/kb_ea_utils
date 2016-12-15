@@ -397,7 +397,7 @@ class kb_ea_utils_dev:
         required_params = ['workspace_name',
                            'input_reads_ref',
                            'index_mode',
-                           #'desc',  # FIX
+                           'desc',
                            'output_reads_name'
                            ]
         for required_param in required_params:
@@ -413,18 +413,26 @@ class kb_ea_utils_dev:
                 raise ValueError ("Must have input_index_ref if index_mode is 'index-lane'")
 
         # and param defaults
-        defaults = { 'use_header_barcode': 0,
-                     'force_beg': 0,
-                     'force_end': 0,
-                     'trim_barcode': 1,
-                     'suggest_barcodes': 0,
-                     'mismatch_max': 1,
-                     'edit_dist_min': 2,
-                     'barcode_base_qual_score_min': 0
+        defaults = { 'barcode_options': {'use_header_barcode': 0,
+                                         'trim_barcode': 1,
+                                         'suggest_barcodes': 0
+                                        },
+                     'force_options': { 'force_beg': 0,
+                                        'force_end': 0
+                                      },
+                     'dist_and_qual_params': { 'mismatch_max': 1,
+                                               'edit_dist_min': 2,
+                                               'barcode_base_qual_score_min': 1
+                                             }
                    }
-        for arg in defaults.keys():
-            if arg not in params or params[arg] == None or params[arg] == '':
-                params[arg] = defaults[arg]
+        for param_group in defaults.keys():
+            if param_group not in params or params[param_group] == None:
+                for arg in defaults[param_group].keys():
+                    params[param_group][arg] = defaults[param_group][arg]
+            else:
+                for arg in defaults[param_group].keys():
+                    if arg not in params[param_group] or params[param_group][arg] == None or params[param_group][arg] == '':
+                        params[param_group][arg] = defaults[param_group][arg]
 
 
         # Set path to default barcodes
@@ -573,27 +581,30 @@ class kb_ea_utils_dev:
             multx_cmd.append(index_index_fwd_file_path)
             # what about reverse barcode lane?
 
-        if 'use_header_barcode' in params and params['use_header_barcode'] == 1:
-            multx_cmd.append('-H')
-        if 'force_beg' in params and params['force_beg'] == 1:
-            multx_cmd.append('-b')
-        if 'force_end' in params and params['force_end'] == 1:
-            multx_cmd.append('-e')
+        if 'barcode_options' in params and params['barcode_options'] != None:
+            if 'use_header_barcode' in params['barcode_options'] and params['barcode_options']['use_header_barcode'] == 1:
+                multx_cmd.append('-H')
+            if 'trim_barcode' in params['barcode_options'] and params['barcode_options']['trim_barcode'] == 0:
+                multx_cmd.append('-x')
+            if 'suggest_barcodes' in params['barcode_options'] and params['barcode_options']['suggest_barcodes'] == 1:
+                multx_cmd.append('-n')
 
-        if 'trim_barcode' in params and params['trim_barcode'] == 0:
-            multx_cmd.append('-x')
-        if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
-            multx_cmd.append('-n')
+        if 'force_options' in params and params['force_options'] != None:
+            if 'force_beg' in params['force_options'] and params['force_options']['force_beg'] == 1:
+                multx_cmd.append('-b')
+            if 'force_end' in params['force_options'] and params['force_options']['force_end'] == 1:
+                multx_cmd.append('-e')
 
-        if 'mismatch_max' in params and params['mismatch_max'] != None and params['mismatch_max'] != '':
-            multx_cmd.append('-m')
-            multx_cmd.append(str(params['mismatch_max']))
-        if 'edit_dist_min' in params and params['edit_dist_min'] != None and params['edit_dist_min'] != '':
-            multx_cmd.append('-d')
-            multx_cmd.append(str(params['edit_dist_min']))
-        if 'barcode_base_qual_score_min' in params and params['barcode_base_qual_score_min'] != None and params['barcode_base_qual_score_min'] != '':
-            multx_cmd.append('-q')
-            multx_cmd.append(str(params['barcode_base_qual_score_min']))
+        if 'dist_and_qual_params' in params and params['dist_and_qual_params'] != None:
+            if 'mismatch_max' in params['dist_and_qual_params'] and params['dist_and_qual_params']['mismatch_max'] != None and params['dist_and_qual_params']['mismatch_max'] != '':
+                multx_cmd.append('-m')
+                multx_cmd.append(str(params['dist_and_qual_params']['mismatch_max']))
+            if 'edit_dist_min' in params['dist_and_qual_params'] and params['dist_and_qual_params']['edit_dist_min'] != None and params['dist_and_qual_params']['edit_dist_min'] != '':
+                multx_cmd.append('-d')
+                multx_cmd.append(str(params['dist_and_qual_params']['edit_dist_min']))
+            if 'barcode_base_qual_score_min' in params['dist_and_qual_params'] and params['dist_and_qual_params']['barcode_base_qual_score_min'] != None and params['dist_and_qual_params']['barcode_base_qual_score_min'] != '':
+                multx_cmd.append('-q')
+                multx_cmd.append(str(params['dist_and_qual_params']['barcode_base_qual_score_min']))
 
         # add input files
         multx_cmd.append(input_fwd_file_path)

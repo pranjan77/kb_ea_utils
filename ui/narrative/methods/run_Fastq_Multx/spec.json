@@ -198,6 +198,30 @@
 
 	],
 
+	"parameter-groups": [
+		{
+			"id": "barcode_options",
+			"parameters": ["use_header_barcode", "trim_barcode", "suggest_barcodes"],
+			"optional": true,
+			"allow_multiple": false,
+			"with_border": true
+		},	
+		{
+			"id": "force_edge_options",
+			"parameters": ["force_beg", "force_end"],
+			"optional": true,
+			"allow_multiple": false,
+			"with_border": true
+		},	
+		{
+			"id": "dist_and_qual_params",
+			"parameters": ["mismatch_max", "edit_dist_min", "barcode_base_qual_score_min"],
+			"optional": true,
+			"allow_multiple": false,
+			"with_border": true
+		}	
+	],
+
 	"behavior": {
 		"service-mapping": {
 			"url": "",
@@ -238,36 +262,16 @@
 					"target_property": "index_mode"
 				},
 				{
-					"input_parameter": "use_header_barcode",
-					"target_property": "use_header_barcode"
+					"input_parameter": "barcode_options",
+					"target_property": "barcode_options"
 				},
 				{
-					"input_parameter": "force_beg",
-					"target_property": "force_beg"
+					"input_parameter": "force_options",
+					"target_property": "force_options"
 				},
 				{
-					"input_parameter": "force_end",
-					"target_property": "force_end"
-				},
-				{
-					"input_parameter": "trim_barcode",
-					"target_property": "trim_barcode"
-				},
-				{
-					"input_parameter": "suggest_barcodes",
-					"target_property": "suggest_barcodes"
-				},
-				{
-					"input_parameter": "mismatch_max",
-					"target_property": "mismatch_max"
-				},
-				{
-					"input_parameter": "edit_dist_min",
-					"target_property": "edit_dist_min"
-				},
-				{
-					"input_parameter": "barcode_base_qual_score_min",
-					"target_property": "barcode_base_qual_score_min"
+					"input_parameter": "dist_and_qual_params",
+					"target_property": "dist_and_qual_params"
 				}
 			],
 			"output_mapping": [
