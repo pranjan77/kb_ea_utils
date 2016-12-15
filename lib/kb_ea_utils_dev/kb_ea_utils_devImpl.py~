@@ -417,9 +417,9 @@ class kb_ea_utils_dev:
                                          'trim_barcode': 1,
                                          'suggest_barcodes': 0
                                         },
-                     'force_options': { 'force_beg': 0,
-                                        'force_end': 0
-                                      },
+                     'force_edge_options': { 'force_beg': 0,
+                                             'force_end': 0
+                                           },
                      'dist_and_qual_params': { 'mismatch_max': 1,
                                                'edit_dist_min': 2,
                                                'barcode_base_qual_score_min': 1
@@ -589,10 +589,10 @@ class kb_ea_utils_dev:
             if 'suggest_barcodes' in params['barcode_options'] and params['barcode_options']['suggest_barcodes'] == 1:
                 multx_cmd.append('-n')
 
-        if 'force_options' in params and params['force_options'] != None:
-            if 'force_beg' in params['force_options'] and params['force_options']['force_beg'] == 1:
+        if 'force_edge_options' in params and params['force_edge_options'] != None:
+            if 'force_beg' in params['force_edge_options'] and params['force_edge_options']['force_beg'] == 1:
                 multx_cmd.append('-b')
-            if 'force_end' in params['force_options'] and params['force_options']['force_end'] == 1:
+            if 'force_end' in params['force_edge_options'] and params['force_edge_options']['force_end'] == 1:
                 multx_cmd.append('-e')
 
         if 'dist_and_qual_params' in params and params['dist_and_qual_params'] != None:
