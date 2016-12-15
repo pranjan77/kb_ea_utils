@@ -387,10 +387,10 @@ class kb_ea_utils_dev:
         env['KB_AUTH_TOKEN'] = token
         
 
-        # Instantiate Set API Client and Report API Client as dynamic services
+        # Instantiate Set API Client and Report API Client
         SERVICE_VER = 'dev'  # DEBUG
-        setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # for dynamic service
-        reportAPI_Client = KBaseReport (self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # dynamic service
+        reportAPI_Client = KBaseReport (self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # local method
 
 
         # param checks
@@ -810,11 +810,6 @@ class kb_ea_utils_dev:
             
             base_desc = params['desc']
             
-            # get SetAPI Client
-            # Set API Client instantiated at beginning of method
-            #setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # for dynamic service
-            #setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
-
             # paired end
             if len(paired_obj_refs) == 0:
                 self.log (console, "No paired reads found with configured barcodes")
@@ -828,15 +823,10 @@ class kb_ea_utils_dev:
                                   #'data_attachment': ,
                                   #'info':
                                  })
-                    self.log (console, "DEBUGGING: lib_i:'"+str(lib_i)+"' lib_ref:'"+str(lib_ref)+"' label:'"+str(label)+"'")  # DEBUG
-
                 desc = base_desc
                 output_readsSet_obj = { 'description': desc,
                                         'items': items
                                       }
-                self.log (console, "DEBUGGING: workspace_name: '"+str(params['workspace_name'])+"'")  # DEBUG
-                self.log (console, "DEBUGGING: output_reads_name: '"+str(params['output_reads_name'])+"'")  # DEBUG
-                self.log (console, "DEBUGGING: output_readsSet_obj: '"+str(output_readsSet_obj)+"'")  # DEBUG
                 output_readsSet_name = str(params['output_reads_name'])
                 paired_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': str(params['workspace_name']),
                                                                         'output_object_name': output_readsSet_name,
@@ -910,7 +900,6 @@ class kb_ea_utils_dev:
 
         # save report object
         #
-        # report API Client instantiated at beginning of method
         report_info = reportAPI_Client.create({'report':reportObj, 'workspace_name':params['workspace_name']})
 
         returnVal = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
