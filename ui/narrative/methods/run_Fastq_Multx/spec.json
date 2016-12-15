@@ -266,8 +266,8 @@
 					"target_property": "barcode_options"
 				},
 				{
-					"input_parameter": "force_options",
-					"target_property": "force_options"
+					"input_parameter": "force_edge_options",
+					"target_property": "force_edge_options"
 				},
 				{
 					"input_parameter": "dist_and_qual_params",
