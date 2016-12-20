@@ -13,7 +13,7 @@ from pprint import pprint, pformat
 import uuid
 
 from ReadsUtils.ReadsUtilsClient import ReadsUtils as ReadsUtils
-from SetAPI.SetAPIClient import SetAPI
+from SetAPI.SetAPIServiceClient import SetAPI
 from KBaseReport.KBaseReportClient import KBaseReport
 #END_HEADER
 

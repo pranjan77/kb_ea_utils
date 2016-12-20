@@ -388,7 +388,8 @@ class kb_ea_utils_dev:
         
 
         # Instantiate Set API Client and Report API Client
-        SERVICE_VER = 'dev'  # DEBUG
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # dynamic service
         reportAPI_Client = KBaseReport (self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # local method
 
@@ -1018,7 +1019,8 @@ class kb_ea_utils_dev:
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
         
-        SERVICE_VER = 'dev'  # DEBUG
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
 
         # param checks
         if 'input_reads_ref' not in params and 'input_reads_file' not in params:
