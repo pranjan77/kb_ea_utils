@@ -347,7 +347,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
 
     def test_get_ea_utils_stats(self):
-        fastq_file = "/kb/module/test/data/small_1.fwd.fq"
+        fastq_file = "data/small_1.fwd.fq"
         params={'read_library_path': fastq_file}
 
         report = self.getImpl().get_ea_utils_stats(self.getContext(), params)
@@ -356,7 +356,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
 
     def test_calculate_fastq_stats(self):
-        fastq_file = "/kb/module/test/data/small_1.fwd.fq"
+        fastq_file = "data/small_1.fwd.fq"
         params={'read_library_path': fastq_file}
 
         ea_stats = self.getImpl().calculate_fastq_stats(self.getContext(), params)
