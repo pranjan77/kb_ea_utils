@@ -317,7 +317,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     def test_get_fastq_ea_utils_stats(self):
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('small_1')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
 
         # run method
@@ -333,7 +333,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
     def test_run_app_fastq_ea_utils_stats(self):
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('small_1')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
 
         # run method
@@ -347,7 +347,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
 
     def test_get_ea_utils_stats(self):
-        fastq_file = "data/small_1.fwd.fq"
+        fastq_file = "data/mxtest_unit.fwd.fq"
         params={'read_library_path': fastq_file}
 
         report = self.getImpl().get_ea_utils_stats(self.getContext(), params)
@@ -356,9 +356,10 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
 
     def test_calculate_fastq_stats(self):
-        fastq_file = "data/small_1.fwd.fq"
+        fastq_file = "data/mxtest_unit.fwd.fq"
         params={'read_library_path': fastq_file}
 
         ea_stats = self.getImpl().calculate_fastq_stats(self.getContext(), params)
-        #self.assertEqual(ea_stats[0]['total_bases'], 38610800)
+        total_bases = 18750
+        self.assertEqual(ea_stats[0]['total_bases'], total_bases)
 
