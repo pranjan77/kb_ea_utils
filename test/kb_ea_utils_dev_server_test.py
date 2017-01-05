@@ -361,3 +361,4 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
         ea_stats = self.getImpl().calculate_fastq_stats(self.getContext(), params)
         #self.assertEqual(ea_stats[0]['total_bases'], 38610800)
+
