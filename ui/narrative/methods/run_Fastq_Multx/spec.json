@@ -79,15 +79,9 @@
                                         "options": [
                                                 {
                                                         "value": "manual",
-                                                        "display": "Manual Configuration",
+                                                        "display": "Manual Barcode Configuration",
                                                         "id": "manual",
                                                         "ui-name": "manual"
-                                                },
-                                                {
-                                                        "value": "index-lane",
-                                                        "display": "Index Read Lane Library",
-                                                        "id": "index-lane",
-                                                        "ui-name": "index-lane"
                                                 },
                                                 {
                                                         "value": "auto-detect",
