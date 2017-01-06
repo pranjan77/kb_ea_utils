@@ -207,7 +207,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
                             {
                                 'type':'KBaseFile.PairedEndLibrary',
                                 'data':paired_end_library,
-                                'name':'test.pe.reads',
+                                'name':'test-'+str(lib_i)+'.pe.reads',
                                 'meta':{},
                                 'provenance':[
                                     {
@@ -315,6 +315,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
         # 10 - usermeta meta
 
 
+    ### TEST 0+: get Fastq Stats
+    #
     def test_get_fastq_ea_utils_stats(self):
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
@@ -328,7 +330,6 @@ class kb_ea_utils_devTest(unittest.TestCase):
         ea_utils_stats_str = self.getImpl().get_fastq_ea_utils_stats(self.getContext(),params)
         print('EA_UTILS_STATS_str:')
         print(ea_utils_stats_str)
-
 
     def test_run_app_fastq_ea_utils_stats(self):
 
@@ -345,7 +346,6 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('REPORT:')
         pprint(report)
 
-
     def test_get_ea_utils_stats(self):
         fastq_file = "data/mxtest_unit.fwd.fq"
         params={'read_library_path': fastq_file}
@@ -353,7 +353,6 @@ class kb_ea_utils_devTest(unittest.TestCase):
         report = self.getImpl().get_ea_utils_stats(self.getContext(), params)
         print('REPORT:')
         pprint(report)
-
 
     def test_calculate_fastq_stats(self):
         fastq_file = "data/mxtest_unit.fwd.fq"
@@ -363,3 +362,56 @@ class kb_ea_utils_devTest(unittest.TestCase):
         total_bases = 18750
         self.assertEqual(ea_stats[0]['total_bases'], total_bases)
 
+
+    ### TEST 1: run Fastq_Multx against paired end library in manual mode
+    #
+    def test_run_Fastq_Multx_PE_manual_mode(self):
+
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pprint(pe_lib_info)
+
+        #index_lane_lib_info = self.getPairedEndLibInfo('multx_lane_unit')
+        #pprint(index_lane_lib_info)
+
+        # run method
+        output_name = 'output_demult.PERS'
+
+        index_mode = 'manual'
+        index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
+            'index_mode': index_mode,
+            'desc': 'TEST',
+            'output_reads_name': output_name,
+            'index_info': index_info,
+            #'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
+            'barcode_options': {
+                'use_header_barcode': 0,
+                'trim_barcode': 1,
+                'suggest_barcodes': 0
+                },
+            'force_edge_options': {
+                'force_beg': 0,
+                'force_end': 0
+                },
+            'dist_and_qual_params': {
+                'mismatch_max': 1,
+                'edit_dist_min': 2,
+                'barcode_base_qual_score_min': 1
+                },
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsSet_info = info_list[0]
+        self.assertEqual(readsSet_info[1],output_name)
+        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
