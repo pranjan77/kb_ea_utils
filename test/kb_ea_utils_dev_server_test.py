@@ -726,10 +726,10 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 5: run Fastq_Multx against paired end library in manual mode with barcodes in header
     #
-    def test_run_Fastq_Multx_PE_manual_mode_barcode_header(self):
+    def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode_barcode_header()")
-        print ("=============================================================\n\n")
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
+        print ("=================================================================\n\n")
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest-header')
@@ -739,10 +739,10 @@ class kb_ea_utils_devTest(unittest.TestCase):
         #pprint(index_lane_lib_info)
 
         # run method
-        output_name = 'output_demult_manual_barcode_header.PERS'
+        output_name = 'output_demult_autodetect_barcode_header.PERS'
 
-        index_mode = 'manual'
-        index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
+        index_mode = 'auto-detect'
+        #index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
 
         params = {
             'workspace_name': pe_lib_info[7],
@@ -750,7 +750,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             'index_mode': index_mode,
             'desc': 'TEST',
             'output_reads_name': output_name,
-            'index_info': index_info,
+            #'index_info': index_info,
             #'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
             'barcode_options': {
                 'use_header_barcode': 1,  # this is special
