@@ -54,11 +54,11 @@ parameters :
 			The read library for which you want to de-barcode
 	input_index_ref :
 		ui-name : |
-			Index lane library
+			Index lane library (optional)
 		short-hint : |
-			The index read library with the barcodes (if split from the rest of the read)
+			The index read library with the barcodes (split from the rest of the read)
 		long-hint  : |
-			The index read library with the barcodes (if split from the rest of the read)
+			The index read library with the barcodes (split from the rest of the read)
 	desc :
 		ui-name : |
 			Output readsSet description

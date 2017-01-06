@@ -84,6 +84,12 @@
                                                         "ui-name": "manual"
                                                 },
                                                 {
+                                                        "value": "index-lane",
+                                                        "display": "Index Read Lane",
+                                                        "id": "index-lane",
+                                                        "ui-name": "index-lane"
+                                                },
+                                                {
                                                         "value": "auto-detect",
                                                         "display": "Auto Detect from Standard Barcodes",
                                                         "id": "auto-detect",
