@@ -677,6 +677,7 @@ class kb_ea_utils_dev:
 
         # determine group_id_order
         #
+        group_id_order = []
         if params['index_mode'] == 'manual':
             group_id_order = manual_group_id_order
         elif params['index_mode'] == 'auto-detect':
@@ -690,8 +691,15 @@ class kb_ea_utils_dev:
                     continue
                 group_id_order.append(row[0])
         elif params['index_mode'] == 'index-lane':
-            for line in outputlines.split("\n"):
-                foo # HERE
+            for line in outputlines:
+                line = line.strip()
+                if line == '':
+                    continue
+                row = line.split()
+                if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#") \
+                  or row[0] == 'unmatched' or row[0] == 'total': 
+                    continue
+                group_id_order.append(row[0])
         else:
             raise ValueError ("badly configured index_mode: '"+params['index_mode']+"'")
 

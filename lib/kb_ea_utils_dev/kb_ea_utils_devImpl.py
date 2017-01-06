@@ -497,9 +497,13 @@ class kb_ea_utils_dev:
         except Exception as e:
             raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
         try:
-            readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
-                                                             'interleaved': 'false'
-                                                             })
+            if input_reads_obj_type == "KBaseFile.PairedEndLibarary":
+                readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
+                                                                  'interleaved': 'false'
+                                                                  })
+            else:
+                readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref]})
+
         except Exception as e:
             raise ValueError('Unable to download read library sequences from workspace: (' + str(input_reads_ref) +")\n" + str(e))
 
