@@ -443,6 +443,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
     ### TESTS 0.1-0.4: get Fastq Stats
     #
     def test_get_fastq_ea_utils_stats(self):
+        print ("\n\nRUNNING: test_get_fastq_ea_utils_stats()\n")
+        print ("========================================\n\n")
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
@@ -457,7 +459,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print(ea_utils_stats_str)
 
     def test_run_app_fastq_ea_utils_stats(self):
-
+        print ("\n\nRUNNING: test_run_app_fastq_ea_utils_stats()\n")
+        print ("============================================\n\n")
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
@@ -472,6 +475,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pprint(report)
 
     def test_get_ea_utils_stats(self):
+        print ("\n\nRUNNING: test_get_ea_utils_stats()\n")
+        print ("==================================\n\n")
         fastq_file = "data/mxtest_unit.fwd.fq"
         params={'read_library_path': fastq_file}
 
@@ -480,6 +485,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pprint(report)
 
     def test_calculate_fastq_stats(self):
+        print ("\n\nRUNNING: test_calculate_fastq_stats()\n")
+        print ("=====================================\n\n")
         fastq_file = "data/mxtest_unit.fwd.fq"
         params={'read_library_path': fastq_file}
 
@@ -491,6 +498,9 @@ class kb_ea_utils_devTest(unittest.TestCase):
     ### TEST 1: run Fastq_Multx against paired end library in manual mode
     #
     def test_run_Fastq_Multx_PE_manual_mode(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode()\n")
+        print ("==============================================\n\n")
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
@@ -546,6 +556,9 @@ class kb_ea_utils_devTest(unittest.TestCase):
     #
     def test_run_Fastq_Multx_PE_manual_mode_index_lane(self):
 
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode_index_lane()\n")
+        print ("=========================================================\n\n")
+
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
         pprint(pe_lib_info)
@@ -599,6 +612,9 @@ class kb_ea_utils_devTest(unittest.TestCase):
     ### TEST 3: run Fastq_Multx against paired end library in auto-detect mode
     #
     def test_run_Fastq_Multx_PE_autodetect_mode(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode()\n")
+        print ("==================================================\n\n")
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
@@ -655,6 +671,9 @@ class kb_ea_utils_devTest(unittest.TestCase):
     #
     def test_run_Fastq_Multx_PE_autodetect_mode_index_lane(self):
 
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_index_lane()\n")
+        print ("=============================================================\n\n")
+
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
         pprint(pe_lib_info)
@@ -708,6 +727,9 @@ class kb_ea_utils_devTest(unittest.TestCase):
     ### TEST 5: run Fastq_Multx against paired end library in manual mode with barcodes in header
     #
     def test_run_Fastq_Multx_PE_manual_mode_barcode_header(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode_barcode_header()\n")
+        print ("=============================================================\n\n")
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest-header')
