@@ -465,7 +465,7 @@ class kb_ea_utils_dev:
             raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
 
 
-        if 'index_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
+        if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
             try:
                 # object_info tuple
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
@@ -601,7 +601,7 @@ class kb_ea_utils_dev:
 
         if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
             multx_cmd.append('-g')
-            multx_cmd.append(index_index_fwd_file_path)
+            multx_cmd.append(input_index_fwd_file_path)
             # what about reverse barcode lane?
 
         if 'barcode_options' in params and params['barcode_options'] != None:
