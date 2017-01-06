@@ -409,6 +409,9 @@ class kb_ea_utils_dev:
         if params['index_mode'] == 'manual':
             if 'index_info' not in params or params['index_info'] == None or params['index_info'] == '':
                 raise ValueError ("Must have index_info if index_mode is 'manual'")
+        elif params['index_mode'] == 'index-lane':
+            if 'input_index_ref' not in params or params['input_index_ref'] == None or params['input_index_ref'] == '':
+                raise ValueError ("Must have index lane library if index_mode is 'index-lane'")
 
         # and param defaults
         defaults = { 'barcode_options': {'use_header_barcode': 0,
@@ -593,16 +596,15 @@ class kb_ea_utils_dev:
         if params['index_mode'] == 'auto-detect':
              multx_cmd.append('-l')
              multx_cmd.append(master_barcodes_path)
+        elif params['index_mode'] == 'index-lane':
+            multx_cmd.append('-g')
+            multx_cmd.append(input_index_fwd_file_path) # what about reverse barcode lane? fastq-multx only accepts single end even for paired end primary reads
         elif params['index_mode'] == 'manual':
             multx_cmd.append('-B')
             multx_cmd.append(index_info_path)
         else:
             raise ValueError ("Bad index_mode: '"+params['index_mode']+"'")
 
-        if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
-            multx_cmd.append('-g')
-            multx_cmd.append(input_index_fwd_file_path)
-            # what about reverse barcode lane?
 
         if 'barcode_options' in params and params['barcode_options'] != None:
             if 'use_header_barcode' in params['barcode_options'] and params['barcode_options']['use_header_barcode'] == 1:
