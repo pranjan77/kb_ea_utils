@@ -496,7 +496,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
         pprint(pe_lib_info)
 
-        #index_lane_lib_info = self.getPairedEndLibInfo('multx_lane_unit')
+        #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
         #pprint(index_lane_lib_info)
 
         # run method
@@ -550,7 +550,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
         pprint(pe_lib_info)
 
-        index_lane_lib_info = self.getSingleEndLibInfo('multx_lane_unit')
+        index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
         pprint(index_lane_lib_info)
 
         # run method
@@ -604,7 +604,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
         pprint(pe_lib_info)
 
-        #index_lane_lib_info = self.getPairedEndLibInfo('multx_lane_unit')
+        #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
         #pprint(index_lane_lib_info)
 
         # run method
@@ -619,7 +619,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             'index_mode': index_mode,
             'desc': 'TEST',
             'output_reads_name': output_name,
-            'index_info': index_info,
+            #'index_info': index_info,
             #'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
             'barcode_options': {
                 'use_header_barcode': 0,
@@ -659,7 +659,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pe_lib_info = self.getPairedEndLibInfo('multx_unit')
         pprint(pe_lib_info)
 
-        index_lane_lib_info = self.getSingleEndLibInfo('multx_lane_unit')
+        index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
         pprint(index_lane_lib_info)
 
         # run method
@@ -674,7 +674,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             'index_mode': index_mode,
             'desc': 'TEST',
             'output_reads_name': output_name,
-            'index_info': index_info,
+            #'index_info': index_info,
             'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
             'barcode_options': {
                 'use_header_barcode': 0,
@@ -710,10 +710,10 @@ class kb_ea_utils_devTest(unittest.TestCase):
     def test_run_Fastq_Multx_PE_manual_mode_barcode_header(self):
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('multx-header')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest-header')
         pprint(pe_lib_info)
 
-        #index_lane_lib_info = self.getPairedEndLibInfo('multx_lane_unit')
+        #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
         #pprint(index_lane_lib_info)
 
         # run method
