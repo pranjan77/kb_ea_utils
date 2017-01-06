@@ -187,8 +187,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
                                 'meta':{},
                                 'provenance':[
                                     {
-                                        'service':'kb_trimmomatic',
-                                        'method':'test_runTrimmomatic'
+                                        'service':'kb_ea_utils',
+                                        'method':'test_run_EaUtils'
                                     }
                                 ]
                             }]
@@ -344,8 +344,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
                                 'meta':{},
                                 'provenance':[
                                     {
-                                        'service':'kb_trimmomatic',
-                                        'method':'test_runTrimmomatic'
+                                        'service':'kb_ea_utils',
+                                        'method':'test_run_EaUtils'
                                     }
                                 ]
                             }]
