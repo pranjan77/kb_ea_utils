@@ -530,8 +530,9 @@ class kb_ea_utils_dev:
         #
         if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
             try:
-                indexLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_index_ref],
-                                                                  'interleaved': 'false'
+                input_index_ref = params['input_index_ref']
+                indexLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_index_ref]#,
+                                                                  #'interleaved': 'false'
                                                                   })
             except Exception as e:
                 raise ValueError('Unable to download index read library sequences from workspace: (' + str(input_index_ref) +")\n" + str(e))
