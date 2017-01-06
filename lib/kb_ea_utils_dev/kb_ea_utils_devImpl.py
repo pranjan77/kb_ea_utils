@@ -551,8 +551,8 @@ class kb_ea_utils_dev:
 
         # clean up index_info
         #
-        group_id_order = []
-        if params['index_mode'] != 'auto-detect':
+        manual_group_id_order = []
+        if params['index_mode'] == 'manual':
             index_info_path = None
             if 'index_info' in params and params['index_info'] != None and params['index_info'] != '':
 
@@ -564,7 +564,7 @@ class kb_ea_utils_dev:
                     row = line.split()
                     if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#"): 
                         continue
-                    group_id_order.append(row[0])
+                    manual_group_id_order.append(row[0])
 
                     row_str = "\t".join(row)+"\n"
                     index_info_buf.append(row_str)
@@ -576,16 +576,6 @@ class kb_ea_utils_dev:
                 index_info_handle.close()
             else:
                 raise Value ("missing index_info")
-        else:
-            master_barcodes_handle = open (master_barcodes_path, 'r', 0)
-            for line in master_barcodes_handle.readlines():
-                line = line.strip()
-                if line == '':
-                    continue
-                row = line.split()
-                if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
-                    continue
-                group_id_order.append(row[0])
 
 
         # Prep vars
@@ -683,6 +673,35 @@ class kb_ea_utils_dev:
 
         report += "\n".join(outputlines)
         self.log (console, "\n".join(outputlines))
+
+
+        # determine group_id_order
+        #
+        group_id_order = []
+        if params['index_mode'] == 'manual':
+            group_id_order = manual_group_id_order
+        elif params['index_mode'] == 'auto-detect':
+            master_barcodes_handle = open (master_barcodes_path, 'r', 0)
+            for line in master_barcodes_handle.readlines():
+                line = line.strip()
+                if line == '':
+                    continue
+                row = line.split()
+                if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
+                    continue
+                group_id_order.append(row[0])
+        elif params['index_mode'] == 'index-lane':
+            for line in outputlines:
+                line = line.strip()
+                if line == '':
+                    continue
+                row = line.split()
+                if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#") \
+                  or row[0] == 'unmatched' or row[0] == 'total': 
+                    continue
+                group_id_order.append(row[0])
+        else:
+            raise ValueError ("badly configured index_mode: '"+params['index_mode']+"'")
 
 
         # Collect output files and upload
