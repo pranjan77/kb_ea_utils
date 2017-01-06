@@ -315,7 +315,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         # 10 - usermeta meta
 
 
-    ### TEST 0+: get Fastq Stats
+    ### TESTS 0.1-0.4: get Fastq Stats
     #
     def test_get_fastq_ea_utils_stats(self):
         # figure out where the test data lives
@@ -375,7 +375,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         #pprint(index_lane_lib_info)
 
         # run method
-        output_name = 'output_demult.PERS'
+        output_name = 'output_demult_manual.PERS'
 
         index_mode = 'manual'
         index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
@@ -415,3 +415,222 @@ class kb_ea_utils_devTest(unittest.TestCase):
         readsSet_info = info_list[0]
         self.assertEqual(readsSet_info[1],output_name)
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
+
+
+    ### TEST 2: run Fastq_Multx against paired end library in manual mode with index-lane data
+    #
+    def test_run_Fastq_Multx_PE_manual_mode_index_lane(self):
+
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pprint(pe_lib_info)
+
+        index_lane_lib_info = self.getSingleEndLibInfo('multx_lane_unit')
+        pprint(index_lane_lib_info)
+
+        # run method
+        output_name = 'output_demult_manual_indexlane.PERS'
+
+        index_mode = 'manual'
+        index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
+            'index_mode': index_mode,
+            'desc': 'TEST',
+            'output_reads_name': output_name,
+            'index_info': index_info,
+            'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
+            'barcode_options': {
+                'use_header_barcode': 0,
+                'trim_barcode': 1,
+                'suggest_barcodes': 0
+                },
+            'force_edge_options': {
+                'force_beg': 0,
+                'force_end': 0
+                },
+            'dist_and_qual_params': {
+                'mismatch_max': 1,
+                'edit_dist_min': 2,
+                'barcode_base_qual_score_min': 1
+                },
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsSet_info = info_list[0]
+        self.assertEqual(readsSet_info[1],output_name)
+        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
+
+
+    ### TEST 3: run Fastq_Multx against paired end library in auto-detect mode
+    #
+    def test_run_Fastq_Multx_PE_autodetect_mode(self):
+
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pprint(pe_lib_info)
+
+        #index_lane_lib_info = self.getPairedEndLibInfo('multx_lane_unit')
+        #pprint(index_lane_lib_info)
+
+        # run method
+        output_name = 'output_demult_autodetect.PERS'
+
+        index_mode = 'auto-detect'
+        #index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
+            'index_mode': index_mode,
+            'desc': 'TEST',
+            'output_reads_name': output_name,
+            'index_info': index_info,
+            #'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
+            'barcode_options': {
+                'use_header_barcode': 0,
+                'trim_barcode': 1,
+                'suggest_barcodes': 0
+                },
+            'force_edge_options': {
+                'force_beg': 0,
+                'force_end': 0
+                },
+            'dist_and_qual_params': {
+                'mismatch_max': 1,
+                'edit_dist_min': 2,
+                'barcode_base_qual_score_min': 1
+                },
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsSet_info = info_list[0]
+        self.assertEqual(readsSet_info[1],output_name)
+        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
+
+
+
+    ### TEST 4: run Fastq_Multx against paired end library in auto-detect mode with index-lane data
+    #
+    def test_run_Fastq_Multx_PE_autodetect_mode_index_lane(self):
+
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pprint(pe_lib_info)
+
+        index_lane_lib_info = self.getSingleEndLibInfo('multx_lane_unit')
+        pprint(index_lane_lib_info)
+
+        # run method
+        output_name = 'output_demult_autodetect_indexlane.PERS'
+
+        index_mode = 'auto-detect'
+        #index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
+            'index_mode': index_mode,
+            'desc': 'TEST',
+            'output_reads_name': output_name,
+            'index_info': index_info,
+            'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
+            'barcode_options': {
+                'use_header_barcode': 0,
+                'trim_barcode': 1,
+                'suggest_barcodes': 0
+                },
+            'force_edge_options': {
+                'force_beg': 0,
+                'force_end': 0
+                },
+            'dist_and_qual_params': {
+                'mismatch_max': 1,
+                'edit_dist_min': 2,
+                'barcode_base_qual_score_min': 1
+                },
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsSet_info = info_list[0]
+        self.assertEqual(readsSet_info[1],output_name)
+        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
+
+
+    ### TEST 5: run Fastq_Multx against paired end library in manual mode with barcodes in header
+    #
+    def test_run_Fastq_Multx_PE_manual_mode_barcode_header(self):
+
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo('multx-header')
+        pprint(pe_lib_info)
+
+        #index_lane_lib_info = self.getPairedEndLibInfo('multx_lane_unit')
+        #pprint(index_lane_lib_info)
+
+        # run method
+        output_name = 'output_demult_manual_barcode_header.PERS'
+
+        index_mode = 'manual'
+        index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
+            'index_mode': index_mode,
+            'desc': 'TEST',
+            'output_reads_name': output_name,
+            'index_info': index_info,
+            #'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
+            'barcode_options': {
+                'use_header_barcode': 1,  # this is special
+                'trim_barcode': 0,        # so's this
+                'suggest_barcodes': 0
+                },
+            'force_edge_options': {
+                'force_beg': 0,
+                'force_end': 0
+                },
+            'dist_and_qual_params': {
+                'mismatch_max': 1,
+                'edit_dist_min': 2,
+                'barcode_base_qual_score_min': 1
+                },
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsSet_info = info_list[0]
+        self.assertEqual(readsSet_info[1],output_name)
+        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
+
+
