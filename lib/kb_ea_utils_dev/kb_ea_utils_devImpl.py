@@ -409,9 +409,6 @@ class kb_ea_utils_dev:
         if params['index_mode'] == 'manual':
             if 'index_info' not in params or params['index_info'] == None or params['index_info'] == '':
                 raise ValueError ("Must have index_info if index_mode is 'manual'")
-        elif params['index_mode'] == 'index-lane':
-            if 'input_index_ref' not in params or params['input_index_ref'] == None or params['input_index_ref'] == '':
-                raise ValueError ("Must have input_index_ref if index_mode is 'index-lane'")
 
         # and param defaults
         defaults = { 'barcode_options': {'use_header_barcode': 0,
@@ -463,10 +460,30 @@ class kb_ea_utils_dev:
         except Exception as e:
             raise ValueError('Unable to get read library object info from workspace: (' + str(input_reads_ref) +')' + str(e))
 
-
         acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
         if input_reads_obj_type not in acceptable_types:
             raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
+
+
+        if 'index_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
+            try:
+                # object_info tuple
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
+            
+                input_index_ref = params['input_index_ref']
+                input_index_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_index_ref}]})[0]
+                input_index_obj_type = input_index_obj_info[TYPE_I]
+                input_index_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_index_obj_type)  # remove trailing version
+
+            except Exception as e:
+                raise ValueError('Unable to get index read library object info from workspace: (' + str(input_index_ref) +')' + str(e))
+
+            #acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
+            acceptable_types = ["KBaseFile.SingleEndLibrary"]
+            if input_index_obj_type not in acceptable_types:
+                raise ValueError ("Input index reads of type: '"+input_index_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
+            #if input_index_obj_type != input_reads_obj_type:
+            #    raise ValueError ("Input index reads of type: '"+input_index_obj_type+"' must be same as Input reads of type: '"+input_reads_obj_type+"'")
 
 
         # Download Reads
@@ -509,7 +526,7 @@ class kb_ea_utils_dev:
 #            phred_type = self.exec_Determine_Phred (ctx, {'input_reads_file':input_fwd_file_path})['phred_type']
 
 
-        # Download index reads
+        # Download index reads (currently must be single end.  why?)
         #
         if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
             try:
@@ -519,7 +536,7 @@ class kb_ea_utils_dev:
             except Exception as e:
                 raise ValueError('Unable to download index read library sequences from workspace: (' + str(input_index_ref) +")\n" + str(e))
             input_index_fwd_file_path = indexLibrary['files'][input_index_ref]['files']['fwd']
-            input_index_rev_file_path = indexLibrary['files'][input_index_ref]['files']['rev']
+            #input_index_rev_file_path = indexLibrary['files'][input_index_ref]['files']['rev']
 
 
         # Set the output dir
@@ -578,7 +595,10 @@ class kb_ea_utils_dev:
         elif params['index_mode'] == 'manual':
             multx_cmd.append('-B')
             multx_cmd.append(index_info_path)
-        elif params['index_mode'] == 'index-lane':
+        else:
+            raise ValueError ("Bad index_mode: '"+params['index_mode']+"'")
+
+        if 'input_index_ref' in params and params['input_index_ref'] != None and params['input_index_ref'] != '':
             multx_cmd.append('-g')
             multx_cmd.append(index_index_fwd_file_path)
             # what about reverse barcode lane?
