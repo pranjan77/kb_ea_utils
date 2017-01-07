@@ -803,3 +803,77 @@ class kb_ea_utils_devTest(unittest.TestCase):
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
 
 
+    ### TEST 6: run Fastq_Join against paired end library
+    #
+    def test_run_Fastq_Join_PE_lib(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Join_PE_lib()")
+        print ("=====================================\n\n")
+
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo('test-ov-a')
+        pprint(pe_lib_info)
+
+        # run method
+        output_name = 'output_join.PE_lib'
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
+            'output_reads_name': output_name,
+            'verbose': 0,
+            'reverse_complement': 1,
+            'max_perc_dist': 8,
+            'min_base_overlap': 6
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsLib_info = info_list[0]
+        self.assertEqual(readsLib_info[1],output_name)
+        self.assertEqual(readsLib_info[2].split('-')[0],'KBaseFile.SingleEndLibrary')
+
+
+    ### TEST 7: run Fastq_Join against paired end library reads set
+    #
+    def test_run_Fastq_Join_PE_readsSet(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Join_PE_readsSet()")
+        print ("==========================================\n\n")
+
+        # figure out where the test data lives
+        pe_lib_set_info = self.getPairedEndLib_SetInfo(['test-ov-a','test-ov-b'])
+        pprint(pe_lib_set_info)
+
+        # run method
+        output_name = 'output_join.PE_readsSet'
+
+        params = {
+            'workspace_name': pe_lib_set_info[7],
+            'input_reads_ref': str(pe_lib_set_info[6])+'/'+str(pe_lib_set_info[0]),
+            'output_reads_name': output_name,
+            'verbose': 0,
+            'reverse_complement': 1,
+            'max_perc_dist': 8,
+            'min_base_overlap': 6
+        }
+
+        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output
+        output_name = output_name
+        info_list = self.wsClient.get_object_info([{'ref':pe_lib_set_info[7] + '/' + output_name}], 1)
+        self.assertEqual(len(info_list),1)
+        readsSet_info = info_list[0]
+        self.assertEqual(readsSet_info[1],output_name)
+        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
+
+
