@@ -193,7 +193,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
                                 'provenance':[
                                     {
                                         'service':'kb_ea_utils',
-                                        'method':'test_run_EaUtils'
+                                        'method':'test_run_ea-utils'
                                     }
                                 ]
                             }]
@@ -364,7 +364,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
                                 'provenance':[
                                     {
                                         'service':'kb_ea_utils',
-                                        'method':'test_run_EaUtils'
+                                        'method':'test_run_ea-utils'
                                     }
                                 ]
                             }]
