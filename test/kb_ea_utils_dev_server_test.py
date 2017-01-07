@@ -140,8 +140,13 @@ class kb_ea_utils_devTest(unittest.TestCase):
         if hasattr(self.__class__, 'singleEndLibInfo_list'):
             try:
                 info = self.__class__.singleEndLibInfo_list[lib_i]
+                name = self.__class__.singleEndLibName_list[lib_i]
                 if info != None:
-                    return info
+                    if name != read_lib_basename:
+                        self.__class__.singleEndLib_SetInfo[lib_i] = None
+                        self.__class__.singleEndLib_SetName[lib_i] = None
+                    else:
+                        return info
             except:
                 pass
 
@@ -197,13 +202,16 @@ class kb_ea_utils_devTest(unittest.TestCase):
         # store it
         if not hasattr(self.__class__, 'singleEndLibInfo_list'):
             self.__class__.singleEndLibInfo_list = []
-        for i in range(lib_i):
+            self.__class__.singleEndLibName_list = []
+        for i in range(lib_i+1):
             try:
                 assigned = self.__class__.singleEndLibInfo_list[i]
             except:
                 self.__class__.singleEndLibInfo_list.append(None)
+                self.__class__.singleEndLibName_list.append(None)
 
-        self.__class__.singleEndLibInfo_list.append(new_obj_info)
+        self.__class__.singleEndLibInfo_list[lib_i] = new_obj_info
+        self.__class__.singleEndLibName_list[lib_i] = read_lib_basename
         return new_obj_info
 
 
@@ -211,8 +219,13 @@ class kb_ea_utils_devTest(unittest.TestCase):
         if hasattr(self.__class__, 'pairedEndLibInfo_list'):
             try:
                 info = self.__class__.pairedEndLibInfo_list[lib_i]
+                name = self.__class__.pairedEndLibName_list[lib_i]
                 if info != None:
-                    return info
+                    if name != read_lib_basename:
+                        self.__class__.singleEndLibInfo_list[lib_i] = None
+                        self.__class__.singleEndLibName_list[lib_i] = None
+                    else:
+                        return info
             except:
                 pass
 
@@ -292,24 +305,30 @@ class kb_ea_utils_devTest(unittest.TestCase):
         # store it
         if not hasattr(self.__class__, 'pairedEndLibInfo_list'):
             self.__class__.pairedEndLibInfo_list = []
-        for i in range(lib_i):
+            self.__class__.pairedEndLibName_list = []
+        for i in range(lib_i+1):
             try:
                 assigned = self.__class__.pairedEndLibInfo_list[i]
             except:
                 self.__class__.pairedEndLibInfo_list.append(None)
+                self.__class__.pairedEndLibName_list.append(None)
 
-        self.__class__.pairedEndLibInfo_list.append(new_obj_info)
+        self.__class__.pairedEndLibInfo_list[lib_i] = new_obj_info
+        self.__class__.pairedEndLibName_list[lib_i] = read_lib_basename
         return new_obj_info
 
 
     # call this method to get the WS object info of a Single End Library Set (will
     # upload the example data if this is the first time the method is called during tests)
-    def getSingleEndLib_SetInfo(self, read_libs_basename_list):
+    def getSingleEndLib_SetInfo(self, read_libs_basename_list, refresh=False):
         if hasattr(self.__class__, 'singleEndLib_SetInfo'):
             try:
                 info = self.__class__.singleEndLib_SetInfo
                 if info != None:
-                    return info
+                    if refresh:
+                        self.__class__.singleEndLib_SetInfo = None
+                    else:
+                        return info
             except:
                 pass
 
@@ -319,7 +338,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             label    = read_lib_basename
             lib_info = self.getSingleEndLibInfo (read_lib_basename, lib_i)
             lib_ref  = str(lib_info[6])+'/'+str(lib_info[0])
-            print ("LIB_REF["+str(lib_i)+"]: "+lib_ref+" read_lib_basename")  # DEBUG
+            print ("LIB_REF["+str(lib_i)+"]: "+lib_ref+" "+read_lib_basename)  # DEBUG
 
             items.append({'ref': lib_ref,
                           'label': label
@@ -358,12 +377,15 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     # call this method to get the WS object info of a Paired End Library Set (will
     # upload the example data if this is the first time the method is called during tests)
-    def getPairedEndLib_SetInfo(self, read_libs_basename_list):
+    def getPairedEndLib_SetInfo(self, read_libs_basename_list, refresh=False):
         if hasattr(self.__class__, 'pairedEndLib_SetInfo'):
             try:
                 info = self.__class__.pairedEndLib_SetInfo
                 if info != None:
-                    return info
+                    if refresh:
+                        self.__class__.pairedEndLib_SetInfo[lib_i] = None
+                    else:
+                        return info
             except:
                 pass
 
@@ -373,7 +395,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             label    = read_lib_basename
             lib_info = self.getPairedEndLibInfo (read_lib_basename, lib_i)
             lib_ref  = str(lib_info[6])+'/'+str(lib_info[0])
-            print ("LIB_REF["+str(lib_i)+"]: "+lib_ref+" read_lib_basename")  # DEBUG
+            print ("LIB_REF["+str(lib_i)+"]: "+lib_ref+" "+read_lib_basename)  # DEBUG
 
             items.append({'ref': lib_ref,
                           'label': label
@@ -503,7 +525,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print ("==============================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
 
         #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
@@ -560,7 +582,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print ("=========================================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
 
         index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
@@ -617,7 +639,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print ("==================================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
 
         #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
@@ -675,7 +697,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print ("=============================================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('multx_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
         pprint(pe_lib_info)
 
         index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
