@@ -118,12 +118,15 @@ class kb_ea_utils_dev(object):
            parameter "input_reads_ref" of type "data_obj_ref", parameter
            "input_index_ref" of type "data_obj_ref", parameter
            "output_reads_name" of type "data_obj_name", parameter
-           "use_header_barcode" of type "bool", parameter "force_beg" of type
-           "bool", parameter "force_end" of type "bool", parameter
-           "trim_barcode" of type "bool", parameter "suggest_barcodes" of
-           type "bool", parameter "mismatch_max" of Long, parameter
-           "edit_dist_min" of Long, parameter "barcode_base_qual_score_min"
-           of Long
+           "barcode_options" of type "Barcode_Options" (Parameter groups) ->
+           structure: parameter "use_header_barcode" of type "bool",
+           parameter "trim_barcode" of type "bool", parameter
+           "suggest_barcodes" of type "bool", parameter "force_edge_options"
+           of type "ForceEdge_Options" -> structure: parameter "force_beg" of
+           type "bool", parameter "force_end" of type "bool", parameter
+           "dist_and_qual_params" of type "DistAndQual_Params" -> structure:
+           parameter "mismatch_max" of Long, parameter "edit_dist_min" of
+           Long, parameter "barcode_base_qual_score_min" of Long
         :returns: instance of type "run_Fastq_Multx_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -138,7 +141,10 @@ class kb_ea_utils_dev(object):
            SingleEnd Lib.  This sub interacts with Narrative) -> structure:
            parameter "workspace_name" of type "workspace_name" (** Common
            types), parameter "input_reads_ref" of type "data_obj_ref",
-           parameter "output_reads_name" of type "data_obj_name"
+           parameter "output_reads_name" of type "data_obj_name", parameter
+           "verbose" of type "bool", parameter "reverse_complement" of type
+           "bool", parameter "max_perc_dist" of Long, parameter
+           "min_base_overlap" of Long
         :returns: instance of type "run_Fastq_Join_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -148,12 +154,15 @@ class kb_ea_utils_dev(object):
 
     def exec_Fastq_Join(self, params, context=None):
         """
-        :param params: instance of type "exec_Fastq_Join_Input"
-           (exec_Fastq_Join() ** ** merge overlapping mate pairs into
-           SingleEnd Lib.  This routine creates readsSets) -> structure:
+        :param params: instance of type "run_Fastq_Join_Input"
+           (run_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This sub interacts with Narrative) -> structure:
            parameter "workspace_name" of type "workspace_name" (** Common
            types), parameter "input_reads_ref" of type "data_obj_ref",
-           parameter "output_reads_name" of type "data_obj_name"
+           parameter "output_reads_name" of type "data_obj_name", parameter
+           "verbose" of type "bool", parameter "reverse_complement" of type
+           "bool", parameter "max_perc_dist" of Long, parameter
+           "min_base_overlap" of Long
         :returns: instance of type "exec_Fastq_Join_Output" -> structure:
            parameter "output_reads_ref" of type "data_obj_ref"
         """
@@ -163,12 +172,15 @@ class kb_ea_utils_dev(object):
 
     def exec_Fastq_Join_OneLibrary(self, params, context=None):
         """
-        :param params: instance of type "exec_Fastq_Join_Input"
-           (exec_Fastq_Join() ** ** merge overlapping mate pairs into
-           SingleEnd Lib.  This routine creates readsSets) -> structure:
+        :param params: instance of type "run_Fastq_Join_Input"
+           (run_Fastq_Join() ** ** merge overlapping mate pairs into
+           SingleEnd Lib.  This sub interacts with Narrative) -> structure:
            parameter "workspace_name" of type "workspace_name" (** Common
            types), parameter "input_reads_ref" of type "data_obj_ref",
-           parameter "output_reads_name" of type "data_obj_name"
+           parameter "output_reads_name" of type "data_obj_name", parameter
+           "verbose" of type "bool", parameter "reverse_complement" of type
+           "bool", parameter "max_perc_dist" of Long, parameter
+           "min_base_overlap" of Long
         :returns: instance of type "exec_Fastq_Join_Output" -> structure:
            parameter "output_reads_ref" of type "data_obj_ref"
         """

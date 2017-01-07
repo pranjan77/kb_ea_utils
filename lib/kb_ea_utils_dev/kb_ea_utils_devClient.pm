@@ -518,19 +518,25 @@ run_Fastq_Multx_Input is a reference to a hash where the following keys are defi
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	use_header_barcode has a value which is a kb_ea_utils_dev.bool
-	force_beg has a value which is a kb_ea_utils_dev.bool
-	force_end has a value which is a kb_ea_utils_dev.bool
-	trim_barcode has a value which is a kb_ea_utils_dev.bool
-	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
-	mismatch_max has a value which is an int
-	edit_dist_min has a value which is an int
-	barcode_base_qual_score_min has a value which is an int
+	barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
+	force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
+	dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
 workspace_name is a string
 textarea_str is a string
 data_obj_ref is a string
 data_obj_name is a string
+Barcode_Options is a reference to a hash where the following keys are defined:
+	use_header_barcode has a value which is a kb_ea_utils_dev.bool
+	trim_barcode has a value which is a kb_ea_utils_dev.bool
+	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
 bool is an int
+ForceEdge_Options is a reference to a hash where the following keys are defined:
+	force_beg has a value which is a kb_ea_utils_dev.bool
+	force_end has a value which is a kb_ea_utils_dev.bool
+DistAndQual_Params is a reference to a hash where the following keys are defined:
+	mismatch_max has a value which is an int
+	edit_dist_min has a value which is an int
+	barcode_base_qual_score_min has a value which is an int
 run_Fastq_Multx_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -551,19 +557,25 @@ run_Fastq_Multx_Input is a reference to a hash where the following keys are defi
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	use_header_barcode has a value which is a kb_ea_utils_dev.bool
-	force_beg has a value which is a kb_ea_utils_dev.bool
-	force_end has a value which is a kb_ea_utils_dev.bool
-	trim_barcode has a value which is a kb_ea_utils_dev.bool
-	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
-	mismatch_max has a value which is an int
-	edit_dist_min has a value which is an int
-	barcode_base_qual_score_min has a value which is an int
+	barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
+	force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
+	dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
 workspace_name is a string
 textarea_str is a string
 data_obj_ref is a string
 data_obj_name is a string
+Barcode_Options is a reference to a hash where the following keys are defined:
+	use_header_barcode has a value which is a kb_ea_utils_dev.bool
+	trim_barcode has a value which is a kb_ea_utils_dev.bool
+	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
 bool is an int
+ForceEdge_Options is a reference to a hash where the following keys are defined:
+	force_beg has a value which is a kb_ea_utils_dev.bool
+	force_end has a value which is a kb_ea_utils_dev.bool
+DistAndQual_Params is a reference to a hash where the following keys are defined:
+	mismatch_max has a value which is an int
+	edit_dist_min has a value which is an int
+	barcode_base_qual_score_min has a value which is an int
 run_Fastq_Multx_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -644,9 +656,14 @@ run_Fastq_Join_Input is a reference to a hash where the following keys are defin
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	verbose has a value which is a kb_ea_utils_dev.bool
+	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	max_perc_dist has a value which is an int
+	min_base_overlap has a value which is an int
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 run_Fastq_Join_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -663,9 +680,14 @@ run_Fastq_Join_Input is a reference to a hash where the following keys are defin
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	verbose has a value which is a kb_ea_utils_dev.bool
+	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	max_perc_dist has a value which is an int
+	min_base_overlap has a value which is an int
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 run_Fastq_Join_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -740,15 +762,20 @@ run_Fastq_Join_Output is a reference to a hash where the following keys are defi
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.exec_Fastq_Join_Input
+$params is a kb_ea_utils_dev.run_Fastq_Join_Input
 $returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
-exec_Fastq_Join_Input is a reference to a hash where the following keys are defined:
+run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	verbose has a value which is a kb_ea_utils_dev.bool
+	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	max_perc_dist has a value which is an int
+	min_base_overlap has a value which is an int
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
 	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
@@ -758,15 +785,20 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 
 =begin text
 
-$params is a kb_ea_utils_dev.exec_Fastq_Join_Input
+$params is a kb_ea_utils_dev.run_Fastq_Join_Input
 $returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
-exec_Fastq_Join_Input is a reference to a hash where the following keys are defined:
+run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	verbose has a value which is a kb_ea_utils_dev.bool
+	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	max_perc_dist has a value which is an int
+	min_base_overlap has a value which is an int
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
 	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
@@ -840,15 +872,20 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.exec_Fastq_Join_Input
+$params is a kb_ea_utils_dev.run_Fastq_Join_Input
 $returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
-exec_Fastq_Join_Input is a reference to a hash where the following keys are defined:
+run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	verbose has a value which is a kb_ea_utils_dev.bool
+	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	max_perc_dist has a value which is an int
+	min_base_overlap has a value which is an int
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
 	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
@@ -858,15 +895,20 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 
 =begin text
 
-$params is a kb_ea_utils_dev.exec_Fastq_Join_Input
+$params is a kb_ea_utils_dev.run_Fastq_Join_Input
 $returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
-exec_Fastq_Join_Input is a reference to a hash where the following keys are defined:
+run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+	verbose has a value which is a kb_ea_utils_dev.bool
+	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	max_perc_dist has a value which is an int
+	min_base_overlap has a value which is an int
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
 	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
@@ -1490,6 +1532,111 @@ base_percentages has a value which is a reference to a hash where the key is a s
 
 
 
+=head2 Barcode_Options
+
+=over 4
+
+
+
+=item Description
+
+Parameter groups
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+use_header_barcode has a value which is a kb_ea_utils_dev.bool
+trim_barcode has a value which is a kb_ea_utils_dev.bool
+suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+use_header_barcode has a value which is a kb_ea_utils_dev.bool
+trim_barcode has a value which is a kb_ea_utils_dev.bool
+suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+
+
+=end text
+
+=back
+
+
+
+=head2 ForceEdge_Options
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+force_beg has a value which is a kb_ea_utils_dev.bool
+force_end has a value which is a kb_ea_utils_dev.bool
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+force_beg has a value which is a kb_ea_utils_dev.bool
+force_end has a value which is a kb_ea_utils_dev.bool
+
+
+=end text
+
+=back
+
+
+
+=head2 DistAndQual_Params
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+mismatch_max has a value which is an int
+edit_dist_min has a value which is an int
+barcode_base_qual_score_min has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+mismatch_max has a value which is an int
+edit_dist_min has a value which is an int
+barcode_base_qual_score_min has a value which is an int
+
+
+=end text
+
+=back
+
+
+
 =head2 run_Fastq_Multx_Input
 
 =over 4
@@ -1516,14 +1663,9 @@ index_mode has a value which is a string
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-use_header_barcode has a value which is a kb_ea_utils_dev.bool
-force_beg has a value which is a kb_ea_utils_dev.bool
-force_end has a value which is a kb_ea_utils_dev.bool
-trim_barcode has a value which is a kb_ea_utils_dev.bool
-suggest_barcodes has a value which is a kb_ea_utils_dev.bool
-mismatch_max has a value which is an int
-edit_dist_min has a value which is an int
-barcode_base_qual_score_min has a value which is an int
+barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
+force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
+dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
 
 </pre>
 
@@ -1539,14 +1681,9 @@ index_mode has a value which is a string
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-use_header_barcode has a value which is a kb_ea_utils_dev.bool
-force_beg has a value which is a kb_ea_utils_dev.bool
-force_end has a value which is a kb_ea_utils_dev.bool
-trim_barcode has a value which is a kb_ea_utils_dev.bool
-suggest_barcodes has a value which is a kb_ea_utils_dev.bool
-mismatch_max has a value which is an int
-edit_dist_min has a value which is an int
-barcode_base_qual_score_min has a value which is an int
+barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
+force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
+dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
 
 
 =end text
@@ -1609,6 +1746,10 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+verbose has a value which is a kb_ea_utils_dev.bool
+reverse_complement has a value which is a kb_ea_utils_dev.bool
+max_perc_dist has a value which is an int
+min_base_overlap has a value which is an int
 
 </pre>
 
@@ -1620,6 +1761,10 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_ea_utils_dev.workspace_name
 input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
+verbose has a value which is a kb_ea_utils_dev.bool
+reverse_complement has a value which is a kb_ea_utils_dev.bool
+max_perc_dist has a value which is an int
+min_base_overlap has a value which is an int
 
 
 =end text
@@ -1652,47 +1797,6 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 report_name has a value which is a string
 report_ref has a value which is a string
-
-
-=end text
-
-=back
-
-
-
-=head2 exec_Fastq_Join_Input
-
-=over 4
-
-
-
-=item Description
-
-exec_Fastq_Join()
-**
-** merge overlapping mate pairs into SingleEnd Lib.  This routine creates readsSets
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
 
 
 =end text

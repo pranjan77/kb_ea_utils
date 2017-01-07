@@ -30,24 +30,49 @@ suggestions :
 #
 # Configure the display and description of the parameters
 #
-#
-# Configure the display and description of parameters
-#
 parameters :
 	input_reads_ref :
 		ui-name : |
-			Read library
+			Input reads
 		short-hint : |
-			The read library to examine
+			The reads library or reads library set which you want to join
 		long-hint  : |
-			The read library for which you want to de-barcode
+			The reads library or reads library set which you want to join
 	output_reads_name :
 		ui-name : |
-			Output ReadsSet
+			Output reads
 		short-hint : |
-			Base name for output read library or read library set object
+			Base name for output reads library or reads library set object
 		long-hint : |
-			Base name for output read library or read library set object
+			Base name for output reads library or reads library set object
+	verbose :
+		ui-name : |
+			Verbose
+		short-hint : |
+			Get most chatty output
+		long-hint : |
+			Get most chatty output
+	reverse_complement :
+		ui-name : |
+			Reverse complement
+		short-hint : |
+			Reverse complement the reverse reads during overlap check (default: Yes)
+		long-hint : |
+			Reverse complement the reverse reads during overlap check (default: Yes)
+	max_perc_dist :
+		ui-name : |
+			Max overlap mismatch (percentage)
+		short-hint : |
+			Maximum percentage (0-50) that overlap can mismatch (default: 8)
+		long-hint : |
+			Maximum percentage (0-50) that overlap can mismatch (default: 8)
+	min_base_overlap :
+		ui-name : |
+			Min base overlap
+		short-hint : |
+			Minimum number of bases to consider an overlap (default: 6)
+		long-hint : |
+			Minimum number of bases to consider an overlap (default: 6)
 
 
 #

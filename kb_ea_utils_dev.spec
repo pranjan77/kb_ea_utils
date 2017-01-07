@@ -184,8 +184,14 @@ funcdef run_Fastq_Multx(run_Fastq_Multx_Input params)
 */
 typedef structure {
     workspace_name workspace_name;
-    data_obj_ref  input_reads_ref;  /* PairedEndLibrary or PairedEnd ReadsSet */
+    data_obj_ref  input_reads_ref;       /* PairedEndLibrary or PairedEnd ReadsSet */
+    /*data_obj_ref  input_mate_reads_ref;*/  /* SingleEndLibrary or SingleEnd ReadsSet */
     data_obj_name output_reads_name;
+
+    bool verbose;
+    bool reverse_complement;
+    int  max_perc_dist;
+    int  min_base_overlap;
 } run_Fastq_Join_Input;
 
 typedef structure {
@@ -193,30 +199,19 @@ typedef structure {
     string report_ref;
 } run_Fastq_Join_Output;
 
-funcdef run_Fastq_Join(run_Fastq_Join_Input params) 
-    returns (run_Fastq_Join_Output returnVal) 
-    authentication required;
-
-
-/* exec_Fastq_Join()
-**
-** merge overlapping mate pairs into SingleEnd Lib.  This routine creates readsSets
-*/
-typedef structure {
-    workspace_name workspace_name;
-    data_obj_ref  input_reads_ref;  /* PairedEndLibrary or PairedEnd ReadsSet */
-    data_obj_name output_reads_name;
-} exec_Fastq_Join_Input;
-
 typedef structure {
     data_obj_ref output_reads_ref;
 } exec_Fastq_Join_Output;
 
-funcdef exec_Fastq_Join(exec_Fastq_Join_Input params) 
+funcdef run_Fastq_Join(run_Fastq_Join_Input params) 
+    returns (run_Fastq_Join_Output returnVal) 
+    authentication required;
+
+funcdef exec_Fastq_Join(run_Fastq_Join_Input params) 
     returns (exec_Fastq_Join_Output returnVal) 
     authentication required;
 
-funcdef exec_Fastq_Join_OneLibrary(exec_Fastq_Join_Input params) 
+funcdef exec_Fastq_Join_OneLibrary(run_Fastq_Join_Input params) 
     returns (exec_Fastq_Join_Output returnVal) 
     authentication required;
 
