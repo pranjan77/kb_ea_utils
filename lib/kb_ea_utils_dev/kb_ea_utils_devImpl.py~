@@ -991,6 +991,152 @@ class kb_ea_utils_dev:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN run_Fastq_Join
+        console = []
+        self.log(console, 'Running runTrimmomatic with parameters: ')
+        self.log(console, "\n"+pformat(input_params))
+
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+
+        # param checks
+        required_params = ['input_reads_ref', 
+                           'output_ws', 
+                           'output_reads_name', 
+                           'read_type'
+                          ]
+        for required_param in required_params:
+            if required_param not in input_params or input_params[required_param] == None:
+                raise ValueError ("Must define required param: '"+required_param+"'")
+
+        # load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        provenance[0]['input_ws_objects']=[str(input_params['input_reads_ref'])]
+
+        # set up and run execTrimmomatic()
+        #
+        if ('output_ws' not in input_params or input_params['output_ws'] is None):
+            input_params['output_ws'] = input_params['input_ws']
+
+        execTrimmomaticParams = { 'input_reads_ref': str(input_params['input_reads_ref']),
+                                  'output_ws': input_params['output_ws'],
+                                  'output_reads_name': input_params['output_reads_name'],
+                                  'read_type': input_params['read_type'],
+                                 }
+
+
+        if 'quality_encoding' in input_params:
+            execTrimmomaticParams['quality_encoding'] = input_params['quality_encoding']
+
+        # adapter_clip grouped params
+        if 'adapter_clip' in input_params and input_params['adapter_clip'] != None:
+            if 'adapterFa' in input_params['adapter_clip']:
+                execTrimmomaticParams['adapterFa'] = input_params['adapter_clip']['adapterFa']
+            else:
+                execTrimmomaticParams['adapterFa'] = None
+
+            if 'seed_mismatches' in input_params['adapter_clip']:
+                execTrimmomaticParams['seed_mismatches'] = input_params['adapter_clip']['seed_mismatches']
+            else:
+                execTrimmomaticParams['seed_mismatches'] = None
+
+            if 'palindrome_clip_threshold' in input_params['adapter_clip']:
+                execTrimmomaticParams['palindrome_clip_threshold'] = input_params['adapter_clip']['palindrome_clip_threshold']
+            else:
+                execTrimmomaticParams['palindrome_clip_threshold'] = None
+
+            if 'simple_clip_threshold' in input_params['adapter_clip']:
+                execTrimmomaticParams['simple_clip_threshold'] = input_params['adapter_clip']['simple_clip_threshold']
+            else:
+                execTrimmomaticParams['simple_clip_threshold'] = None
+
+        # sliding_window grouped params
+        if 'sliding_window' in input_params and input_params['sliding_window'] != None:
+            if 'sliding_window_size' in input_params['sliding_window']:
+                execTrimmomaticParams['sliding_window_size'] = input_params['sliding_window']['sliding_window_size']
+            else:
+                execTrimmomaticParams['sliding_window_size'] = None
+
+            if 'sliding_window_min_quality' in input_params['sliding_window']:
+                execTrimmomaticParams['sliding_window_min_quality'] = input_params['sliding_window']['sliding_window_min_quality']
+            else:
+                execTrimmomaticParams['sliding_window_min_quality'] = None
+        
+        # remaining params
+        if 'leading_min_quality' in input_params:
+            execTrimmomaticParams['leading_min_quality'] = input_params['leading_min_quality']
+        if 'trailing_min_quality' in input_params:
+            execTrimmomaticParams['trailing_min_quality'] = input_params['trailing_min_quality']
+        if 'crop_length' in input_params:
+            execTrimmomaticParams['crop_length'] = input_params['crop_length']
+        if 'head_crop_length' in input_params:
+            execTrimmomaticParams['head_crop_length'] = input_params['head_crop_length']
+        if 'min_length' in input_params:
+            execTrimmomaticParams['min_length'] = input_params['min_length']
+
+        # RUN
+        trimmomatic_retVal = self.execTrimmomatic (ctx, execTrimmomaticParams)[0]
+
+
+        # build report
+        #
+        reportObj = {'objects_created':[], 
+                     'text_message':''}
+
+        # text report
+        try:
+            reportObj['text_message'] = trimmomatic_retVal['report']
+        except:
+            raise ValueError ("no report generated by execTrimmomatic()")
+
+
+        # trimmed object
+        if trimmomatic_retVal['output_filtered_ref'] != None:
+            try:
+                # DEBUG
+                #self.log(console,"OBJECT CREATED: '"+str(trimmomatic_retVal['output_filtered_ref'])+"'")
+
+                reportObj['objects_created'].append({'ref':trimmomatic_retVal['output_filtered_ref'],
+                                                     'description':'Trimmed Reads'})
+            except:
+                raise ValueError ("failure saving trimmed output")
+        else:
+            raise ValueError ("no trimmed output generated by execTrimmomatic()")
+
+
+        # unpaired fwd
+        if trimmomatic_retVal['output_unpaired_fwd_ref'] != None:
+            try:
+                reportObj['objects_created'].append({'ref':trimmomatic_retVal['output_unpaired_fwd_ref'],
+                                                     'description':'Trimmed Unpaired Forward Reads'})
+            except:
+                raise ValueError ("failure saving unpaired fwd output")
+        else:
+            pass
+
+        # unpaired rev
+        if trimmomatic_retVal['output_unpaired_rev_ref'] != None:
+            try:
+                reportObj['objects_created'].append({'ref':trimmomatic_retVal['output_unpaired_rev_ref'],
+                                                     'description':'Trimmed Unpaired Reverse Reads'})
+            except:
+                raise ValueError ("failure saving unpaired fwd output")
+        else:
+            pass
+
+        # save report object
+        #
+        report = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = report.create({'report':reportObj, 'workspace_name':input_params['input_ws']})
+
+        returnVal = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
         #END run_Fastq_Join
 
         # At some point might do deeper type checking...
@@ -1017,6 +1163,263 @@ class kb_ea_utils_dev:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN exec_Fastq_Join
+        console = []
+        self.log(console, 'Running execTrimmomatic with parameters: ')
+        self.log(console, "\n"+pformat(input_params))
+        report = ''
+        trimmomatic_retVal = dict()
+        trimmomatic_retVal['output_filtered_ref'] = None
+        trimmomatic_retVal['output_unpaired_fwd_ref'] = None
+        trimmomatic_retVal['output_unpaired_rev_ref'] = None
+
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        # param checks
+        required_params = ['input_reads_ref', 
+                           'output_ws', 
+                           'output_reads_name', 
+                           'read_type'
+                          ]
+        for required_param in required_params:
+            if required_param not in input_params or input_params[required_param] == None:
+                raise ValueError ("Must define required param: '"+required_param+"'")
+
+        # load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects']=[str(input_params['input_reads_ref'])]
+
+        # Determine whether read library or read set is input object
+        #
+        try:
+            # object_info tuple
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
+
+            input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_params['input_reads_ref']}]})[0]
+            input_reads_obj_type = input_reads_obj_info[TYPE_I]
+            #input_reads_obj_version = input_reads_obj_info[VERSION_I]  # this is object version, not type version
+
+        except Exception as e:
+            raise ValueError('Unable to get read library object from workspace: (' + str(input_params['input_reads_ref']) +')' + str(e))
+
+        #self.log (console, "B4 TYPE: '"+str(input_reads_obj_type)+"' VERSION: '"+str(input_reads_obj_version)+"'")
+        input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
+        #self.log (console, "AF TYPE: '"+str(input_reads_obj_type)+"' VERSION: '"+str(input_reads_obj_version)+"'")
+
+        acceptable_types = ["KBaseSets.ReadsSet", "KBaseFile.PairedEndLibrary", "KBaseAssembly.PairedEndLibrary", "KBaseAssembly.SingleEndLibrary", "KBaseFile.SingleEndLibrary"]
+        if input_reads_obj_type not in acceptable_types:
+            raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
+
+
+        # get set
+        #
+        readsSet_ref_list = []
+        readsSet_names_list = []
+        if input_reads_obj_type != "KBaseSets.ReadsSet":
+            readsSet_ref_list = [input_params['input_reads_ref']]
+        else:
+            try:
+                #self.log (console, "INPUT_READS_REF: '"+input_params['input_reads_ref']+"'")  # DEBUG
+                #setAPI_Client = SetAPI (url=self.callbackURL, token=ctx['token'])  # for SDK local.  doesn't work for SetAPI
+                setAPI_Client = SetAPI (url=self.serviceWizardURL, token=ctx['token'])  # for dynamic service
+                input_readsSet_obj = setAPI_Client.get_reads_set_v1 ({'ref':input_params['input_reads_ref'],'include_item_info':1})
+
+            except Exception as e:
+                raise ValueError('SetAPI FAILURE: Unable to get read library set object from workspace: (' + str(input_params['input_reads_ref'])+")\n" + str(e))
+            for readsLibrary_obj in input_readsSet_obj['data']['items']:
+                readsSet_ref_list.append(readsLibrary_obj['ref'])
+                NAME_I = 1
+                readsSet_names_list.append(readsLibrary_obj['info'][NAME_I])
+
+
+        # Iterate through readsLibrary memebers of set
+        #
+        report = ''
+        trimmed_readsSet_ref       = None
+        unpaired_fwd_readsSet_ref  = None
+        unpaired_rev_readsSet_ref  = None
+        trimmed_readsSet_refs      = []
+        unpaired_fwd_readsSet_refs = []
+        unpaired_rev_readsSet_refs = []
+
+        for reads_item_i,input_reads_library_ref in enumerate(readsSet_ref_list):
+            execTrimmomaticParams = { 'input_reads_ref': input_reads_library_ref,
+                                      'output_ws': input_params['output_ws'],
+                                      'read_type': input_params['read_type'],
+                                      'adapterFa': input_params['adapterFa'],
+                                      'seed_mismatches': input_params['seed_mismatches'],
+                                      'palindrome_clip_threshold': input_params['palindrome_clip_threshold'],
+                                      'simple_clip_threshold': input_params['simple_clip_threshold'],
+                                      'quality_encoding': input_params['quality_encoding'],
+                                      'sliding_window_size': input_params['sliding_window_size'],
+                                      'sliding_window_min_quality': input_params['sliding_window_min_quality'],
+                                      'leading_min_quality': input_params['leading_min_quality'],
+                                      'trailing_min_quality': input_params['trailing_min_quality'],
+                                      'crop_length': input_params['crop_length'],
+                                      'head_crop_length': input_params['head_crop_length'],
+                                      'min_length': input_params['min_length']
+                                    }
+            
+            if input_reads_obj_type != "KBaseSets.ReadsSet":
+                execTrimmomaticParams['output_reads_name'] = input_params['output_reads_name']
+            else:
+                execTrimmomaticParams['output_reads_name'] = readsSet_names_list[reads_item_i]+'_trimm'
+
+            report += "RUNNING TRIMMOMATIC ON LIBRARY: "+str(input_reads_library_ref)+"\n"
+            report += "----------------------------------------------------------------------------\n\n"
+
+            trimmomaticSingleLibrary_retVal = self.execTrimmomaticSingleLibrary (ctx, execTrimmomaticParams)[0]
+
+            report += trimmomaticSingleLibrary_retVal['report']+"\n\n"
+            trimmed_readsSet_refs.append (trimmomaticSingleLibrary_retVal['output_filtered_ref'])
+            unpaired_fwd_readsSet_refs.append (trimmomaticSingleLibrary_retVal['output_unpaired_fwd_ref'])
+            unpaired_rev_readsSet_refs.append (trimmomaticSingleLibrary_retVal['output_unpaired_rev_ref'])
+
+
+        # Just one Library
+        if input_reads_obj_type != "KBaseSets.ReadsSet":
+
+            # create return output object
+            returnVal = { 'report': report,
+                          'output_filtered_ref': trimmed_readsSet_refs[0],
+                          'output_unpaired_fwd_ref': unpaired_fwd_readsSet_refs[0],
+                          'output_unpaired_rev_ref': unpaired_rev_readsSet_refs[0],
+                        }
+        # ReadsSet
+        else:
+
+            # save trimmed readsSet
+            some_trimmed_output_created = False
+            items = []
+            for i,lib_ref in enumerate(trimmed_readsSet_refs):   # FIX: assumes order maintained
+                if lib_ref == None:
+                    #items.append(None)  # can't have 'None' items in ReadsSet
+                    continue
+                else:
+                    some_trimmed_output_created = True
+                    try:
+                        label = input_readsSet_obj['data']['items'][i]['label']
+                    except:
+                        NAME_I = 1
+                        label = wsClient.get_object_info_new ({'objects':[{'ref':lib_ref}]})[0][NAME_I]
+                    label = label + "_Trimm_paired"
+
+                    items.append({'ref': lib_ref,
+                                  'label': label
+                                  #'data_attachment': ,
+                                  #'info':
+                                      })
+            if some_trimmed_output_created:
+                if input_params['read_type'] == 'SE':
+                    reads_desc_ext = " Trimmomatic trimmed SingleEndLibrary"
+                    reads_name_ext = "_trimm"
+                else:
+                    reads_desc_ext = " Trimmomatic trimmed paired reads"
+                    reads_name_ext = "_trimm_paired"
+                output_readsSet_obj = { 'description': input_readsSet_obj['data']['description']+reads_desc_ext,
+                                        'items': items
+                                        }
+                output_readsSet_name = str(input_params['output_reads_name'])+reads_name_ext
+                trimmed_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': input_params['output_ws'],
+                                                                         'output_object_name': output_readsSet_name,
+                                                                         'data': output_readsSet_obj
+                                                                         })['set_ref']
+            else:
+                raise ValueError ("No trimmed output created")
+
+
+            # save unpaired forward readsSet
+            some_unpaired_fwd_output_created = False
+            if len(unpaired_fwd_readsSet_refs) > 0:
+                items = []
+                for i,lib_ref in enumerate(unpaired_fwd_readsSet_refs):  # FIX: assumes order maintained
+                    if lib_ref == None:
+                        #items.append(None)  # can't have 'None' items in ReadsSet
+                        continue
+                    else:
+                        some_unpaired_fwd_output_created = True
+                        try:
+                            if len(unpaired_fwd_readsSet_refs) == len(input_readsSet_obj['data']['items']):
+                                label = input_readsSet_obj['data']['items'][i]['label']
+                            else:
+                                NAME_I = 1
+                                label = wsClient.get_object_info_new ({'objects':[{'ref':lib_ref}]})[0][NAME_I]
+                        except:
+                            NAME_I = 1
+                            label = wsClient.get_object_info_new ({'objects':[{'ref':lib_ref}]})[0][NAME_I]
+                        label = label + "_Trimm_unpaired_fwd"
+
+                        items.append({'ref': lib_ref,
+                                      'label': label
+                                      #'data_attachment': ,
+                                      #'info':
+                                          })
+                if some_unpaired_fwd_output_created:
+                    output_readsSet_obj = { 'description': input_readsSet_obj['data']['description']+" Trimmomatic unpaired fwd reads",
+                                            'items': items
+                                            }
+                    output_readsSet_name = str(input_params['output_reads_name'])+'_trimm_unpaired_fwd'
+                    unpaired_fwd_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': input_params['output_ws'],
+                                                                                  'output_object_name': output_readsSet_name,
+                                                                                  'data': output_readsSet_obj
+                                                                                  })['set_ref']
+                else:
+                    self.log (console, "no unpaired_fwd readsLibraries created")
+                    unpaired_fwd_readsSet_ref = None
+
+            # save unpaired reverse readsSet
+            some_unpaired_rev_output_created = False
+            if len(unpaired_rev_readsSet_refs) > 0:
+                items = []
+                for i,lib_ref in enumerate(unpaired_fwd_readsSet_refs):  # FIX: assumes order maintained
+                    if lib_ref == None:
+                        #items.append(None)  # can't have 'None' items in ReadsSet
+                        continue
+                    else:
+                        some_unpaired_rev_output_created = True
+                        try:
+                            if len(unpaired_rev_readsSet_refs) == len(input_readsSet_obj['data']['items']):
+                                label = input_readsSet_obj['data']['items'][i]['label']
+                            else:
+                                NAME_I = 1
+                                label = wsClient.get_object_info_new ({'objects':[{'ref':lib_ref}]})[0][NAME_I]
+
+                        except:
+                            NAME_I = 1
+                            label = wsClient.get_object_info_new ({'objects':[{'ref':lib_ref}]})[0][NAME_I]
+                        label = label + "_Trimm_unpaired_rev"
+
+                        items.append({'ref': lib_ref,
+                                      'label': label
+                                      #'data_attachment': ,
+                                      #'info':
+                                          })
+                if some_unpaired_rev_output_created:
+                    output_readsSet_obj = { 'description': input_readsSet_obj['data']['description']+" Trimmomatic unpaired rev reads",
+                                            'items': items
+                                            }
+                    output_readsSet_name = str(input_params['output_reads_name'])+'_trimm_unpaired_rev'
+                    unpaired_rev_readsSet_ref = setAPI_Client.save_reads_set_v1 ({'workspace_name': input_params['output_ws'],
+                                                                                  'output_object_name': output_readsSet_name,
+                                                                                  'data': output_readsSet_obj
+                                                                                  })['set_ref']
+                else:
+                    self.log (console, "no unpaired_rev readsLibraries created")
+                    unpaired_rev_readsSet_ref = None
+
+
+            # create return output object
+            returnVal = { 'report': report,
+                          'output_filtered_ref': trimmed_readsSet_ref,
+                          'output_unpaired_fwd_ref': unpaired_fwd_readsSet_ref,
+                          'output_unpaired_rev_ref': unpaired_rev_readsSet_ref
+                        }
         #END exec_Fastq_Join
 
         # At some point might do deeper type checking...
@@ -1043,6 +1446,251 @@ class kb_ea_utils_dev:
         # ctx is the context object
         # return variables are: returnVal
         #BEGIN exec_Fastq_Join_OneLibrary
+        console = []
+        self.log(console, 'Running Trimmomatic with parameters: ')
+        self.log(console, "\n"+pformat(input_params))
+        report = ''
+        retVal = dict()
+        retVal['output_filtered_ref'] = None
+        retVal['output_unpaired_fwd_ref'] = None
+        retVal['output_unpaired_rev_ref'] = None
+
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        # param checks
+        required_params = ['input_reads_ref', 
+                           'output_ws', 
+                           'output_reads_name', 
+                           'read_type'
+                          ]
+        for required_param in required_params:
+            if required_param not in input_params or input_params[required_param] == None:
+                raise ValueError ("Must define required param: '"+required_param+"'")
+
+        # and param defaults
+        defaults = { 'quality_encoding':           'phred33',
+                     'seed_mismatches':            '0', # '2',
+                     'palindrom_clip_threshold':   '0', # '3',
+                     'simple_clip_threshold':      '0', # '10',
+                     'crop_length':                '0',
+                     'head_crop_length':           '0',
+                     'leading_min_quality':        '0', # '3',
+                     'trailing_min_quality':       '0', # '3',
+                     'sliding_window_size':        '0', # '4',
+                     'sliding_window_min_quality': '0', # '15',
+                     'min_length':                 '0', # '36'
+                   }
+        for arg in defaults.keys():
+            if arg not in input_params or input_params[arg] == None or input_params[arg] == '':
+                input_params[arg] = defaults[arg]
+            
+        # conditional arg behavior
+        arg = 'adapterFa'
+        if arg not in input_params or input_params[arg] == None or input_params[arg] == '':
+            input_params['adapterFa'] = None
+            input_params['seed_mismatches'] = None
+            input_params['palindrome_clip_threshold'] = None
+            input_params['simple_clip_threshold'] = None
+            
+
+        #load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects']=[str(input_params['input_reads_ref'])]
+
+        # Determine whether read library is of correct type
+        #
+        try:
+            # object_info tuple
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
+
+            input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_params['input_reads_ref']}]})[0]
+            input_reads_obj_type = input_reads_obj_info[TYPE_I]
+            #input_reads_obj_version = input_reads_obj_info[VERSION_I]  # this is object version, not type version
+
+        except Exception as e:
+            raise ValueError('Unable to get read library object from workspace: (' + str(input_params['input_reads_ref']) +')' + str(e))
+
+        #self.log (console, "B4 TYPE: '"+str(input_reads_obj_type)+"' VERSION: '"+str(input_reads_obj_version)+"'")
+        input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
+        #self.log (console, "AF TYPE: '"+str(input_reads_obj_type)+"' VERSION: '"+str(input_reads_obj_version)+"'")
+
+        acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseAssembly.PairedEndLibrary", "KBaseAssembly.SingleEndLibrary", "KBaseFile.SingleEndLibrary"]
+        if input_reads_obj_type not in acceptable_types:
+            raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
+
+
+        # Confirm user is paying attention (matters because Trimmomatic params are very different for PairedEndLibary and SingleEndLibrary
+        #
+        if input_params['read_type'] == 'PE' \
+                and (input_reads_obj_type == 'KBaseAssembly.SingleEndLibrary' \
+                     or input_reads_obj_type == 'KBaseFile.SingleEndLibrary'):
+            raise ValueError ("read_type set to 'Paired End' but object is SingleEndLibrary")
+        if input_params['read_type'] == 'SE' \
+                and (input_reads_obj_type == 'KBaseAssembly.PairedEndLibrary' \
+                     or input_reads_obj_type == 'KBaseFile.PairedEndLibrary'):
+            raise ValueError ("read_type set to 'Single End' but object is PairedEndLibrary")
+            
+
+        # Let's rock!
+        #
+        trimmomatic_params  = self.parse_trimmomatic_steps(input_params)
+        trimmomatic_options = str(input_params['read_type']) + ' -' + str(input_params['quality_encoding'])
+
+        self.log(console, pformat(trimmomatic_params))
+        self.log(console, pformat(trimmomatic_options))
+
+
+        # Instatiate ReadsUtils
+        #
+        try:
+            readsUtils_Client = ReadsUtils (url=self.callbackURL, token=ctx['token'])  # SDK local
+            
+            readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_params['input_reads_ref']],
+                                                             'interleaved': 'false'
+                                                             })
+        except Exception as e:
+            raise ValueError('Unable to get read library object from workspace: (' + str(input_params['input_reads_ref']) +")\n" + str(e))
+
+
+        # Download reads Libs to FASTQ files
+        input_fwd_file_path = readsLibrary['files'][input_params['input_reads_ref']]['files']['fwd']
+        input_rev_file_path = readsLibrary['files'][input_params['input_reads_ref']]['files']['rev']
+        sequencing_tech     = readsLibrary['files'][input_params['input_reads_ref']]['sequencing_tech']
+
+
+            # DEBUG
+#            self.log (console, "FWD_INPUT\n")
+#            fwd_reads_handle = open (input_fwd_file_path, 'r')
+#            for line_i in range(20):
+#                self.log (console, fwd_reads_handle.readline())
+#            fwd_reads_handle.close ()
+#            self.log (console, "REV_INPUT\n")
+#            rev_reads_handle = open (input_rev_file_path, 'r')
+#            for line_i in range(20):
+#                self.log (console, rev_reads_handle.readline())
+#            rev_reads_handle.close ()
+
+
+        # Run Trimmomatic
+        #
+        self.log(console, 'Starting Trimmomatic')
+        input_fwd_file_path = re.sub ("\.fastq$", "", input_fwd_file_path)
+        input_fwd_file_path = re.sub ("\.FASTQ$", "", input_fwd_file_path)
+        input_rev_file_path = re.sub ("\.fastq$", "", input_rev_file_path)
+        input_rev_file_path = re.sub ("\.FASTQ$", "", input_rev_file_path)
+        output_fwd_paired_file_path   = input_fwd_file_path+"_trimm_fwd_paired.fastq"
+        output_fwd_unpaired_file_path = input_fwd_file_path+"_trimm_fwd_unpaired.fastq"
+        output_rev_paired_file_path   = input_rev_file_path+"_trimm_rev_paired.fastq"
+        output_rev_unpaired_file_path = input_rev_file_path+"_trimm_rev_unpaired.fastq"
+        input_fwd_file_path           = input_fwd_file_path+".fastq"
+        input_rev_file_path           = input_rev_file_path+".fastq"
+            
+        cmdstring = " ".join( (self.TRIMMOMATIC, trimmomatic_options, 
+                               input_fwd_file_path, 
+                               input_rev_file_path,
+                               output_fwd_paired_file_path,
+                               output_fwd_unpaired_file_path,
+                               output_rev_paired_file_path,
+                               output_rev_unpaired_file_path,
+                               trimmomatic_params) )
+
+        cmdProcess = subprocess.Popen(cmdstring, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+
+        outputlines = []
+        while True:
+            line = cmdProcess.stdout.readline()
+            outputlines.append(line)
+            if not line: break
+            self.log(console, line.replace('\n', ''))
+
+        cmdProcess.stdout.close()
+        cmdProcess.wait()
+        self.log(console, 'return code: ' + str(cmdProcess.returncode) + '\n')
+        if cmdProcess.returncode != 0:
+            raise ValueError('Error running kb_trimmomatic, return code: ' +
+                             str(cmdProcess.returncode) + '\n')
+
+
+        report += "\n".join(outputlines)
+        #report += "cmdstring: " + cmdstring + " stdout: " + stdout + " stderr " + stderr
+        
+        #get read counts
+        match = re.search(r'Input Read Pairs: (\d+).*?Both Surviving: (\d+).*?Forward Only Surviving: (\d+).*?Reverse Only Surviving: (\d+).*?Dropped: (\d+)', report)
+        input_read_count = match.group(1)
+        read_count_paired = match.group(2)
+        read_count_forward_only = match.group(3)
+        read_count_reverse_only = match.group(4)
+        read_count_dropped = match.group(5)
+        
+        report = "\n".join( ('Input Read Pairs: '+ input_read_count, 
+                             'Both Surviving: '+ read_count_paired, 
+                             'Forward Only Surviving: '+ read_count_forward_only,
+                             'Reverse Only Surviving: '+ read_count_reverse_only,
+                             'Dropped: '+ read_count_dropped) )
+
+        # upload paired reads
+        if not os.path.isfile (output_fwd_paired_file_path) \
+                or os.path.getsize (output_fwd_paired_file_path) == 0 \
+                or not os.path.isfile (output_rev_paired_file_path) \
+                or os.path.getsize (output_rev_paired_file_path) == 0:
+
+            retVal['output_filtered_ref'] = None
+        else:
+            output_obj_name = input_params['output_reads_name']+'_paired'
+            self.log(console, 'Uploading trimmed paired reads: '+output_obj_name)
+            retVal['output_filtered_ref'] = readsUtils_Client.upload_reads ({ 'wsname': str(input_params['output_ws']),
+                                                                              'name': output_obj_name,
+                                                                              'sequencing_tech': sequencing_tech,
+                                                                              'fwd_file': output_fwd_paired_file_path,
+                                                                              'rev_file': output_rev_paired_file_path
+                                                                              })['obj_ref']
+
+
+        # upload reads forward unpaired
+        if not os.path.isfile (output_fwd_unpaired_file_path) \
+                or os.path.getsize (output_fwd_unpaired_file_path) == 0:
+
+            retVal['output_unpaired_fwd_ref'] = None
+        else:
+            output_obj_name = input_params['output_reads_name']+'_unpaired_fwd'
+            self.log(console, '\nUploading trimmed unpaired forward reads: '+output_obj_name)
+            retVal['output_unpaired_fwd_ref'] = readsUtils_Client.upload_reads ({ 'wsname': str(input_params['output_ws']),
+                                                                                  'name': output_obj_name,
+                                                                                  'sequencing_tech': sequencing_tech,
+                                                                                  'fwd_file': output_fwd_unpaired_file_path
+                                                                                  })['obj_ref']
+
+
+
+        # upload reads reverse unpaired
+        if not os.path.isfile (output_rev_unpaired_file_path) \
+                or os.path.getsize (output_rev_unpaired_file_path) == 0:
+
+            retVal['output_unpaired_rev_ref'] = None
+        else:
+            output_obj_name = input_params['output_reads_name']+'_unpaired_rev'
+            self.log(console, '\nUploading trimmed unpaired reverse reads: '+output_obj_name)
+            retVal['output_unpaired_rev_ref'] = readsUtils_Client.upload_reads ({ 'wsname': str(input_params['output_ws']),
+                                                                                  'name': output_obj_name,
+                                                                                  'sequencing_tech': sequencing_tech,
+                                                                                  'fwd_file': output_rev_unpaired_file_path
+                                                                                  })['obj_ref']
+
+
+        # return created objects
+        #
+        returnVal = { 'report': report,
+                      'output_filtered_ref': retVal['output_filtered_ref'],
+                      'output_unpaired_fwd_ref': retVal['output_unpaired_fwd_ref'],
+                      'output_unpaired_rev_ref': retVal['output_unpaired_rev_ref']
+                    }
         #END exec_Fastq_Join_OneLibrary
 
         # At some point might do deeper type checking...

@@ -164,7 +164,8 @@ class kb_ea_utils_dev(object):
            "bool", parameter "max_perc_dist" of Long, parameter
            "min_base_overlap" of Long
         :returns: instance of type "exec_Fastq_Join_Output" -> structure:
-           parameter "output_reads_ref" of type "data_obj_ref"
+           parameter "output_joined_reads_ref" of type "data_obj_ref",
+           parameter "output_unjoined_reads_ref" of type "data_obj_ref"
         """
         return self._client.call_method(
             'kb_ea_utils_dev.exec_Fastq_Join',
@@ -182,7 +183,8 @@ class kb_ea_utils_dev(object):
            "bool", parameter "max_perc_dist" of Long, parameter
            "min_base_overlap" of Long
         :returns: instance of type "exec_Fastq_Join_Output" -> structure:
-           parameter "output_reads_ref" of type "data_obj_ref"
+           parameter "output_joined_reads_ref" of type "data_obj_ref",
+           parameter "output_unjoined_reads_ref" of type "data_obj_ref"
         """
         return self._client.call_method(
             'kb_ea_utils_dev.exec_Fastq_Join_OneLibrary',

@@ -200,7 +200,8 @@ typedef structure {
 } run_Fastq_Join_Output;
 
 typedef structure {
-    data_obj_ref output_reads_ref;
+    data_obj_ref output_joined_reads_ref;
+    data_obj_ref output_unjoined_reads_ref;
 } exec_Fastq_Join_Output;
 
 funcdef run_Fastq_Join(run_Fastq_Join_Input params) 

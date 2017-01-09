@@ -777,7 +777,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 </pre>
 
@@ -800,7 +801,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 
 =end text
@@ -887,7 +889,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 </pre>
 
@@ -910,7 +913,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 
 =end text
@@ -1817,7 +1821,8 @@ report_ref has a value which is a string
 
 <pre>
 a reference to a hash where the following keys are defined:
-output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 </pre>
 
@@ -1826,7 +1831,8 @@ output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 =begin text
 
 a reference to a hash where the following keys are defined:
-output_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 
 
 =end text
