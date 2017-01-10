@@ -832,7 +832,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pprint(result)
 
         # check the output
-        output_name = output_name
+        output_name = output_name+"_joined"
         info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
         self.assertEqual(len(info_list),1)
         readsLib_info = info_list[0]
@@ -869,7 +869,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pprint(result)
 
         # check the output
-        output_name = output_name
+        output_name = output_name+"_joined"
         info_list = self.wsClient.get_object_info([{'ref':pe_lib_set_info[7] + '/' + output_name}], 1)
         self.assertEqual(len(info_list),1)
         readsSet_info = info_list[0]
