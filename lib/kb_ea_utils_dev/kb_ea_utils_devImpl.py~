@@ -1214,8 +1214,8 @@ class kb_ea_utils_dev:
                 if arg in params:
                     exec_Fastq_Join_params[arg] = params[arg]
 
-            msg = "RUNNING Fastq_Join ON LIBRARY: "+str(input_reads_library_ref)+" "+str(readsSet_names_list[reads_item_i])+"\n"
-            msg += "----------------------------------------------------------------------------\n\n"
+            msg = "\n\nRUNNING Fastq_Join ON LIBRARY: "+str(input_reads_library_ref)+" "+str(readsSet_names_list[reads_item_i])+"\n"
+            msg += "----------------------------------------------------------------------------\n"
             report += msg
             self.log (console, msg)
                                                                                          

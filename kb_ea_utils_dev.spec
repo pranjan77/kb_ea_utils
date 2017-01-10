@@ -1,5 +1,5 @@
 /*
-Utilities for converting KBaseAssembly types to KBaseFile types
+Utilities for Reads Processing
 */
 
 module kb_ea_utils_dev {
