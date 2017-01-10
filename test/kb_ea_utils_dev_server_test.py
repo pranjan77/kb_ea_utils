@@ -464,11 +464,11 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TESTS 0.1-0.4: get Fastq Stats
     #
-    def test_get_fastq_ea_utils_stats(self):
-        print ("\n\nRUNNING: test_get_fastq_ea_utils_stats()")
+    def hide_test_get_fastq_ea_utils_stats(self):
+        print ("\n\nRUNNING: hide_test_get_fastq_ea_utils_stats()")
         print ("========================================\n\n")
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxhide_test_unit')
         pprint(pe_lib_info)
 
         # run method
@@ -480,11 +480,11 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('EA_UTILS_STATS_str:')
         print(ea_utils_stats_str)
 
-    def test_run_app_fastq_ea_utils_stats(self):
-        print ("\n\nRUNNING: test_run_app_fastq_ea_utils_stats()")
+    def hide_test_run_app_fastq_ea_utils_stats(self):
+        print ("\n\nRUNNING: hide_test_run_app_fastq_ea_utils_stats()")
         print ("============================================\n\n")
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxhide_test_unit')
         pprint(pe_lib_info)
 
         # run method
@@ -496,20 +496,20 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('REPORT:')
         pprint(report)
 
-    def test_get_ea_utils_stats(self):
-        print ("\n\nRUNNING: test_get_ea_utils_stats()")
+    def hide_test_get_ea_utils_stats(self):
+        print ("\n\nRUNNING: hide_test_get_ea_utils_stats()")
         print ("==================================\n\n")
-        fastq_file = "data/mxtest_unit.fwd.fq"
+        fastq_file = "data/mxhide_test_unit.fwd.fq"
         params={'read_library_path': fastq_file}
 
         report = self.getImpl().get_ea_utils_stats(self.getContext(), params)
         print('REPORT:')
         pprint(report)
 
-    def test_calculate_fastq_stats(self):
-        print ("\n\nRUNNING: test_calculate_fastq_stats()")
+    def hide_test_calculate_fastq_stats(self):
+        print ("\n\nRUNNING: hide_test_calculate_fastq_stats()")
         print ("=====================================\n\n")
-        fastq_file = "data/mxtest_unit.fwd.fq"
+        fastq_file = "data/mxhide_test_unit.fwd.fq"
         params={'read_library_path': fastq_file}
 
         ea_stats = self.getImpl().calculate_fastq_stats(self.getContext(), params)
@@ -519,16 +519,16 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 1: run Fastq_Multx against paired end library in manual mode
     #
-    def test_run_Fastq_Multx_PE_manual_mode(self):
+    def hide_test_run_Fastq_Multx_PE_manual_mode(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode()")
+        print ("\n\nRUNNING: hide_test_run_Fastq_Multx_PE_manual_mode()")
         print ("==============================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxhide_test_unit')
         pprint(pe_lib_info)
 
-        #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
+        #index_lane_lib_info = self.getPairedEndLibInfo('mxhide_test_index_lane_unit')
         #pprint(index_lane_lib_info)
 
         # run method
@@ -576,16 +576,16 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 2: run Fastq_Multx against paired end library in manual mode with index-lane data
     #
-    def test_run_Fastq_Multx_PE_manual_mode_index_lane(self):
+    def hide_test_run_Fastq_Multx_PE_manual_mode_index_lane(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode_index_lane()")
+        print ("\n\nRUNNING: hide_test_run_Fastq_Multx_PE_manual_mode_index_lane()")
         print ("=========================================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxhide_test_unit')
         pprint(pe_lib_info)
 
-        index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
+        index_lane_lib_info = self.getSingleEndLibInfo('mxhide_test_index_lane_unit')
         pprint(index_lane_lib_info)
 
         # run method
@@ -633,16 +633,16 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 3: run Fastq_Multx against paired end library in auto-detect mode
     #
-    def test_run_Fastq_Multx_PE_autodetect_mode(self):
+    def hide_test_run_Fastq_Multx_PE_autodetect_mode(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode()")
+        print ("\n\nRUNNING: hide_test_run_Fastq_Multx_PE_autodetect_mode()")
         print ("==================================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxhide_test_unit')
         pprint(pe_lib_info)
 
-        #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
+        #index_lane_lib_info = self.getPairedEndLibInfo('mxhide_test_index_lane_unit')
         #pprint(index_lane_lib_info)
 
         # run method
@@ -691,16 +691,16 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 4: run Fastq_Multx against paired end library in auto-detect mode with index-lane data
     #
-    def test_run_Fastq_Multx_PE_autodetect_mode_index_lane(self):
+    def hide_test_run_Fastq_Multx_PE_autodetect_mode_index_lane(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_index_lane()")
+        print ("\n\nRUNNING: hide_test_run_Fastq_Multx_PE_autodetect_mode_index_lane()")
         print ("=============================================================\n\n")
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
+        pe_lib_info = self.getPairedEndLibInfo('mxhide_test_unit')
         pprint(pe_lib_info)
 
-        index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
+        index_lane_lib_info = self.getSingleEndLibInfo('mxhide_test_index_lane_unit')
         pprint(index_lane_lib_info)
 
         # run method
@@ -748,16 +748,16 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 5: run Fastq_Multx against paired end library in manual mode with barcodes in header
     #
-    def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
+    def hide_test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
+        print ("\n\nRUNNING: hide_test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
         print ("=================================================================\n\n")
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest-header')
         pprint(pe_lib_info)
 
-        #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
+        #index_lane_lib_info = self.getPairedEndLibInfo('mxhide_test_index_lane_unit')
         #pprint(index_lane_lib_info)
 
         # run method
@@ -827,7 +827,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             'min_base_overlap': 6
         }
 
-        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        result = self.getImpl().run_Fastq_Join(self.getContext(),params)
         print('RESULT:')
         pprint(result)
 
@@ -864,7 +864,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
             'min_base_overlap': 6
         }
 
-        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
+        result = self.getImpl().run_Fastq_Join(self.getContext(),params)
         print('RESULT:')
         pprint(result)
 
