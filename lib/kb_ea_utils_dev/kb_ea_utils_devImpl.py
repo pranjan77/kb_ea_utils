@@ -40,7 +40,8 @@ class kb_ea_utils_dev:
     #BEGIN_CLASS_HEADER
     FASTQ_STATS     = "/usr/local/bin/fastq-stats"
     FASTQ_MULTX     = "/usr/local/bin/fastq-multx"
-    FASTQ_JOIN      = "/usr/local/bin/fastq-join"
+    #FASTQ_JOIN      = "/usr/local/bin/fastq-join"
+    FASTQ_JOIN      = "/kb/module/bin/fastq-join"
     DETERMINE_PHRED = "/usr/local/bin/determine-phred"
 
 
@@ -1433,8 +1434,7 @@ class kb_ea_utils_dev:
             os.makedirs(output_dir)
 
         # output file pattern
-        #out_base_pattern = output_dir+'/'+'fastq_join_output.'
-        out_base_pattern = 'fastq_join_output.'  # DEBUG
+        out_base_pattern = output_dir+'/'+'fastq_join_output.'
         out_pattern      = out_base_pattern+'%.fq'
 
 
@@ -1449,10 +1449,10 @@ class kb_ea_utils_dev:
         if params['reverse_complement'] != 1:
             cmd.append('-R')
 
-#        cmd.append ('-p')
-#        cmd.append (str(params['max_perc_dist']))
-#        cmd.append ('-m')
-#        cmd.append (str(params['min_base_overlap']))
+        cmd.append ('-p')
+        cmd.append (str(params['max_perc_dist']))
+        cmd.append ('-m')
+        cmd.append (str(params['min_base_overlap']))
 
         # file args
         cmd.append (input_fwd_file_path)

@@ -993,7 +993,7 @@ class kb_ea_utils_dev:
         #BEGIN run_Fastq_Join
         console = []
         self.log(console, 'Running run_Fastq_Join() with parameters: ')
-        self.log(console, "\n"+pformat(input_params))
+        self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
@@ -1172,6 +1172,7 @@ class kb_ea_utils_dev:
         readsSet_names_list = []
         if input_reads_obj_type != "KBaseSets.ReadsSet":
             readsSet_ref_list = [params['input_reads_ref']]
+            readsSet_names_list = [params['output_reads_name']]
         else:
             try:
                 #setAPI_Client = SetAPI (url=self.callbackURL, token=ctx['token'])  # for SDK local.  doesn't work for SetAPI
@@ -1421,36 +1422,19 @@ class kb_ea_utils_dev:
         sequencing_tech     = readsLibrary['files'][params['input_reads_ref']]['sequencing_tech']
 
 
-            # DEBUG
-#            self.log (console, "FWD_INPUT\n")
-#            fwd_reads_handle = open (input_fwd_file_path, 'r')
-#            for line_i in range(20):
-#                self.log (console, fwd_reads_handle.readline())
-#            fwd_reads_handle.close ()
-#            self.log (console, "REV_INPUT\n")
-#            rev_reads_handle = open (input_rev_file_path, 'r')
-#            for line_i in range(20):
-#                self.log (console, rev_reads_handle.readline())
-#            rev_reads_handle.close ()
-
-
-        #
-        # BEG FIX HERE
-        #
-
         #
         # LET'S ROCK!!!
         #
 
-        # Set params
-        #
+        # output paths
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
         # output file pattern
-        out_base_pattern = output_dir+'/'+'fastq_join_output.'
+        #out_base_pattern = output_dir+'/'+'fastq_join_output.'
+        out_base_pattern = 'fastq_join_output.'  # DEBUG
         out_pattern      = out_base_pattern+'%.fq'
 
 
@@ -1465,10 +1449,10 @@ class kb_ea_utils_dev:
         if params['reverse_complement'] != 1:
             cmd.append('-R')
 
-        cmd.append ('-p')
-        cmd.append (params['max_perc_dist'])
-        cmd.append ('-m')
-        cmd.append (params['min_base_overlap'])
+#        cmd.append ('-p')
+#        cmd.append (str(params['max_perc_dist']))
+#        cmd.append ('-m')
+#        cmd.append (str(params['min_base_overlap']))
 
         # file args
         cmd.append (input_fwd_file_path)
