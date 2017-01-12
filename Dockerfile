@@ -12,7 +12,7 @@ RUN pwd
 
 RUN mkdir -p /kb/module/work
 RUN mkdir -p /kb/module/third_party
-RUN chmod 777 /kb/module
+RUN chmod -R 777 /kb/module
 
 COPY ./third_party /kb/module/third_party
 RUN perl /kb/module/third_party/install_ea_utils.pl
