@@ -574,12 +574,12 @@ class kb_ea_utils_devTest(unittest.TestCase):
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
 
 
-    ### TEST 2: run Fastq_Multx against paired end library in manual mode with index-lane data
+    ### TEST 2: run Fastq_Multx against paired end library in index-lane mode
     #
-    def test_run_Fastq_Multx_PE_manual_mode_index_lane(self):
+    def test_run_Fastq_Multx_PE_index_lane_mode(self):
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_manual_mode_index_lane()")
-        print ("=========================================================\n\n")
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_index_lane_mode()")
+        print ("==================================================\n\n")
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
@@ -589,9 +589,9 @@ class kb_ea_utils_devTest(unittest.TestCase):
         pprint(index_lane_lib_info)
 
         # run method
-        output_name = 'output_demult_manual_indexlane.PERS'
+        output_name = 'output_demult_indexlane.PERS'
 
-        index_mode = 'manual'
+        index_mode = 'index-lane'
         index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
 
         params = {
@@ -688,65 +688,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
 
 
-
-    ### TEST 4: run Fastq_Multx against paired end library in auto-detect mode with index-lane data
-    #
-    def test_run_Fastq_Multx_PE_autodetect_mode_index_lane(self):
-
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_index_lane()")
-        print ("=============================================================\n\n")
-
-        # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest_unit')
-        pprint(pe_lib_info)
-
-        index_lane_lib_info = self.getSingleEndLibInfo('mxtest_index_lane_unit')
-        pprint(index_lane_lib_info)
-
-        # run method
-        output_name = 'output_demult_autodetect_indexlane.PERS'
-
-        index_mode = 'auto-detect'
-        #index_info = "id\tseq\tstyle\nLB1\tATCACG\tTruSeq\nLB2\tCGATGT\tTruSeq\nLB3\tTTAGGC\tTruSeq"
-
-        params = {
-            'workspace_name': pe_lib_info[7],
-            'input_reads_ref': str(pe_lib_info[6])+'/'+str(pe_lib_info[0]),
-            'index_mode': index_mode,
-            'desc': 'TEST',
-            'output_reads_name': output_name,
-            #'index_info': index_info,
-            'input_index_ref': str(index_lane_lib_info[6])+'/'+str(index_lane_lib_info[0]),
-            'barcode_options': {
-                'use_header_barcode': 0,
-                'trim_barcode': 1,
-                'suggest_barcodes': 0
-                },
-            'force_edge_options': {
-                'force_beg': 0,
-                'force_end': 0
-                },
-            'dist_and_qual_params': {
-                'mismatch_max': 1,
-                'edit_dist_min': 2,
-                'barcode_base_qual_score_min': 1
-                },
-        }
-
-        result = self.getImpl().run_Fastq_Multx(self.getContext(),params)
-        print('RESULT:')
-        pprint(result)
-
-        # check the output
-        output_name = output_name
-        info_list = self.wsClient.get_object_info([{'ref':pe_lib_info[7] + '/' + output_name}], 1)
-        self.assertEqual(len(info_list),1)
-        readsSet_info = info_list[0]
-        self.assertEqual(readsSet_info[1],output_name)
-        self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
-
-
-    ### TEST 5: run Fastq_Multx against paired end library in manual mode with barcodes in header
+    ### TEST 4: run Fastq_Multx against paired end library in manual mode with barcodes in header
     #
     def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
 
@@ -803,7 +745,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
 
 
-    ### TEST 6: run Fastq_Join against paired end library
+    ### TEST 5: run Fastq_Join against paired end library
     #
     def test_run_Fastq_Join_PE_lib(self):
 
@@ -840,7 +782,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         self.assertEqual(readsLib_info[2].split('-')[0],'KBaseFile.SingleEndLibrary')
 
 
-    ### TEST 7: run Fastq_Join against paired end library reads set
+    ### TEST 6: run Fastq_Join against paired end library reads set
     #
     def test_run_Fastq_Join_PE_readsSet(self):
 
@@ -875,5 +817,3 @@ class kb_ea_utils_devTest(unittest.TestCase):
         readsSet_info = info_list[0]
         self.assertEqual(readsSet_info[1],output_name)
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
-
-
