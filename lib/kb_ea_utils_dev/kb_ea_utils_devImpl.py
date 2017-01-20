@@ -798,7 +798,7 @@ class kb_ea_utils_dev:
                                                                               'name': output_obj_name,
                                                                               # don't use sequencing_tech if you use source_reads_ref
                                                                               #'sequencing_tech': sequencing_tech,
-                                                                              'source_reads_ref': params['source_reads_ref'],
+                                                                              'source_reads_ref': params['input_reads_ref'],
                                                                               'fwd_file': output_fwd_paired_file_path,
                                                                               'rev_file': output_rev_paired_file_path
                                                                               })['obj_ref'])
@@ -816,7 +816,7 @@ class kb_ea_utils_dev:
                                                                                     'name': output_obj_name,
                                                                                     # don't use sequencing_tech if you use source_reads_ref
                                                                                     #'sequencing_tech': sequencing_tech,
-                                                                                    'source_reads_ref': params['source_reads_ref'],
+                                                                                    'source_reads_ref': params['input_reads_ref'],
                                                                                     'fwd_file': output_fwd_unpaired_file_path
                                                                               })['obj_ref'])
                 except:
@@ -833,7 +833,7 @@ class kb_ea_utils_dev:
                                                                                     'name': output_obj_name,
                                                                                     # don't use sequencing_tech if you use source_reads_ref
                                                                                     #'sequencing_tech': sequencing_tech,
-                                                                                    'source_reads_ref': params['source_reads_ref'],
+                                                                                    'source_reads_ref': params['input_reads_ref'],
                                                                                     'fwd_file': output_rev_unpaired_file_path
                                                                               })['obj_ref'])
                 except:
@@ -849,7 +849,7 @@ class kb_ea_utils_dev:
                                                                           'name': output_obj_name,
                                                                           # don't use sequencing_tech if you use source_reads_ref
                                                                           #'sequencing_tech': sequencing_tech,
-                                                                          'source_reads_ref': params['source_reads_ref'],
+                                                                          'source_reads_ref': params['input_reads_ref'],
                                                                           'fwd_file': output_fwd_unmatched_file_path
                                                                               })['obj_ref']
 
@@ -864,7 +864,7 @@ class kb_ea_utils_dev:
                                                                           'name': output_obj_name,
                                                                           # don't use sequencing_tech if you use source_reads_ref
                                                                           #'sequencing_tech': sequencing_tech,
-                                                                          'source_reads_ref': params['source_reads_ref'],
+                                                                          'source_reads_ref': params['input_reads_ref'],
                                                                           'fwd_file': output_rev_unmatched_file_path
                                                                               })['obj_ref']
 
