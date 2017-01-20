@@ -24,7 +24,7 @@ class kb_ea_utils_dev:
     kb_ea_utils_dev
 
     Module Description:
-    Utilities for converting KBaseAssembly types to KBaseFile types
+    Utilities for Reads Processing
     '''
 
     ######## WARNING FOR GEVENT USERS ####### noqa

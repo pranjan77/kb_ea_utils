@@ -796,8 +796,10 @@ class kb_ea_utils_dev:
                     paired_group_ids.append (group_id)
                     paired_obj_refs.append (readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                               'name': output_obj_name,
-                                                                              'sequencing_tech': sequencing_tech,
-                                                                             'fwd_file': output_fwd_paired_file_path,
+                                                                              # don't use sequencing_tech if you use source_reads_ref
+                                                                              #'sequencing_tech': sequencing_tech,
+                                                                              'source_reads_ref': params['source_reads_ref'],
+                                                                              'fwd_file': output_fwd_paired_file_path,
                                                                               'rev_file': output_rev_paired_file_path
                                                                               })['obj_ref'])
                 except:
@@ -812,7 +814,9 @@ class kb_ea_utils_dev:
                     unpaired_fwd_group_ids.append (group_id)
                     unpaired_fwd_obj_refs.append (readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                                     'name': output_obj_name,
-                                                                                    'sequencing_tech': sequencing_tech,
+                                                                                    # don't use sequencing_tech if you use source_reads_ref
+                                                                                    #'sequencing_tech': sequencing_tech,
+                                                                                    'source_reads_ref': params['source_reads_ref'],
                                                                                     'fwd_file': output_fwd_unpaired_file_path
                                                                               })['obj_ref'])
                 except:
@@ -827,7 +831,9 @@ class kb_ea_utils_dev:
                     unpaired_rev_group_ids.append (group_id)
                     unpaired_rev_obj_refs.append (readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                                     'name': output_obj_name,
-                                                                                    'sequencing_tech': sequencing_tech,
+                                                                                    # don't use sequencing_tech if you use source_reads_ref
+                                                                                    #'sequencing_tech': sequencing_tech,
+                                                                                    'source_reads_ref': params['source_reads_ref'],
                                                                                     'fwd_file': output_rev_unpaired_file_path
                                                                               })['obj_ref'])
                 except:
@@ -841,7 +847,9 @@ class kb_ea_utils_dev:
                 self.log(console, 'Uploading unmatched fwd reads: '+output_obj_name)
                 unmatched_fwd_obj_ref = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                           'name': output_obj_name,
-                                                                          'sequencing_tech': sequencing_tech,
+                                                                          # don't use sequencing_tech if you use source_reads_ref
+                                                                          #'sequencing_tech': sequencing_tech,
+                                                                          'source_reads_ref': params['source_reads_ref'],
                                                                           'fwd_file': output_fwd_unmatched_file_path
                                                                               })['obj_ref']
 
@@ -854,7 +862,9 @@ class kb_ea_utils_dev:
                 self.log(console, 'Uploading unmatched rev reads: '+output_obj_name)
                 unmatched_rev_obj_ref = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                           'name': output_obj_name,
-                                                                          'sequencing_tech': sequencing_tech,
+                                                                          # don't use sequencing_tech if you use source_reads_ref
+                                                                          #'sequencing_tech': sequencing_tech,
+                                                                          'source_reads_ref': params['source_reads_ref'],
                                                                           'fwd_file': output_rev_unmatched_file_path
                                                                               })['obj_ref']
 
@@ -1517,7 +1527,9 @@ class kb_ea_utils_dev:
             self.log(console, 'Uploading joined reads: '+output_obj_name)
             retVal['output_joined_reads_ref'] = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                                   'name': output_obj_name,
-                                                                                  'sequencing_tech': sequencing_tech,
+                                                                                  # don't use sequencing_tech as well as source_reads_ref
+                                                                                  #'sequencing_tech': sequencing_tech,
+                                                                                  'source_reads_ref': params['input_reads_ref'],
                                                                                   'fwd_file': output_joined_file_path
                                                                                   })['obj_ref']
 
@@ -1536,7 +1548,9 @@ class kb_ea_utils_dev:
             self.log(console, '\nUploading unjoined reads: '+output_obj_name)
             retVal['output_unjoined_reads_ref'] = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
                                                                                     'name': output_obj_name,
-                                                                                    'sequencing_tech': sequencing_tech,
+                                                                                    # don't use sequencing_tech as well as source_reads_ref
+                                                                                    #'sequencing_tech': sequencing_tech,
+                                                                                    'source_reads_ref': params['input_reads_ref'],
                                                                                     'fwd_file': output_unjoined_fwd_file_path,
                                                                                     'rev_file': output_unjoined_rev_file_path
                                                                                     })['obj_ref']
