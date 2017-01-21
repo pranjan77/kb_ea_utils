@@ -2,7 +2,7 @@
 Utilities for Reads Processing
 */
 
-module kb_ea_utils_dev {
+module kb_ea_utils {
 
 /*
 
