@@ -24,7 +24,7 @@
 	"behavior" : {
 		"service-mapping" : {
 			"url" : "",
-			"name" : "kb_ea_utils_dev",
+			"name" : "kb_ea_utils",
 			"method" : "run_app_fastq_ea_utils_stats",
 			"input_mapping" : [
 				{
