@@ -26,7 +26,7 @@ kb_ea_utils::kb_ea_utilsClient
 =head1 DESCRIPTION
 
 
-Utilities for converting KBaseAssembly types to KBaseFile types
+Utilities for Reads Processing
 
 
 =cut

@@ -1,5 +1,5 @@
 module-name:
-    kb_ea_utils_dev
+    kb_ea_utils
 
 module-description:
     A KBase wrapper module for some functionality of the ea-utils package.
@@ -8,7 +8,7 @@ service-language:
     python
 
 module-version:
-    0.0.2
+    0.0.3
 
 owners:
     [pranjan77, msneddon, dylan]

@@ -33,9 +33,9 @@ class kb_ea_utils:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "0.0.1"
-    GIT_URL = "https://github.com/dcchivian/kb_ea_utils"
-    GIT_COMMIT_HASH = "ea934fb989bf19255873347fa7ebab10aea6e9d0"
+    VERSION = "0.0.3"
+    GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
+    GIT_COMMIT_HASH = "8bf0c2dec5b596b990624becf3e475b621bf9884"
 
     #BEGIN_CLASS_HEADER
     FASTQ_STATS     = "/usr/local/bin/fastq-stats"
