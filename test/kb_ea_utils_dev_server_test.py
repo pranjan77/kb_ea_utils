@@ -18,11 +18,11 @@ from requests_toolbelt import MultipartEncoder
 from biokbase.workspace.client import Workspace as workspaceService
 from biokbase.AbstractHandle.Client import AbstractHandle as HandleService
 
-from kb_ea_utils_dev.kb_ea_utils_devImpl import kb_ea_utils_dev
-from kb_ea_utils_dev.kb_ea_utils_devServer import MethodContext
+from kb_ea_utils.kb_ea_utilsImpl import kb_ea_utils
+from kb_ea_utils.kb_ea_utilsServer import MethodContext
 
 
-class kb_ea_utils_devTest(unittest.TestCase):
+class kb_ea_utilsTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -38,7 +38,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         cls.ctx.update({'token': token,
                         'user_id': user_id,
                         'provenance': [
-                            {'service': 'kb_ea_utils_dev',
+                            {'service': 'kb_ea_utils',
                              'method': 'please_never_use_it_in_production',
                              'method_params': []
                              }],
@@ -47,7 +47,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         cls.cfg = {}
         config = ConfigParser()
         config.read(config_file)
-        for nameval in config.items('kb_ea_utils_dev'):
+        for nameval in config.items('kb_ea_utils'):
             cls.cfg[nameval[0]] = nameval[1]
         cls.wsURL = cls.cfg['workspace-url']
         cls.shockURL = cls.cfg['shock-url']
@@ -55,7 +55,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         cls.serviceWizardURL = cls.cfg['service-wizard-url']
 
         cls.wsClient = workspaceService(cls.wsURL, token=token)
-        cls.serviceImpl = kb_ea_utils_dev(cls.cfg)
+        cls.serviceImpl = kb_ea_utils(cls.cfg)
 
     @classmethod
     def tearDownClass(cls):
@@ -74,7 +74,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         if hasattr(self.__class__, 'wsName'):
             return self.__class__.wsName
         suffix = int(time.time() * 1000)
-        wsName = "test_kb_ea_utils_dev_" + str(suffix)
+        wsName = "test_kb_ea_utils_" + str(suffix)
         ret = self.getWsClient().create_workspace({'workspace': wsName})
         self.__class__.wsName = wsName
         return wsName
@@ -464,7 +464,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TESTS 0.1-0.4: get Fastq Stats
     #
-    def hide_get_fastq_ea_utils_stats(self):
+    def test_get_fastq_ea_utils_stats(self):
         print ("\n\nRUNNING: test_get_fastq_ea_utils_stats()")
         print ("========================================\n\n")
         # figure out where the test data lives
@@ -480,7 +480,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('EA_UTILS_STATS_str:')
         print(ea_utils_stats_str)
 
-    def hide_run_app_fastq_ea_utils_stats(self):
+    def test_run_app_fastq_ea_utils_stats(self):
         print ("\n\nRUNNING: test_run_app_fastq_ea_utils_stats()")
         print ("============================================\n\n")
         # figure out where the test data lives
@@ -496,7 +496,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('REPORT:')
         pprint(report)
 
-    def hide_get_ea_utils_stats(self):
+    def test_get_ea_utils_stats(self):
         print ("\n\nRUNNING: test_get_ea_utils_stats()")
         print ("==================================\n\n")
         fastq_file = "data/mxtest_unit.fwd.fq"
@@ -506,7 +506,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('REPORT:')
         pprint(report)
 
-    def hide_calculate_fastq_stats(self):
+    def test_calculate_fastq_stats(self):
         print ("\n\nRUNNING: test_calculate_fastq_stats()")
         print ("=====================================\n\n")
         fastq_file = "data/mxtest_unit.fwd.fq"
@@ -633,7 +633,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 3: run Fastq_Multx against paired end library in auto-detect mode
     #
-    def hide_run_Fastq_Multx_PE_autodetect_mode(self):
+    def test_run_Fastq_Multx_PE_autodetect_mode(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode()")
         print ("==================================================\n\n")
@@ -690,7 +690,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 4: run Fastq_Multx against paired end library in manual mode with barcodes in header
     #
-    def hide_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
+    def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
         print ("=================================================================\n\n")
@@ -747,7 +747,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 5: run Fastq_Join against paired end library
     #
-    def hide_run_Fastq_Join_PE_lib(self):
+    def test_run_Fastq_Join_PE_lib(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Join_PE_lib()")
         print ("=====================================\n\n")
@@ -784,7 +784,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 6: run Fastq_Join against paired end library reads set
     #
-    def hide_run_Fastq_Join_PE_readsSet(self):
+    def test_run_Fastq_Join_PE_readsSet(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Join_PE_readsSet()")
         print ("==========================================\n\n")
