@@ -18,10 +18,10 @@ from KBaseReport.KBaseReportClient import KBaseReport
 #END_HEADER
 
 
-class kb_ea_utils_dev:
+class kb_ea_utils:
     '''
     Module Name:
-    kb_ea_utils_dev
+    kb_ea_utils
 
     Module Description:
     Utilities for Reads Processing
@@ -34,7 +34,7 @@ class kb_ea_utils_dev:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
+    GIT_URL = "https://github.com/dcchivian/kb_ea_utils"
     GIT_COMMIT_HASH = "ea934fb989bf19255873347fa7ebab10aea6e9d0"
 
     #BEGIN_CLASS_HEADER

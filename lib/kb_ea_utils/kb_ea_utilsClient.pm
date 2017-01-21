@@ -1,4 +1,4 @@
-package kb_ea_utils_dev::kb_ea_utils_devClient;
+package kb_ea_utils::kb_ea_utilsClient;
 
 use JSON::RPC::Client;
 use POSIX;
@@ -21,7 +21,7 @@ our $VERSION = "0.1.0";
 
 =head1 NAME
 
-kb_ea_utils_dev::kb_ea_utils_devClient
+kb_ea_utils::kb_ea_utilsClient
 
 =head1 DESCRIPTION
 
@@ -37,7 +37,7 @@ sub new
     
 
     my $self = {
-	client => kb_ea_utils_dev::kb_ea_utils_devClient::RpcClient->new,
+	client => kb_ea_utils::kb_ea_utilsClient::RpcClient->new,
 	url => $url,
 	headers => [],
     };
@@ -120,7 +120,7 @@ sub new
 =begin html
 
 <pre>
-$input_params is a kb_ea_utils_dev.get_fastq_ea_utils_stats_params
+$input_params is a kb_ea_utils.get_fastq_ea_utils_stats_params
 $ea_utils_stats is a string
 get_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
@@ -133,7 +133,7 @@ get_fastq_ea_utils_stats_params is a reference to a hash where the following key
 
 =begin text
 
-$input_params is a kb_ea_utils_dev.get_fastq_ea_utils_stats_params
+$input_params is a kb_ea_utils.get_fastq_ea_utils_stats_params
 $ea_utils_stats is a string
 get_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
@@ -177,7 +177,7 @@ The results are returned as a string.
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.get_fastq_ea_utils_stats",
+	    method => "kb_ea_utils.get_fastq_ea_utils_stats",
 	    params => \@args,
     });
     if ($result) {
@@ -211,8 +211,8 @@ The results are returned as a string.
 =begin html
 
 <pre>
-$input_params is a kb_ea_utils_dev.run_app_fastq_ea_utils_stats_params
-$report is a kb_ea_utils_dev.Report
+$input_params is a kb_ea_utils.run_app_fastq_ea_utils_stats_params
+$report is a kb_ea_utils.Report
 run_app_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_name has a value which is a string
@@ -227,8 +227,8 @@ Report is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$input_params is a kb_ea_utils_dev.run_app_fastq_ea_utils_stats_params
-$report is a kb_ea_utils_dev.Report
+$input_params is a kb_ea_utils.run_app_fastq_ea_utils_stats_params
+$report is a kb_ea_utils.Report
 run_app_fastq_ea_utils_stats_params is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_name has a value which is a string
@@ -274,7 +274,7 @@ The results are returned as a report type object.
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.run_app_fastq_ea_utils_stats",
+	    method => "kb_ea_utils.run_app_fastq_ea_utils_stats",
 	    params => \@args,
     });
     if ($result) {
@@ -308,7 +308,7 @@ The results are returned as a report type object.
 =begin html
 
 <pre>
-$input_params is a kb_ea_utils_dev.ea_utils_params
+$input_params is a kb_ea_utils.ea_utils_params
 $report is a string
 ea_utils_params is a reference to a hash where the following keys are defined:
 	read_library_path has a value which is a string
@@ -319,7 +319,7 @@ ea_utils_params is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$input_params is a kb_ea_utils_dev.ea_utils_params
+$input_params is a kb_ea_utils.ea_utils_params
 $report is a string
 ea_utils_params is a reference to a hash where the following keys are defined:
 	read_library_path has a value which is a string
@@ -361,7 +361,7 @@ Output is a report string.
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.get_ea_utils_stats",
+	    method => "kb_ea_utils.get_ea_utils_stats",
 	    params => \@args,
     });
     if ($result) {
@@ -395,8 +395,8 @@ Output is a report string.
 =begin html
 
 <pre>
-$input_params is a kb_ea_utils_dev.ea_utils_params
-$ea_stats is a kb_ea_utils_dev.ea_report
+$input_params is a kb_ea_utils.ea_utils_params
+$ea_stats is a kb_ea_utils.ea_report
 ea_utils_params is a reference to a hash where the following keys are defined:
 	read_library_path has a value which is a string
 ea_report is a reference to a hash where the following keys are defined:
@@ -419,8 +419,8 @@ ea_report is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$input_params is a kb_ea_utils_dev.ea_utils_params
-$ea_stats is a kb_ea_utils_dev.ea_report
+$input_params is a kb_ea_utils.ea_utils_params
+$ea_stats is a kb_ea_utils.ea_report
 ea_utils_params is a reference to a hash where the following keys are defined:
 	read_library_path has a value which is a string
 ea_report is a reference to a hash where the following keys are defined:
@@ -474,7 +474,7 @@ Output is a data structure with different fields.
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.calculate_fastq_stats",
+	    method => "kb_ea_utils.calculate_fastq_stats",
 	    params => \@args,
     });
     if ($result) {
@@ -508,31 +508,31 @@ Output is a data structure with different fields.
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.run_Fastq_Multx_Input
-$returnVal is a kb_ea_utils_dev.run_Fastq_Multx_Output
+$params is a kb_ea_utils.run_Fastq_Multx_Input
+$returnVal is a kb_ea_utils.run_Fastq_Multx_Output
 run_Fastq_Multx_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	index_info has a value which is a kb_ea_utils_dev.textarea_str
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	index_info has a value which is a kb_ea_utils.textarea_str
 	desc has a value which is a string
 	index_mode has a value which is a string
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
-	force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
-	dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	input_index_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	barcode_options has a value which is a kb_ea_utils.Barcode_Options
+	force_edge_options has a value which is a kb_ea_utils.ForceEdge_Options
+	dist_and_qual_params has a value which is a kb_ea_utils.DistAndQual_Params
 workspace_name is a string
 textarea_str is a string
 data_obj_ref is a string
 data_obj_name is a string
 Barcode_Options is a reference to a hash where the following keys are defined:
-	use_header_barcode has a value which is a kb_ea_utils_dev.bool
-	trim_barcode has a value which is a kb_ea_utils_dev.bool
-	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+	use_header_barcode has a value which is a kb_ea_utils.bool
+	trim_barcode has a value which is a kb_ea_utils.bool
+	suggest_barcodes has a value which is a kb_ea_utils.bool
 bool is an int
 ForceEdge_Options is a reference to a hash where the following keys are defined:
-	force_beg has a value which is a kb_ea_utils_dev.bool
-	force_end has a value which is a kb_ea_utils_dev.bool
+	force_beg has a value which is a kb_ea_utils.bool
+	force_end has a value which is a kb_ea_utils.bool
 DistAndQual_Params is a reference to a hash where the following keys are defined:
 	mismatch_max has a value which is an int
 	edit_dist_min has a value which is an int
@@ -547,31 +547,31 @@ run_Fastq_Multx_Output is a reference to a hash where the following keys are def
 
 =begin text
 
-$params is a kb_ea_utils_dev.run_Fastq_Multx_Input
-$returnVal is a kb_ea_utils_dev.run_Fastq_Multx_Output
+$params is a kb_ea_utils.run_Fastq_Multx_Input
+$returnVal is a kb_ea_utils.run_Fastq_Multx_Output
 run_Fastq_Multx_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	index_info has a value which is a kb_ea_utils_dev.textarea_str
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	index_info has a value which is a kb_ea_utils.textarea_str
 	desc has a value which is a string
 	index_mode has a value which is a string
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
-	force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
-	dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	input_index_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	barcode_options has a value which is a kb_ea_utils.Barcode_Options
+	force_edge_options has a value which is a kb_ea_utils.ForceEdge_Options
+	dist_and_qual_params has a value which is a kb_ea_utils.DistAndQual_Params
 workspace_name is a string
 textarea_str is a string
 data_obj_ref is a string
 data_obj_name is a string
 Barcode_Options is a reference to a hash where the following keys are defined:
-	use_header_barcode has a value which is a kb_ea_utils_dev.bool
-	trim_barcode has a value which is a kb_ea_utils_dev.bool
-	suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+	use_header_barcode has a value which is a kb_ea_utils.bool
+	trim_barcode has a value which is a kb_ea_utils.bool
+	suggest_barcodes has a value which is a kb_ea_utils.bool
 bool is an int
 ForceEdge_Options is a reference to a hash where the following keys are defined:
-	force_beg has a value which is a kb_ea_utils_dev.bool
-	force_end has a value which is a kb_ea_utils_dev.bool
+	force_beg has a value which is a kb_ea_utils.bool
+	force_end has a value which is a kb_ea_utils.bool
 DistAndQual_Params is a reference to a hash where the following keys are defined:
 	mismatch_max has a value which is an int
 	edit_dist_min has a value which is an int
@@ -616,7 +616,7 @@ run_Fastq_Multx_Output is a reference to a hash where the following keys are def
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.run_Fastq_Multx",
+	    method => "kb_ea_utils.run_Fastq_Multx",
 	    params => \@args,
     });
     if ($result) {
@@ -650,14 +650,14 @@ run_Fastq_Multx_Output is a reference to a hash where the following keys are def
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.run_Fastq_Join_Input
-$returnVal is a kb_ea_utils_dev.run_Fastq_Join_Output
+$params is a kb_ea_utils.run_Fastq_Join_Input
+$returnVal is a kb_ea_utils.run_Fastq_Join_Output
 run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	verbose has a value which is a kb_ea_utils_dev.bool
-	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	verbose has a value which is a kb_ea_utils.bool
+	reverse_complement has a value which is a kb_ea_utils.bool
 	max_perc_dist has a value which is an int
 	min_base_overlap has a value which is an int
 workspace_name is a string
@@ -674,14 +674,14 @@ run_Fastq_Join_Output is a reference to a hash where the following keys are defi
 
 =begin text
 
-$params is a kb_ea_utils_dev.run_Fastq_Join_Input
-$returnVal is a kb_ea_utils_dev.run_Fastq_Join_Output
+$params is a kb_ea_utils.run_Fastq_Join_Input
+$returnVal is a kb_ea_utils.run_Fastq_Join_Output
 run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	verbose has a value which is a kb_ea_utils_dev.bool
-	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	verbose has a value which is a kb_ea_utils.bool
+	reverse_complement has a value which is a kb_ea_utils.bool
 	max_perc_dist has a value which is an int
 	min_base_overlap has a value which is an int
 workspace_name is a string
@@ -728,7 +728,7 @@ run_Fastq_Join_Output is a reference to a hash where the following keys are defi
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.run_Fastq_Join",
+	    method => "kb_ea_utils.run_Fastq_Join",
 	    params => \@args,
     });
     if ($result) {
@@ -762,14 +762,14 @@ run_Fastq_Join_Output is a reference to a hash where the following keys are defi
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.run_Fastq_Join_Input
-$returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
+$params is a kb_ea_utils.run_Fastq_Join_Input
+$returnVal is a kb_ea_utils.exec_Fastq_Join_Output
 run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	verbose has a value which is a kb_ea_utils_dev.bool
-	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	verbose has a value which is a kb_ea_utils.bool
+	reverse_complement has a value which is a kb_ea_utils.bool
 	max_perc_dist has a value which is an int
 	min_base_overlap has a value which is an int
 workspace_name is a string
@@ -777,8 +777,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
 
 </pre>
 
@@ -786,14 +786,14 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 
 =begin text
 
-$params is a kb_ea_utils_dev.run_Fastq_Join_Input
-$returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
+$params is a kb_ea_utils.run_Fastq_Join_Input
+$returnVal is a kb_ea_utils.exec_Fastq_Join_Output
 run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	verbose has a value which is a kb_ea_utils_dev.bool
-	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	verbose has a value which is a kb_ea_utils.bool
+	reverse_complement has a value which is a kb_ea_utils.bool
 	max_perc_dist has a value which is an int
 	min_base_overlap has a value which is an int
 workspace_name is a string
@@ -801,8 +801,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
 
 
 =end text
@@ -840,7 +840,7 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.exec_Fastq_Join",
+	    method => "kb_ea_utils.exec_Fastq_Join",
 	    params => \@args,
     });
     if ($result) {
@@ -874,14 +874,14 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.run_Fastq_Join_Input
-$returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
+$params is a kb_ea_utils.run_Fastq_Join_Input
+$returnVal is a kb_ea_utils.exec_Fastq_Join_Output
 run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	verbose has a value which is a kb_ea_utils_dev.bool
-	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	verbose has a value which is a kb_ea_utils.bool
+	reverse_complement has a value which is a kb_ea_utils.bool
 	max_perc_dist has a value which is an int
 	min_base_overlap has a value which is an int
 workspace_name is a string
@@ -889,8 +889,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
 
 </pre>
 
@@ -898,14 +898,14 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 
 =begin text
 
-$params is a kb_ea_utils_dev.run_Fastq_Join_Input
-$returnVal is a kb_ea_utils_dev.exec_Fastq_Join_Output
+$params is a kb_ea_utils.run_Fastq_Join_Input
+$returnVal is a kb_ea_utils.exec_Fastq_Join_Output
 run_Fastq_Join_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-	verbose has a value which is a kb_ea_utils_dev.bool
-	reverse_complement has a value which is a kb_ea_utils_dev.bool
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_reads_name has a value which is a kb_ea_utils.data_obj_name
+	verbose has a value which is a kb_ea_utils.bool
+	reverse_complement has a value which is a kb_ea_utils.bool
 	max_perc_dist has a value which is an int
 	min_base_overlap has a value which is an int
 workspace_name is a string
@@ -913,8 +913,8 @@ data_obj_ref is a string
 data_obj_name is a string
 bool is an int
 exec_Fastq_Join_Output is a reference to a hash where the following keys are defined:
-	output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+	output_joined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	output_unjoined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
 
 
 =end text
@@ -952,7 +952,7 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.exec_Fastq_Join_OneLibrary",
+	    method => "kb_ea_utils.exec_Fastq_Join_OneLibrary",
 	    params => \@args,
     });
     if ($result) {
@@ -986,12 +986,12 @@ exec_Fastq_Join_Output is a reference to a hash where the following keys are def
 =begin html
 
 <pre>
-$params is a kb_ea_utils_dev.exec_Determine_Phred_Input
-$returnVal is a kb_ea_utils_dev.exec_Determine_Phred_Output
+$params is a kb_ea_utils.exec_Determine_Phred_Input
+$returnVal is a kb_ea_utils.exec_Determine_Phred_Output
 exec_Determine_Phred_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	input_reads_file has a value which is a kb_ea_utils_dev.file_path
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	input_reads_file has a value which is a kb_ea_utils.file_path
 workspace_name is a string
 data_obj_ref is a string
 file_path is a string
@@ -1004,12 +1004,12 @@ exec_Determine_Phred_Output is a reference to a hash where the following keys ar
 
 =begin text
 
-$params is a kb_ea_utils_dev.exec_Determine_Phred_Input
-$returnVal is a kb_ea_utils_dev.exec_Determine_Phred_Output
+$params is a kb_ea_utils.exec_Determine_Phred_Input
+$returnVal is a kb_ea_utils.exec_Determine_Phred_Output
 exec_Determine_Phred_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-	input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-	input_reads_file has a value which is a kb_ea_utils_dev.file_path
+	workspace_name has a value which is a kb_ea_utils.workspace_name
+	input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+	input_reads_file has a value which is a kb_ea_utils.file_path
 workspace_name is a string
 data_obj_ref is a string
 file_path is a string
@@ -1052,7 +1052,7 @@ exec_Determine_Phred_Output is a reference to a hash where the following keys ar
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_ea_utils_dev.exec_Determine_Phred",
+	    method => "kb_ea_utils.exec_Determine_Phred",
 	    params => \@args,
     });
     if ($result) {
@@ -1083,7 +1083,7 @@ sub status
     }
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-        method => "kb_ea_utils_dev.status",
+        method => "kb_ea_utils.status",
         params => \@args,
     });
     if ($result) {
@@ -1108,7 +1108,7 @@ sub status
 sub version {
     my ($self) = @_;
     my $result = $self->{client}->call($self->{url}, $self->{headers}, {
-        method => "kb_ea_utils_dev.version",
+        method => "kb_ea_utils.version",
         params => [],
     });
     if ($result) {
@@ -1151,10 +1151,10 @@ sub _validate_version {
         );
     }
     if ($sMinor > $cMinor) {
-        warn "New client version available for kb_ea_utils_dev::kb_ea_utils_devClient\n";
+        warn "New client version available for kb_ea_utils::kb_ea_utilsClient\n";
     }
     if ($sMajor == 0) {
-        warn "kb_ea_utils_dev::kb_ea_utils_devClient version is $svr_version. API subject to change.\n";
+        warn "kb_ea_utils::kb_ea_utilsClient version is $svr_version. API subject to change.\n";
     }
 }
 
@@ -1553,9 +1553,9 @@ Parameter groups
 
 <pre>
 a reference to a hash where the following keys are defined:
-use_header_barcode has a value which is a kb_ea_utils_dev.bool
-trim_barcode has a value which is a kb_ea_utils_dev.bool
-suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+use_header_barcode has a value which is a kb_ea_utils.bool
+trim_barcode has a value which is a kb_ea_utils.bool
+suggest_barcodes has a value which is a kb_ea_utils.bool
 
 </pre>
 
@@ -1564,9 +1564,9 @@ suggest_barcodes has a value which is a kb_ea_utils_dev.bool
 =begin text
 
 a reference to a hash where the following keys are defined:
-use_header_barcode has a value which is a kb_ea_utils_dev.bool
-trim_barcode has a value which is a kb_ea_utils_dev.bool
-suggest_barcodes has a value which is a kb_ea_utils_dev.bool
+use_header_barcode has a value which is a kb_ea_utils.bool
+trim_barcode has a value which is a kb_ea_utils.bool
+suggest_barcodes has a value which is a kb_ea_utils.bool
 
 
 =end text
@@ -1587,8 +1587,8 @@ suggest_barcodes has a value which is a kb_ea_utils_dev.bool
 
 <pre>
 a reference to a hash where the following keys are defined:
-force_beg has a value which is a kb_ea_utils_dev.bool
-force_end has a value which is a kb_ea_utils_dev.bool
+force_beg has a value which is a kb_ea_utils.bool
+force_end has a value which is a kb_ea_utils.bool
 
 </pre>
 
@@ -1597,8 +1597,8 @@ force_end has a value which is a kb_ea_utils_dev.bool
 =begin text
 
 a reference to a hash where the following keys are defined:
-force_beg has a value which is a kb_ea_utils_dev.bool
-force_end has a value which is a kb_ea_utils_dev.bool
+force_beg has a value which is a kb_ea_utils.bool
+force_end has a value which is a kb_ea_utils.bool
 
 
 =end text
@@ -1660,16 +1660,16 @@ run_Fastq_Multx()
 
 <pre>
 a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-index_info has a value which is a kb_ea_utils_dev.textarea_str
+workspace_name has a value which is a kb_ea_utils.workspace_name
+index_info has a value which is a kb_ea_utils.textarea_str
 desc has a value which is a string
 index_mode has a value which is a string
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
-force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
-dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
+input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+input_index_ref has a value which is a kb_ea_utils.data_obj_ref
+output_reads_name has a value which is a kb_ea_utils.data_obj_name
+barcode_options has a value which is a kb_ea_utils.Barcode_Options
+force_edge_options has a value which is a kb_ea_utils.ForceEdge_Options
+dist_and_qual_params has a value which is a kb_ea_utils.DistAndQual_Params
 
 </pre>
 
@@ -1678,16 +1678,16 @@ dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
 =begin text
 
 a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-index_info has a value which is a kb_ea_utils_dev.textarea_str
+workspace_name has a value which is a kb_ea_utils.workspace_name
+index_info has a value which is a kb_ea_utils.textarea_str
 desc has a value which is a string
 index_mode has a value which is a string
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-input_index_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-barcode_options has a value which is a kb_ea_utils_dev.Barcode_Options
-force_edge_options has a value which is a kb_ea_utils_dev.ForceEdge_Options
-dist_and_qual_params has a value which is a kb_ea_utils_dev.DistAndQual_Params
+input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+input_index_ref has a value which is a kb_ea_utils.data_obj_ref
+output_reads_name has a value which is a kb_ea_utils.data_obj_name
+barcode_options has a value which is a kb_ea_utils.Barcode_Options
+force_edge_options has a value which is a kb_ea_utils.ForceEdge_Options
+dist_and_qual_params has a value which is a kb_ea_utils.DistAndQual_Params
 
 
 =end text
@@ -1747,11 +1747,11 @@ run_Fastq_Join()
 
 <pre>
 a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-verbose has a value which is a kb_ea_utils_dev.bool
-reverse_complement has a value which is a kb_ea_utils_dev.bool
+workspace_name has a value which is a kb_ea_utils.workspace_name
+input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+output_reads_name has a value which is a kb_ea_utils.data_obj_name
+verbose has a value which is a kb_ea_utils.bool
+reverse_complement has a value which is a kb_ea_utils.bool
 max_perc_dist has a value which is an int
 min_base_overlap has a value which is an int
 
@@ -1762,11 +1762,11 @@ min_base_overlap has a value which is an int
 =begin text
 
 a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_reads_name has a value which is a kb_ea_utils_dev.data_obj_name
-verbose has a value which is a kb_ea_utils_dev.bool
-reverse_complement has a value which is a kb_ea_utils_dev.bool
+workspace_name has a value which is a kb_ea_utils.workspace_name
+input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+output_reads_name has a value which is a kb_ea_utils.data_obj_name
+verbose has a value which is a kb_ea_utils.bool
+reverse_complement has a value which is a kb_ea_utils.bool
 max_perc_dist has a value which is an int
 min_base_overlap has a value which is an int
 
@@ -1821,8 +1821,8 @@ report_ref has a value which is a string
 
 <pre>
 a reference to a hash where the following keys are defined:
-output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+output_joined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+output_unjoined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
 
 </pre>
 
@@ -1831,8 +1831,8 @@ output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
 =begin text
 
 a reference to a hash where the following keys are defined:
-output_joined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-output_unjoined_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
+output_joined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+output_unjoined_reads_ref has a value which is a kb_ea_utils.data_obj_ref
 
 
 =end text
@@ -1860,9 +1860,9 @@ exec_Determine_Phred()
 
 <pre>
 a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-input_reads_file has a value which is a kb_ea_utils_dev.file_path
+workspace_name has a value which is a kb_ea_utils.workspace_name
+input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+input_reads_file has a value which is a kb_ea_utils.file_path
 
 </pre>
 
@@ -1871,9 +1871,9 @@ input_reads_file has a value which is a kb_ea_utils_dev.file_path
 =begin text
 
 a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_ea_utils_dev.workspace_name
-input_reads_ref has a value which is a kb_ea_utils_dev.data_obj_ref
-input_reads_file has a value which is a kb_ea_utils_dev.file_path
+workspace_name has a value which is a kb_ea_utils.workspace_name
+input_reads_ref has a value which is a kb_ea_utils.data_obj_ref
+input_reads_file has a value which is a kb_ea_utils.file_path
 
 
 =end text
@@ -1914,7 +1914,7 @@ phred_type has a value which is a string
 
 =cut
 
-package kb_ea_utils_dev::kb_ea_utils_devClient::RpcClient;
+package kb_ea_utils::kb_ea_utilsClient::RpcClient;
 use base 'JSON::RPC::Client';
 use POSIX;
 use strict;

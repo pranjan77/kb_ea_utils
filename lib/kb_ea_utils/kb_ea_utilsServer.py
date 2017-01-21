@@ -16,7 +16,7 @@ from biokbase import log
 import requests as _requests
 import random as _random
 import os
-from kb_ea_utils_dev.authclient import KBaseAuth as _KBaseAuth
+from kb_ea_utils.authclient import KBaseAuth as _KBaseAuth
 
 DEPLOY = 'KB_DEPLOYMENT_CONFIG'
 SERVICE = 'KB_SERVICE_NAME'
@@ -39,14 +39,14 @@ def get_config():
     retconfig = {}
     config = ConfigParser()
     config.read(get_config_file())
-    for nameval in config.items(get_service_name() or 'kb_ea_utils_dev'):
+    for nameval in config.items(get_service_name() or 'kb_ea_utils'):
         retconfig[nameval[0]] = nameval[1]
     return retconfig
 
 config = get_config()
 
-from kb_ea_utils_dev.kb_ea_utils_devImpl import kb_ea_utils_dev  # noqa @IgnorePep8
-impl_kb_ea_utils_dev = kb_ea_utils_dev(config)
+from kb_ea_utils.kb_ea_utilsImpl import kb_ea_utils  # noqa @IgnorePep8
+impl_kb_ea_utils = kb_ea_utils(config)
 
 
 class JSONObjectEncoder(json.JSONEncoder):
@@ -318,7 +318,7 @@ class Application(object):
                                    context['method'], context['call_id'])
 
     def __init__(self):
-        submod = get_service_name() or 'kb_ea_utils_dev'
+        submod = get_service_name() or 'kb_ea_utils'
         self.userlog = log.log(
             submod, ip_address=True, authuser=True, module=True, method=True,
             call_id=True, changecallback=self.logcallback,
@@ -329,44 +329,44 @@ class Application(object):
         self.serverlog.set_log_level(6)
         self.rpc_service = JSONRPCServiceCustom()
         self.method_authentication = dict()
-        self.rpc_service.add(impl_kb_ea_utils_dev.get_fastq_ea_utils_stats,
-                             name='kb_ea_utils_dev.get_fastq_ea_utils_stats',
+        self.rpc_service.add(impl_kb_ea_utils.get_fastq_ea_utils_stats,
+                             name='kb_ea_utils.get_fastq_ea_utils_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.get_fastq_ea_utils_stats'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.run_app_fastq_ea_utils_stats,
-                             name='kb_ea_utils_dev.run_app_fastq_ea_utils_stats',
+        self.method_authentication['kb_ea_utils.get_fastq_ea_utils_stats'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.run_app_fastq_ea_utils_stats,
+                             name='kb_ea_utils.run_app_fastq_ea_utils_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.run_app_fastq_ea_utils_stats'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.get_ea_utils_stats,
-                             name='kb_ea_utils_dev.get_ea_utils_stats',
+        self.method_authentication['kb_ea_utils.run_app_fastq_ea_utils_stats'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.get_ea_utils_stats,
+                             name='kb_ea_utils.get_ea_utils_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.get_ea_utils_stats'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.calculate_fastq_stats,
-                             name='kb_ea_utils_dev.calculate_fastq_stats',
+        self.method_authentication['kb_ea_utils.get_ea_utils_stats'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.calculate_fastq_stats,
+                             name='kb_ea_utils.calculate_fastq_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.calculate_fastq_stats'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.run_Fastq_Multx,
-                             name='kb_ea_utils_dev.run_Fastq_Multx',
+        self.method_authentication['kb_ea_utils.calculate_fastq_stats'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.run_Fastq_Multx,
+                             name='kb_ea_utils.run_Fastq_Multx',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.run_Fastq_Multx'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.run_Fastq_Join,
-                             name='kb_ea_utils_dev.run_Fastq_Join',
+        self.method_authentication['kb_ea_utils.run_Fastq_Multx'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.run_Fastq_Join,
+                             name='kb_ea_utils.run_Fastq_Join',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.run_Fastq_Join'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.exec_Fastq_Join,
-                             name='kb_ea_utils_dev.exec_Fastq_Join',
+        self.method_authentication['kb_ea_utils.run_Fastq_Join'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.exec_Fastq_Join,
+                             name='kb_ea_utils.exec_Fastq_Join',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.exec_Fastq_Join'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.exec_Fastq_Join_OneLibrary,
-                             name='kb_ea_utils_dev.exec_Fastq_Join_OneLibrary',
+        self.method_authentication['kb_ea_utils.exec_Fastq_Join'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.exec_Fastq_Join_OneLibrary,
+                             name='kb_ea_utils.exec_Fastq_Join_OneLibrary',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.exec_Fastq_Join_OneLibrary'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.exec_Determine_Phred,
-                             name='kb_ea_utils_dev.exec_Determine_Phred',
+        self.method_authentication['kb_ea_utils.exec_Fastq_Join_OneLibrary'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.exec_Determine_Phred,
+                             name='kb_ea_utils.exec_Determine_Phred',
                              types=[dict])
-        self.method_authentication['kb_ea_utils_dev.exec_Determine_Phred'] = 'required' # noqa
-        self.rpc_service.add(impl_kb_ea_utils_dev.status,
-                             name='kb_ea_utils_dev.status',
+        self.method_authentication['kb_ea_utils.exec_Determine_Phred'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_ea_utils.status,
+                             name='kb_ea_utils.status',
                              types=[dict])
         authurl = config.get(AUTH) if config else None
         self.auth_client = _KBaseAuth(authurl)
@@ -421,7 +421,7 @@ class Application(object):
                             err = JSONServerError()
                             err.data = (
                                 'Authentication required for ' +
-                                'kb_ea_utils_dev ' +
+                                'kb_ea_utils ' +
                                 'but no authentication header was passed')
                             raise err
                         elif token is None and auth_req == 'optional':

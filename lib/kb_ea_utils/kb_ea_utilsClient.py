@@ -17,7 +17,7 @@ except:
     from baseclient import BaseClient as _BaseClient  # @Reimport
 
 
-class kb_ea_utils_dev(object):
+class kb_ea_utils(object):
 
     def __init__(
             self, url=None, timeout=30 * 60, user_id=None,
@@ -46,7 +46,7 @@ class kb_ea_utils_dev(object):
         :returns: instance of String
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.get_fastq_ea_utils_stats',
+            'kb_ea_utils.get_fastq_ea_utils_stats',
             [input_params], self._service_ver, context)
 
     def run_app_fastq_ea_utils_stats(self, input_params, context=None):
@@ -63,7 +63,7 @@ class kb_ea_utils_dev(object):
            "report_name" of String, parameter "report_ref" of String
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.run_app_fastq_ea_utils_stats',
+            'kb_ea_utils.run_app_fastq_ea_utils_stats',
             [input_params], self._service_ver, context)
 
     def get_ea_utils_stats(self, input_params, context=None):
@@ -76,7 +76,7 @@ class kb_ea_utils_dev(object):
         :returns: instance of String
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.get_ea_utils_stats',
+            'kb_ea_utils.get_ea_utils_stats',
             [input_params], self._service_ver, context)
 
     def calculate_fastq_stats(self, input_params, context=None):
@@ -105,7 +105,7 @@ class kb_ea_utils_dev(object):
            mapping from String to Double
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.calculate_fastq_stats',
+            'kb_ea_utils.calculate_fastq_stats',
             [input_params], self._service_ver, context)
 
     def run_Fastq_Multx(self, params, context=None):
@@ -131,7 +131,7 @@ class kb_ea_utils_dev(object):
            parameter "report_name" of String, parameter "report_ref" of String
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.run_Fastq_Multx',
+            'kb_ea_utils.run_Fastq_Multx',
             [params], self._service_ver, context)
 
     def run_Fastq_Join(self, params, context=None):
@@ -149,7 +149,7 @@ class kb_ea_utils_dev(object):
            parameter "report_name" of String, parameter "report_ref" of String
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.run_Fastq_Join',
+            'kb_ea_utils.run_Fastq_Join',
             [params], self._service_ver, context)
 
     def exec_Fastq_Join(self, params, context=None):
@@ -168,7 +168,7 @@ class kb_ea_utils_dev(object):
            parameter "output_unjoined_reads_ref" of type "data_obj_ref"
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.exec_Fastq_Join',
+            'kb_ea_utils.exec_Fastq_Join',
             [params], self._service_ver, context)
 
     def exec_Fastq_Join_OneLibrary(self, params, context=None):
@@ -187,7 +187,7 @@ class kb_ea_utils_dev(object):
            parameter "output_unjoined_reads_ref" of type "data_obj_ref"
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.exec_Fastq_Join_OneLibrary',
+            'kb_ea_utils.exec_Fastq_Join_OneLibrary',
             [params], self._service_ver, context)
 
     def exec_Determine_Phred(self, params, context=None):
@@ -202,9 +202,9 @@ class kb_ea_utils_dev(object):
            structure: parameter "phred_type" of String
         """
         return self._client.call_method(
-            'kb_ea_utils_dev.exec_Determine_Phred',
+            'kb_ea_utils.exec_Determine_Phred',
             [params], self._service_ver, context)
 
     def status(self, context=None):
-        return self._client.call_method('kb_ea_utils_dev.status',
+        return self._client.call_method('kb_ea_utils.status',
                                         [], self._service_ver, context)
