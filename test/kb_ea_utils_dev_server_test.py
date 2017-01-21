@@ -295,8 +295,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
                                 'meta':{},
                                 'provenance':[
                                     {
-                                        'service':'MEGAHIT',
-                                        'method':'test_megahit'
+                                        'service':'kb_ea_utils',
+                                        'method':'test_run_ea-utils'
                                     }
                                 ]
                             }]
@@ -420,8 +420,8 @@ class kb_ea_utils_devTest(unittest.TestCase):
                                 'meta':{},
                                 'provenance':[
                                     {
-                                        'service':'MEGAHIT',
-                                        'method':'test_megahit'
+                                        'service':'kb_ea_utils',
+                                        'method':'test_run_ea-utils'
                                     }
                                 ]
                             }]
@@ -464,7 +464,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TESTS 0.1-0.4: get Fastq Stats
     #
-    def test_get_fastq_ea_utils_stats(self):
+    def hide_get_fastq_ea_utils_stats(self):
         print ("\n\nRUNNING: test_get_fastq_ea_utils_stats()")
         print ("========================================\n\n")
         # figure out where the test data lives
@@ -480,7 +480,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('EA_UTILS_STATS_str:')
         print(ea_utils_stats_str)
 
-    def test_run_app_fastq_ea_utils_stats(self):
+    def hide_run_app_fastq_ea_utils_stats(self):
         print ("\n\nRUNNING: test_run_app_fastq_ea_utils_stats()")
         print ("============================================\n\n")
         # figure out where the test data lives
@@ -496,7 +496,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('REPORT:')
         pprint(report)
 
-    def test_get_ea_utils_stats(self):
+    def hide_get_ea_utils_stats(self):
         print ("\n\nRUNNING: test_get_ea_utils_stats()")
         print ("==================================\n\n")
         fastq_file = "data/mxtest_unit.fwd.fq"
@@ -506,7 +506,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
         print('REPORT:')
         pprint(report)
 
-    def test_calculate_fastq_stats(self):
+    def hide_calculate_fastq_stats(self):
         print ("\n\nRUNNING: test_calculate_fastq_stats()")
         print ("=====================================\n\n")
         fastq_file = "data/mxtest_unit.fwd.fq"
@@ -633,7 +633,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 3: run Fastq_Multx against paired end library in auto-detect mode
     #
-    def test_run_Fastq_Multx_PE_autodetect_mode(self):
+    def hide_run_Fastq_Multx_PE_autodetect_mode(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode()")
         print ("==================================================\n\n")
@@ -690,7 +690,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 4: run Fastq_Multx against paired end library in manual mode with barcodes in header
     #
-    def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
+    def hide_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
         print ("=================================================================\n\n")
@@ -747,7 +747,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 5: run Fastq_Join against paired end library
     #
-    def test_run_Fastq_Join_PE_lib(self):
+    def hide_run_Fastq_Join_PE_lib(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Join_PE_lib()")
         print ("=====================================\n\n")
@@ -784,7 +784,7 @@ class kb_ea_utils_devTest(unittest.TestCase):
 
     ### TEST 6: run Fastq_Join against paired end library reads set
     #
-    def test_run_Fastq_Join_PE_readsSet(self):
+    def hide_run_Fastq_Join_PE_readsSet(self):
 
         print ("\n\nRUNNING: test_run_Fastq_Join_PE_readsSet()")
         print ("==========================================\n\n")
