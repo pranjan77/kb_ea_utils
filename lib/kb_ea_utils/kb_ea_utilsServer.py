@@ -20,7 +20,7 @@ from kb_ea_utils.authclient import KBaseAuth as _KBaseAuth
 
 DEPLOY = 'KB_DEPLOYMENT_CONFIG'
 SERVICE = 'KB_SERVICE_NAME'
-AUTH = 'auth-server-url'
+AUTH = 'auth-service-url'
 
 # Note that the error fields do not match the 2.0 JSONRPC spec
 
@@ -109,7 +109,11 @@ class JSONRPCServiceCustom(JSONRPCService):
             # Exception was raised inside the method.
             newerr = JSONServerError()
             newerr.trace = traceback.format_exc()
-            newerr.data = e.message
+            if isinstance(e.message, basestring):
+                newerr.data = e.message
+            else:
+                # Some exceptions embed other exceptions as the message
+                newerr.data = repr(e.message)
             raise newerr
         return result
 
@@ -332,19 +336,19 @@ class Application(object):
         self.rpc_service.add(impl_kb_ea_utils.get_fastq_ea_utils_stats,
                              name='kb_ea_utils.get_fastq_ea_utils_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils.get_fastq_ea_utils_stats'] = 'required' # noqa
+        self.method_authentication['kb_ea_utils.get_fastq_ea_utils_stats'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_ea_utils.run_app_fastq_ea_utils_stats,
                              name='kb_ea_utils.run_app_fastq_ea_utils_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils.run_app_fastq_ea_utils_stats'] = 'required' # noqa
+        self.method_authentication['kb_ea_utils.run_app_fastq_ea_utils_stats'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_ea_utils.get_ea_utils_stats,
                              name='kb_ea_utils.get_ea_utils_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils.get_ea_utils_stats'] = 'required' # noqa
+        self.method_authentication['kb_ea_utils.get_ea_utils_stats'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_ea_utils.calculate_fastq_stats,
                              name='kb_ea_utils.calculate_fastq_stats',
                              types=[dict])
-        self.method_authentication['kb_ea_utils.calculate_fastq_stats'] = 'required' # noqa
+        self.method_authentication['kb_ea_utils.calculate_fastq_stats'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_ea_utils.status,
                              name='kb_ea_utils.status',
                              types=[dict])
