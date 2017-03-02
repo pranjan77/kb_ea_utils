@@ -16,6 +16,7 @@ from pprint import pprint
 from biokbase.workspace.client import Workspace as workspaceService
 from kb_ea_utils.kb_ea_utilsImpl import kb_ea_utils
 from kb_ea_utils.kb_ea_utilsServer import MethodContext
+from kb_ea_utils.authclient import KBaseAuth as _KBaseAuth
 
 
 class kb_ea_utilsTest(unittest.TestCase):
@@ -23,9 +24,16 @@ class kb_ea_utilsTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         token = environ.get('KB_AUTH_TOKEN', None)
-        user_id = requests.post(
-            'https://kbase.us/services/authorization/Sessions/Login',
-            data='token={}&fields=user_id'.format(token)).json()['user_id']
+        config_file = environ.get('KB_DEPLOYMENT_CONFIG', None)
+        cls.cfg = {}
+        config = ConfigParser()
+        config.read(config_file)
+        for nameval in config.items('kb_ea_utils'):
+            cls.cfg[nameval[0]] = nameval[1]
+        authServiceUrl = cls.cfg.get('auth-service-url',
+                "https://kbase.us/services/authorization/Sessions/Login")
+        auth_client = _KBaseAuth(authServiceUrl)
+        user_id = auth_client.get_user(token)
         # WARNING: don't call any logging methods on the context object,
         # it'll result in a NoneType error
         cls.ctx = MethodContext(None)
@@ -37,12 +45,6 @@ class kb_ea_utilsTest(unittest.TestCase):
                              'method_params': []
                              }],
                         'authenticated': 1})
-        config_file = environ.get('KB_DEPLOYMENT_CONFIG', None)
-        cls.cfg = {}
-        config = ConfigParser()
-        config.read(config_file)
-        for nameval in config.items('kb_ea_utils'):
-            cls.cfg[nameval[0]] = nameval[1]
         cls.wsURL = cls.cfg['workspace-url']
         cls.wsClient = workspaceService(cls.wsURL, token=token)
         cls.serviceImpl = kb_ea_utils(cls.cfg)

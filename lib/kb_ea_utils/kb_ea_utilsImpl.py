@@ -30,9 +30,9 @@ class kb_ea_utils:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.0.0"
-    GIT_URL = "git@github.com:msneddon/kb_ea_utils"
-    GIT_COMMIT_HASH = "e642d722169c442856846ecf813ccd0565d761a3"
+    VERSION = "1.0.1"
+    GIT_URL = "https://github.com/rsutormin/kb_ea_utils"
+    GIT_COMMIT_HASH = "9f045987bcc8226a961be4e67aeaa8ec24576f53"
 
     #BEGIN_CLASS_HEADER
     def log(self, target, message):
