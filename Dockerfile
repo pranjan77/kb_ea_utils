@@ -29,6 +29,7 @@ RUN mkdir -p /kb/module && \
     rm -rf workspace_deluxe
 
 COPY ./ /kb/module
+RUN chmod -R a+rw /kb/module
 WORKDIR /kb/module
 
 RUN make all
