@@ -1,0 +1,148 @@
+{
+	"ver": "0.0.1",
+	
+	"authors": [
+		"dylan"
+	],
+	"contact": "help@kbase.us",
+	"visible": true,
+	"categories": ["active", "reads" ],
+	"widgets": {
+		"input": null,
+		"output": "kbaseReportView"
+	},
+	"parameters": [
+		{
+			"id": "input_reads_ref",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": ["KBaseFile.PairedEndLibrary", "KBaseSets.ReadsSet"]
+			}
+		},
+		{
+			"id": "output_reads_name",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": ["KBaseFile.SingleEndLibrary", "KBaseSets.ReadsSet"],
+				"is_output_name": true
+			}
+                },
+		{
+			"id": "verbose",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "0" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "reverse_complement",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "1" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "max_perc_dist",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "8" ],
+			"field_type": "text",
+			"text_options": {
+				"validate_as": "int",
+				"min_int": 0,
+				"max_int": 50
+			}
+		},
+		{
+			"id": "min_base_overlap",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "6" ],
+			"field_type": "text",
+			"text_options": {
+				"validate_as": "int",
+				"min_int": 0
+			}
+		}
+	],
+
+	"behavior": {
+		"service-mapping": {
+			"url": "",
+			"name": "kb_ea_utils",
+			"method": "run_Fastq_Join",
+			"input_mapping": [
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
+				},
+				{
+					"input_parameter": "input_reads_ref",
+					"target_property": "input_reads_ref",
+					"target_type_transform": "resolved-ref"
+
+				},
+				{
+					"input_parameter": "output_reads_name",
+					"target_property": "output_reads_name"
+
+				},
+				{
+					"input_parameter": "verbose",
+					"target_property": "verbose"
+
+				},
+				{
+					"input_parameter": "reverse_complement",
+					"target_property": "reverse_complement"
+
+				},
+				{
+					"input_parameter": "max_perc_dist",
+					"target_property": "max_perc_dist"
+
+				},
+				{
+					"input_parameter": "min_base_overlap",
+					"target_property": "min_base_overlap"
+
+				}
+			],
+			"output_mapping": [
+				{
+					"service_method_output_path": [0, "report_name"],
+					"target_property": "report_name"
+				},
+				{
+					"service_method_output_path": [0, "report_ref"],
+					"target_property": "report_ref"
+				},
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
+				}
+			]
+		}
+	},
+	"job_id_output_field": "docker"
+}
