@@ -29,8 +29,6 @@ class kb_ea_utilsTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         token = environ.get('KB_AUTH_TOKEN', None)
-        cls.ctx = {'token': token}
-        cls.token = token
         config_file = environ.get('KB_DEPLOYMENT_CONFIG', None)
         cls.cfg = {}
         config = ConfigParser()
@@ -52,6 +50,7 @@ class kb_ea_utilsTest(unittest.TestCase):
                              'method_params': []
                              }],
                         'authenticated': 1})
+
         config_file = environ.get('KB_DEPLOYMENT_CONFIG', None)
         cls.cfg = {}
         config = ConfigParser()
@@ -156,7 +155,7 @@ class kb_ea_utilsTest(unittest.TestCase):
         """
 
         header = dict()
-        header["Authorization"] = "Oauth {0}".format(cls.token)
+        header["Authorization"] = "Oauth {0}".format(cls.ctx['token'])
 
         if file_path is None:
             raise Exception("No file given for upload to SHOCK!")
@@ -185,7 +184,7 @@ class kb_ea_utilsTest(unittest.TestCase):
 
     @classmethod
     def delete_shock_node(cls, node_id):
-        header = {'Authorization': 'Oauth {0}'.format(cls.token)}
+        header = {'Authorization': 'Oauth {0}'.format(cls.ctx['token'])}
         requests.delete(cls.shockURL + '/node/' + node_id, headers=header,
                         allow_redirects=True)
         print('Deleted shock node ' + node_id)
@@ -193,7 +192,7 @@ class kb_ea_utilsTest(unittest.TestCase):
 
     @classmethod
     def delete_shock_node(cls, node_id):
-        header = {'Authorization': 'Oauth {0}'.format(cls.token)}
+        header = {'Authorization': 'Oauth {0}'.format(cls.ctx['token'])}
         requests.delete(cls.shockURL + '/node/' + node_id, headers=header,
                         allow_redirects=True)
         print('Deleted shock node ' + node_id)
