@@ -16,7 +16,7 @@ import us.kbase.common.service.UnauthorizedException;
 /**
  * <p>Original spec-file module name: kb_ea_utils</p>
  * <pre>
- * Utilities for converting KBaseAssembly types to KBaseFile types
+ * Utilities for Reads Processing
  * </pre>
  */
 public class KbEaUtilsClient {
@@ -235,6 +235,91 @@ public class KbEaUtilsClient {
         args.add(inputParams);
         TypeReference<List<EaReport>> retType = new TypeReference<List<EaReport>>() {};
         List<EaReport> res = caller.jsonrpcCall("kb_ea_utils.calculate_fastq_stats", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_Fastq_Multx</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbeautils.RunFastqMultxInput RunFastqMultxInput} (original type "run_Fastq_Multx_Input")
+     * @return   parameter "returnVal" of type {@link us.kbase.kbeautils.RunFastqMultxOutput RunFastqMultxOutput} (original type "run_Fastq_Multx_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public RunFastqMultxOutput runFastqMultx(RunFastqMultxInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<RunFastqMultxOutput>> retType = new TypeReference<List<RunFastqMultxOutput>>() {};
+        List<RunFastqMultxOutput> res = caller.jsonrpcCall("kb_ea_utils.run_Fastq_Multx", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_Fastq_Join</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbeautils.RunFastqJoinInput RunFastqJoinInput} (original type "run_Fastq_Join_Input")
+     * @return   parameter "returnVal" of type {@link us.kbase.kbeautils.RunFastqJoinOutput RunFastqJoinOutput} (original type "run_Fastq_Join_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public RunFastqJoinOutput runFastqJoin(RunFastqJoinInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<RunFastqJoinOutput>> retType = new TypeReference<List<RunFastqJoinOutput>>() {};
+        List<RunFastqJoinOutput> res = caller.jsonrpcCall("kb_ea_utils.run_Fastq_Join", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: exec_Fastq_Join</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbeautils.RunFastqJoinInput RunFastqJoinInput} (original type "run_Fastq_Join_Input")
+     * @return   parameter "returnVal" of type {@link us.kbase.kbeautils.ExecFastqJoinOutput ExecFastqJoinOutput} (original type "exec_Fastq_Join_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExecFastqJoinOutput execFastqJoin(RunFastqJoinInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExecFastqJoinOutput>> retType = new TypeReference<List<ExecFastqJoinOutput>>() {};
+        List<ExecFastqJoinOutput> res = caller.jsonrpcCall("kb_ea_utils.exec_Fastq_Join", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: exec_Fastq_Join_OneLibrary</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbeautils.RunFastqJoinInput RunFastqJoinInput} (original type "run_Fastq_Join_Input")
+     * @return   parameter "returnVal" of type {@link us.kbase.kbeautils.ExecFastqJoinOutput ExecFastqJoinOutput} (original type "exec_Fastq_Join_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExecFastqJoinOutput execFastqJoinOneLibrary(RunFastqJoinInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExecFastqJoinOutput>> retType = new TypeReference<List<ExecFastqJoinOutput>>() {};
+        List<ExecFastqJoinOutput> res = caller.jsonrpcCall("kb_ea_utils.exec_Fastq_Join_OneLibrary", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: exec_Determine_Phred</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbeautils.ExecDeterminePhredInput ExecDeterminePhredInput} (original type "exec_Determine_Phred_Input")
+     * @return   parameter "returnVal" of type {@link us.kbase.kbeautils.ExecDeterminePhredOutput ExecDeterminePhredOutput} (original type "exec_Determine_Phred_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ExecDeterminePhredOutput execDeterminePhred(ExecDeterminePhredInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ExecDeterminePhredOutput>> retType = new TypeReference<List<ExecDeterminePhredOutput>>() {};
+        List<ExecDeterminePhredOutput> res = caller.jsonrpcCall("kb_ea_utils.exec_Determine_Phred", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

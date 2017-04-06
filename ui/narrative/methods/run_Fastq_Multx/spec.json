@@ -1,0 +1,291 @@
+{
+	"ver": "0.0.1",
+	
+	"authors": [
+		"dylan"
+	],
+	"contact": "help@kbase.us",
+	"visible": true,
+	"categories": ["active", "reads" ],
+	"widgets": {
+		"input": null,
+		"output": "kbaseReportView"
+	},
+	"parameters": [
+	        {
+            	"id": "index_info",
+            	"optional": true,
+            	"advanced": false,
+		"allow_multiple": false,
+            	"default_values": [ "" ],
+            	"field_type": "textarea",
+            	"textarea_options" : {
+                		    "n_rows" : 10
+         			    }
+		},
+		{
+			"id": "desc",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"is_output_name": false
+			}
+		},
+		{
+			"id": "input_reads_ref",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
+			}
+		},
+		{
+			"id": "input_index_ref",
+			"optional": true,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
+			}
+		},
+		{
+			"id": "output_reads_name",
+			"optional": false,
+			"advanced": false,
+			"allow_multiple": false,
+			"default_values": [ "" ],
+			"field_type": "text",
+			"text_options": {
+				"valid_ws_types": ["KBaseSets.ReadsSet"],
+				"is_output_name": true
+			}
+		},
+                {
+                        "id": "index_mode",
+                        "optional": false,
+                        "advanced": false,
+                        "allow_multiple": false,
+                        "default_values": [ "manual" ],
+                        "field_type": "dropdown",
+                                "dropdown_options": {
+                                        "options": [
+                                                {
+                                                        "value": "manual",
+                                                        "display": "Manual Barcode Configuration",
+                                                        "id": "manual",
+                                                        "ui-name": "manual"
+                                                },
+                                                {
+                                                        "value": "index-lane",
+                                                        "display": "Index Read Lane",
+                                                        "id": "index-lane",
+                                                        "ui-name": "index-lane"
+                                                },
+                                                {
+                                                        "value": "auto-detect",
+                                                        "display": "Auto Detect from Standard Barcodes",
+                                                        "id": "auto-detect",
+                                                        "ui-name": "auto-detect"
+                                                }
+                                        ]
+                                }
+                },
+		{
+			"id": "use_header_barcode",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "0" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "force_beg",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "0" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "force_end",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "0" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "trim_barcode",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "1" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "suggest_barcodes",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "0" ],
+			"field_type": "checkbox",
+			"checkbox_options": {
+				"checked_value": "1",
+				"unchecked_value": "0"
+			}
+		},
+		{
+			"id": "mismatch_max",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "1" ],
+			"field_type": "text",
+			"text_options": {
+			        "validate_as": "int",
+				"min_int": 0,
+				"max_int": 3
+			}
+		},
+		{
+			"id": "edit_dist_min",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "2" ],
+			"field_type": "text",
+			"text_options": {
+			        "validate_as": "int",
+				"min_int": 1
+			}
+		},
+		{
+			"id": "barcode_base_qual_score_min",
+			"optional": true,
+			"advanced": true,
+			"allow_multiple": false,
+			"default_values": [ "1" ],
+			"field_type": "text",
+			"text_options": {
+			        "validate_as": "int",
+				"min_int": 0
+			}
+		}
+
+	],
+
+	"parameter-groups": [
+		{
+			"id": "barcode_options",
+			"parameters": ["use_header_barcode", "trim_barcode", "suggest_barcodes"],
+			"optional": true,
+			"allow_multiple": false,
+			"with_border": true
+		},	
+		{
+			"id": "force_edge_options",
+			"parameters": ["force_beg", "force_end"],
+			"optional": true,
+			"allow_multiple": false,
+			"with_border": true
+		},	
+		{
+			"id": "dist_and_qual_params",
+			"parameters": ["mismatch_max", "edit_dist_min", "barcode_base_qual_score_min"],
+			"optional": true,
+			"allow_multiple": false,
+			"with_border": true
+		}	
+	],
+
+	"behavior": {
+		"service-mapping": {
+			"url": "",
+			"name": "kb_ea_utils",
+			"method": "run_Fastq_Multx",
+			"input_mapping": [
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
+				},
+				{
+					"input_parameter": "desc",
+					"target_property": "desc"
+				},
+				{
+					"input_parameter": "index_info",
+					"target_property": "index_info"
+				},
+				{
+					"input_parameter": "input_reads_ref",
+					"target_property": "input_reads_ref",
+					"target_type_transform": "resolved-ref"
+				},
+				{
+					"input_parameter": "input_index_ref",
+					"target_property": "input_index_ref",
+					"target_type_transform": "resolved-ref"
+				},
+				{
+					"input_parameter": "output_reads_name",
+					"target_property": "output_reads_name"
+				},
+				{
+					"input_parameter": "index_mode",
+					"target_property": "index_mode"
+				},
+				{
+					"input_parameter": "barcode_options",
+					"target_property": "barcode_options"
+				},
+				{
+					"input_parameter": "force_edge_options",
+					"target_property": "force_edge_options"
+				},
+				{
+					"input_parameter": "dist_and_qual_params",
+					"target_property": "dist_and_qual_params"
+				}
+			],
+			"output_mapping": [
+				{
+					"service_method_output_path": [0, "report_name"],
+					"target_property": "report_name"
+				},
+				{
+					"service_method_output_path": [0, "report_ref"],
+					"target_property": "report_ref"
+				},
+				{
+					"narrative_system_variable": "workspace",
+					"target_property": "workspace_name"
+				}
+			]
+		}
+	},
+	"job_id_output_field": "docker"
+}

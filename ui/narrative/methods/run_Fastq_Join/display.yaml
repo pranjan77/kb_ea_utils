@@ -1,0 +1,90 @@
+#
+# Define basic display information
+#
+name     : Join Overlapping Mate Pairs with ea-utils FASTQ-JOIN
+tooltip  : |
+    Run the ea-utils program fastq-join to join overlapping mate pairs
+
+screenshots :
+    []
+
+icon: ea-utils-pink.png
+
+
+#
+# Define the set of other narrative methods that should be suggested to the user.
+#
+suggestions :
+    apps:
+        related :
+            []
+        next :
+            []
+    methods:
+        related :
+            []
+        next :
+            []
+
+
+#
+# Configure the display and description of the parameters
+#
+parameters :
+	input_reads_ref :
+		ui-name : |
+			Input reads
+		short-hint : |
+			The reads library or reads library set which you want to join
+		long-hint  : |
+			The reads library or reads library set which you want to join
+	output_reads_name :
+		ui-name : |
+			Output reads
+		short-hint : |
+			Base name for output reads library or reads library set object
+		long-hint : |
+			Base name for output reads library or reads library set object
+	verbose :
+		ui-name : |
+			Verbose
+		short-hint : |
+			Get most chatty output
+		long-hint : |
+			Get most chatty output
+	reverse_complement :
+		ui-name : |
+			Reverse complement
+		short-hint : |
+			Reverse complement the reverse reads during overlap check (default: Yes)
+		long-hint : |
+			Reverse complement the reverse reads during overlap check (default: Yes)
+	max_perc_dist :
+		ui-name : |
+			Max overlap mismatch (percentage)
+		short-hint : |
+			Maximum percentage (0-50) that overlap can mismatch (default: 8)
+		long-hint : |
+			Maximum percentage (0-50) that overlap can mismatch (default: 8)
+	min_base_overlap :
+		ui-name : |
+			Min base overlap
+		short-hint : |
+			Minimum number of bases to consider an overlap (default: 6)
+		long-hint : |
+			Minimum number of bases to consider an overlap (default: 6)
+
+
+#
+# Desc
+#
+description : |
+   <p>This method joins overlapping mate pairs into single reads using the FASTQ-JOIN program in the ea-utils package: https://expressionanalysis.github.io/ea-utils/</p>
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
+    Dylan Chivian</p>
+
+
+#
+# Pubs
+#
+publications :
