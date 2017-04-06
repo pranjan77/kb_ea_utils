@@ -34,15 +34,9 @@ class kb_ea_utils:
     # the latter method is running.
     ######################################### noqa
 
-    VERSION = "1.0.1"
-    GIT_URL = "https://github.com/rsutormin/kb_ea_utils"
-    GIT_COMMIT_HASH = "9f045987bcc8226a961be4e67aeaa8ec24576f53"
-
-    '''
-    VERSION = "0.0.3"
-    GIT_URL = "https://github.com/dcchivian/kb_ea_utils_dev"
-    GIT_COMMIT_HASH = "a4477af2bb1e93401af646934aa8c9dcecf129e3"
-    '''
+    VERSION = ""
+    GIT_URL = "https://github.com/uganapathy/kb_ea_utils"
+    GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
     FASTQ_STATS     = "/usr/local/bin/fastq-stats"
