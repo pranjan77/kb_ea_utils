@@ -35,7 +35,7 @@ class kb_ea_utils:
     ######################################### noqa
 
     VERSION = ""
-    GIT_URL = "https://github.com/uganapathy/kb_ea_utils"
+    GIT_URL = ""
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
@@ -209,7 +209,7 @@ class kb_ea_utils:
         info = None
         readLibrary = None
         try:
-            readLibrary = wsClient.get_objects([{'ref': input_reads_ref}])[0]
+            readLibrary = wsClient.get_objects2({'objects':[{'ref': input_reads_ref}]})['data'][0]
             info = readLibrary['info']
             readLibrary = readLibrary['data']
         except Exception as e:
@@ -502,7 +502,7 @@ class kb_ea_utils:
         except Exception as e:
             raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
         try:
-            if input_reads_obj_type == "KBaseFile.PairedEndLibarary":
+            if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
                 readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
                                                                   'interleaved': 'false'
                                                                   })
@@ -649,6 +649,7 @@ class kb_ea_utils:
 
         # Run
         #
+        print(multx_cmd)
         print('running fastq-multx:')
         print('    '+' '.join(multx_cmd))
         try:
@@ -676,13 +677,13 @@ class kb_ea_utils:
         p.stdout.close()
         retcode = p.wait()
         print('Return code: ' + str(retcode))
-        if p.returncode != 0:
-            raise ValueError('Error running fastq-multx, return code: ' +
-                             str(retcode) + '\n')        
 
         report += "\n".join(outputlines)
         self.log (console, "\n".join(outputlines))
 
+        if p.returncode != 0:
+            raise ValueError('Error running fastq-multx, return code: ' +
+                             str(retcode) + '\n')        
 
         # determine group_id_order
         #
