@@ -289,9 +289,89 @@ class kb_ea_utilsTest(unittest.TestCase):
                 'encoding':'UTF8',
                 'type':'fastq',
                 'size':reverse_shock_file['file']['size']
-
             },
             'interleaved':0,
+            'sequencing_tech':'artificial reads'
+        }
+
+        new_obj_info = self.wsClient.save_objects({
+                        'workspace':self.getWsName(),
+                        'objects':[
+                            {
+                                'type':'KBaseFile.PairedEndLibrary',
+                                'data':paired_end_library,
+                                'name':'test-'+str(lib_i)+'.pe.reads',
+                                'meta':{},
+                                'provenance':[
+                                    {
+                                        'service':'kb_ea_utils',
+                                        'method':'test_run_ea-utils'
+                                    }
+                                ]
+                            }]
+                        })[0]
+
+        # store it
+        if not hasattr(self.__class__, 'pairedEndLibInfo_list'):
+            self.__class__.pairedEndLibInfo_list = []
+            self.__class__.pairedEndLibName_list = []
+        for i in range(lib_i+1):
+            try:
+                assigned = self.__class__.pairedEndLibInfo_list[i]
+            except:
+                self.__class__.pairedEndLibInfo_list.append(None)
+                self.__class__.pairedEndLibName_list.append(None)
+
+        self.__class__.pairedEndLibInfo_list[lib_i] = new_obj_info
+        self.__class__.pairedEndLibName_list[lib_i] = read_lib_basename
+        return new_obj_info
+
+
+    def getPairedEndInterleavedLibInfo(self, read_lib_basename, lib_i=0):
+        if hasattr(self.__class__, 'pairedEndLibInfo_list'):
+            try:
+                info = self.__class__.pairedEndLibInfo_list[lib_i]
+                name = self.__class__.pairedEndLibName_list[lib_i]
+                if info != None:
+                    if name != read_lib_basename:
+                        self.__class__.singleEndLibInfo_list[lib_i] = None
+                        self.__class__.singleEndLibName_list[lib_i] = None
+                    else:
+                        return info
+            except:
+                pass
+
+        # 1) upload files to shock
+        token = self.ctx['token']
+        forward_shock_file = self.upload_file_to_shock('data/'+read_lib_basename+'.inter.fq')
+        #pprint(forward_shock_file)
+        #pprint(reverse_shock_file)
+
+        # 2) create handle
+        hs = HandleService(url=self.handleURL, token=token)
+        forward_handle = hs.persist_handle({
+                                        'id' : forward_shock_file['id'],
+                                        'type' : 'shock',
+                                        'url' : self.shockURL,
+                                        'file_name': forward_shock_file['file']['name'],
+                                        'remote_md5': forward_shock_file['file']['checksum']['md5']})
+
+        # 3) save to WS
+        paired_end_library = {
+            'lib1': {
+                'file': {
+                    'hid':forward_handle,
+                    'file_name': forward_shock_file['file']['name'],
+                    'id': forward_shock_file['id'],
+                    'url': self.shockURL,
+                    'type':'shock',
+                    'remote_md5':forward_shock_file['file']['checksum']['md5']
+                },
+                'encoding':'UTF8',
+                'type':'fastq',
+                'size':forward_shock_file['file']['size']
+            },
+            'interleaved':1,
             'sequencing_tech':'artificial reads'
         }
 
@@ -704,15 +784,16 @@ class kb_ea_utilsTest(unittest.TestCase):
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
 
 
-    ### TEST 4: run Fastq_Multx against paired end library in manual mode with barcodes in header
-    #
-    def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
+    ### Used by TEST 4 and TEST 5
 
-        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
-        print ("=================================================================\n\n")
+    def run_Fastq_Multx_PE_autodetect_mode_barcode_header(self, interLeaved=False):
 
         # figure out where the test data lives
-        pe_lib_info = self.getPairedEndLibInfo('mxtest-header')
+        if (interLeaved):
+            pe_lib_info = self.getPairedEndInterleavedLibInfo('mxtest-header')
+        else:
+            pe_lib_info = self.getPairedEndLibInfo('mxtest-header')
+
         pprint(pe_lib_info)
 
         #index_lane_lib_info = self.getPairedEndLibInfo('mxtest_index_lane_unit')
@@ -761,7 +842,30 @@ class kb_ea_utilsTest(unittest.TestCase):
         self.assertEqual(readsSet_info[2].split('-')[0],'KBaseSets.ReadsSet')
 
 
-    ### TEST 5: run Fastq_Join against paired end library
+    ### TEST 4: run Fastq_Multx against paired end library in autodetect mode with barcodes in header
+    #
+    def test_run_Fastq_Multx_PE_autodetect_mode_barcode_header(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
+        print ("         Input Lib is paired")
+        print ("=================================================================\n\n")
+
+        self.run_Fastq_Multx_PE_autodetect_mode_barcode_header(False)
+
+
+    ### TEST 5: run Fastq_Multx against interleaved paired end library in autodetect mode with barcodes in header
+    #
+
+    def test_run_Fastq_Multx_PE_IL_autodetect_mode_barcode_header(self):
+
+        print ("\n\nRUNNING: test_run_Fastq_Multx_PE_autodetect_mode_barcode_header()")
+        print ("         Input Lib is interleaved")
+        print ("=================================================================\n\n")
+
+        self.run_Fastq_Multx_PE_autodetect_mode_barcode_header(True)
+
+
+    ### TEST 6: run Fastq_Join against paired end library
     #
     def test_run_Fastq_Join_PE_lib(self):
 
@@ -798,7 +902,7 @@ class kb_ea_utilsTest(unittest.TestCase):
         self.assertEqual(readsLib_info[2].split('-')[0],'KBaseFile.SingleEndLibrary')
 
 
-    ### TEST 6: run Fastq_Join against paired end library reads set
+    ### TEST 7: run Fastq_Join against paired end library reads set
     #
     def test_run_Fastq_Join_PE_readsSet(self):
 
