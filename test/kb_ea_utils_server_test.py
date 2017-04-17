@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
+from mock import patch
 import os
 import json
 import time
@@ -473,7 +474,9 @@ class kb_ea_utilsTest(unittest.TestCase):
 
     ### TESTS 0.1-0.4: get Fastq Stats
     #
-    def test_get_fastq_ea_utils_stats(self):
+    @patch('biokbase.workspace.client.Workspace.get_objects',
+           side_effect=AssertionError('\n\n*****  Replace get_objects() with get_objects2()'))
+    def test_get_fastq_ea_utils_stats(self, mock):
         print ("\n\nRUNNING: test_get_fastq_ea_utils_stats()")
         print ("========================================\n\n")
         # figure out where the test data lives
@@ -488,8 +491,11 @@ class kb_ea_utilsTest(unittest.TestCase):
         ea_utils_stats_str = self.getImpl().get_fastq_ea_utils_stats(self.getContext(),params)
         print('EA_UTILS_STATS_str:')
         print(ea_utils_stats_str)
+        self.assertFalse(mock.called)
 
-    def test_run_app_fastq_ea_utils_stats(self):
+    @patch('biokbase.workspace.client.Workspace.get_objects',
+           side_effect=AssertionError('\n\n*****  Replace get_objects() with get_objects2()'))
+    def test_run_app_fastq_ea_utils_stats(self, mock):
         print ("\n\nRUNNING: test_run_app_fastq_ea_utils_stats()")
         print ("============================================\n\n")
         # figure out where the test data lives
@@ -504,6 +510,7 @@ class kb_ea_utilsTest(unittest.TestCase):
         report = self.getImpl().run_app_fastq_ea_utils_stats(self.getContext(),params)
         print('REPORT:')
         pprint(report)
+        self.assertFalse(mock.called)
 
     def test_get_ea_utils_stats(self):
         print ("\n\nRUNNING: test_get_ea_utils_stats()")
