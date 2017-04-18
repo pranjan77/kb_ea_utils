@@ -35,7 +35,7 @@ class kb_ea_utils:
     ######################################### noqa
 
     VERSION = ""
-    GIT_URL = "https://github.com/uganapathy/kb_ea_utils"
+    GIT_URL = ""
     GIT_COMMIT_HASH = ""
 
     #BEGIN_CLASS_HEADER
@@ -155,16 +155,7 @@ class kb_ea_utils:
         wsClient = workspaceService(self.workspaceURL)
         # add additional info to provenance here, in this case the input data object reference
         input_reads_ref = self.get_reads_ref_from_params(input_params)
-
-        info = None
-        readLibrary = None
-        try:
-            readLibrary = wsClient.get_objects2({'objects':[{'ref': input_reads_ref}]})['data'][0]
-            info = readLibrary['info']
-            readLibrary = readLibrary['data']
-        except Exception as e:
-            raise ValueError('Unable to get read library object from workspace: (' + input_reads_ref + ')' + str(e))
-
+        
         ea_utils_stats = ''
         ea_utils_stats = self.get_ea_utils_result(input_reads_ref, input_params)
 
@@ -206,15 +197,7 @@ class kb_ea_utils:
         workspace_name = input_params['workspace_name']
         provenance[0]['input_ws_objects'] = [input_reads_ref]
 
-        info = None
-        readLibrary = None
-        try:
-            readLibrary = wsClient.get_objects([{'ref': input_reads_ref}])[0]
-            info = readLibrary['info']
-            readLibrary = readLibrary['data']
-        except Exception as e:
-            raise ValueError('Unable to get read library object from workspace: (' + input_reads_ref + ')' + str(e))
-#        ref=['11665/5/2', '11665/10/7', '11665/11/1' ]
+        #ref=['11665/5/2', '11665/10/7', '11665/11/1' ]
         #ref=['11802/9/1']
         report = self.get_ea_utils_result(input_reads_ref, input_params)
         reportObj = {
@@ -502,7 +485,7 @@ class kb_ea_utils:
         except Exception as e:
             raise ValueError('Unable to get ReadsUtils Client' +"\n" + str(e))
         try:
-            if input_reads_obj_type == "KBaseFile.PairedEndLibarary":
+            if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
                 readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [input_reads_ref],
                                                                   'interleaved': 'false'
                                                                   })
@@ -649,6 +632,7 @@ class kb_ea_utils:
 
         # Run
         #
+        print(multx_cmd)
         print('running fastq-multx:')
         print('    '+' '.join(multx_cmd))
         try:
@@ -676,13 +660,13 @@ class kb_ea_utils:
         p.stdout.close()
         retcode = p.wait()
         print('Return code: ' + str(retcode))
-        if p.returncode != 0:
-            raise ValueError('Error running fastq-multx, return code: ' +
-                             str(retcode) + '\n')        
 
         report += "\n".join(outputlines)
         self.log (console, "\n".join(outputlines))
 
+        if p.returncode != 0:
+            raise ValueError('Error running fastq-multx, return code: ' +
+                             str(retcode) + '\n')        
 
         # determine group_id_order
         #
