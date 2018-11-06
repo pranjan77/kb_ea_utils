@@ -156,7 +156,7 @@ parameter-groups:
 # Desc
 #
 description : |
-   <p>This method demultiplexes a reads library into a reads set using the FASTQ-MULTX program in the ea-utils package: https://expressionanalysis.github.io/ea-utils/</p>
+   <p>This method demultiplexes a reads library into a reads set using the FASTQ-MULTX program in the EA Utils package.</p>
    <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
     Dylan Chivian</p>
 
@@ -167,3 +167,12 @@ description : |
 # Pubs
 #
 publications :
+    -
+        display-text: |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163
+
+    -
+        display-text: |
+            EA Utils package source:
+        link: https://expressionanalysis.github.io/ea-utils/
