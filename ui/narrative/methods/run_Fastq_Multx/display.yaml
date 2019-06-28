@@ -3,7 +3,7 @@
 #
 name     : Demultiplex with ea-utils FASTQ-MULTX
 tooltip  : |
-    Run the ea-utils program fastq-multx to demultiplex reads library into reads set
+    Run the fastq-multx program from ea-utils to demultiplex a reads library into reads sets.
 
 screenshots :
     []
@@ -33,102 +33,74 @@ suggestions :
 parameters :
 	index_mode :
 		ui-name : |
-			Barcode mode
+			Barcode Mode
 		short-hint : |
-			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
-		long-hint  : |
-			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure
+			Get Barcodes from separate Index Library, use default standards auto-detect, or manually configure.
 	index_info :
 		ui-name : |
-			Manual barcode map (if not Auto-detect nor Index lane library)
+			Manual Barcode Map (if not Auto-detect nor Index lane library)
 		short-hint : |
-			The Read Group to Barcode Mapping
-		long-hint  : |
-			Barcodes to Read Group (if 2 barcodes, hyphenate them), space delimited
+			The Read Group to Barcode Mapping. If there are two barcodes, hyphenate them, space delimited.
 	input_reads_ref :
 		ui-name : |
-			Input read library
+			Input Read Library
 		short-hint : |
-			The read library to examine
-		long-hint  : |
-			The read library for which you want to de-barcode
+			The read library to examine.
 	input_index_ref :
 		ui-name : |
-			Index lane library (optional)
+			Index Lane Library (optional)
 		short-hint : |
-			The index read library with the barcodes (split from the rest of the read)
-		long-hint  : |
-			The index read library with the barcodes (split from the rest of the read)
+			The index read library with the barcodes (split from the rest of the read).
 	desc :
 		ui-name : |
-			Output readsSet description
+			Output ReadsSet Description
 		short-hint : |
-			Describe demultiplexed set of read libraries
-		long-hint  : |
-			Describe demultiplexed set of read libraries
+			Describe the demultiplexed set of read libraries.
 	output_reads_name :
 		ui-name : |
-			Output readsSet
+			Output ReadsSet
 		short-hint : |
-			Base name for output read library or read library set object
-		long-hint : |
-			Base name for output read library or read library set object
+			The base name for the output read library or read library set object.
 	use_header_barcode :
 		ui-name : |
 			Find barcode in each fastq record header
 		short-hint : |
-			Use barcode in header instead of sequence row
-		long-hint  : |
-			Use barcode in header instead of sequence row
+			Use barcode in the header instead of sequence row.
 	force_beg :
 		ui-name : |
 			Require 5' start for barcode
 		short-hint : |
-			Require that there are no bases before barcode at Beginning
-		long-hint  : |
-			Require that there are no bases before barcode at Beginning
+			Require that there are no bases before the barcode at the beginning.
 	force_end :
 		ui-name : |
 			Require 3' end for barcode
 		short-hint : |
-			Require that there are no bases after barcode at End
-		long-hint  : |
-			Require that there are no bases after barcode at End
+			Require that there are no bases after the barcode at the end.
 	trim_barcode :
 		ui-name : |
 			Trim barcode from output reads
 		short-hint : |
-			Remove barcode from output sequence
-		long-hint  : |
-			Remove barcode from output sequence
+			Remove barcode from the output sequence.
 	suggest_barcodes :
 		ui-name : |
 			Just suggest barcodes (but don't demultiplex)
 		short-hint : |
-			Don't actually run demultiplex, just detect barcodes
-		long-hint  : |
-			Don't actually run demultiplex, just detect barcodes
+			Don't actually run demultiplex, just detect barcodes.
 	mismatch_max :
 		ui-name : |
-			Barcode mismatch max
+			Barcode Mismatch Max
 		short-hint : |
-			Maximum mismatches in barcode to accept
-		long-hint  : |
-			Maximum mismatches in barcode to accept
+			The maximum mismatches to accept in a barcode.
 	edit_dist_min :
 		ui-name : |
-			Edit distance min
+			Edit Distance Min.
 		short-hint : |
-			Minimum sequence distance between barcodes
-		long-hint  : |
-			Minimum sequence distance between barcodes
+			The minimum sequence distance between barcodes.
 	barcode_base_qual_score_min :
 		ui-name : |
-			Qual score min
+			Qual Score Min.
 		short-hint : |
-			Minimum qual score for a barcode base to accept
-		long-hint  : |
-			Minimum qual score for a barcode base to accept
+			The minimum quality score for a barcode base to accept.
 
 #
 # Configure the display and description of parameters
@@ -136,33 +108,28 @@ parameters :
 parameter-groups:
 	barcode_options :
 		ui-name : |
-			Barcode options
+			Barcode Options
 		short-hint : |
-			Where to find and what to do with barcode
+			Where to find and what to do with the barcode.
 	force_edge_options :
 		ui-name : |
-			Require terminal barcode
+			Require Terminal Barcode
 		short-hint : |
-			Whether barcode must be 5' or 3' of the read
-		long-hint  : |
-			Whether barcode must be 5' or 3' of the read
+			Whether the barcode must be at the 5' or 3' of the read.
 	dist_and_qual_params :
 		ui-name : |
-			Match parameters
+			Match Parameters
 		short-hint : |
-			Parameterization of match, edit distance, and qual score thresholds
+			Parameterization of match, edit distance, and quality score thresholds.
 
 #
 # Desc
 #
 description : |
-   <p>This method demultiplexes a reads library into a reads set using the FASTQ-MULTX program in the EA Utils package.</p>
-   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
-    Dylan Chivian</p>
+   <p>This App demultiplexes a reads library into a ReadsSet using the FASTQ-MULTX program in the EA Utils package. It is capable of automatically determining barcode IDs, and can verify that multiple reads are kept in-sync during demultiplexing.</p>
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Dylan Chivian.</p>
 
-
-   <p>fastq-multx - Demultiplexes a fastq. Capable of auto-determining barcode id's based on a master set fields. Keeps multiple reads in-sync during demultiplexing. Can verify that the reads are in-sync as well, and fail if they're not.</p>
-
+  
 #
 # Pubs
 #

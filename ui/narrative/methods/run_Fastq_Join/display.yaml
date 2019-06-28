@@ -3,7 +3,7 @@
 #
 name     : Join Overlapping Mate Pairs with ea-utils FASTQ-JOIN
 tooltip  : |
-    Run the ea-utils program fastq-join to join overlapping mate pairs
+    Run the ea-utils program fastq-join to join overlapping mate pairs.
 
 screenshots :
     []
@@ -33,55 +33,45 @@ suggestions :
 parameters :
 	input_reads_ref :
 		ui-name : |
-			Input reads
+			Input Reads
 		short-hint : |
-			The reads library or reads library set which you want to join
-		long-hint  : |
-			The reads library or reads library set which you want to join
+			The reads library or reads library set which you want to join.
 	output_reads_name :
 		ui-name : |
-			Output reads
+			Output Reads
 		short-hint : |
-			Base name for output reads library or reads library set object
-		long-hint : |
-			Base name for output reads library or reads library set object
+			The base name for output reads library or reads library set object.
 	verbose :
 		ui-name : |
 			Verbose
 		short-hint : |
-			Get most chatty output
-		long-hint : |
-			Get most chatty output
+			Log all events.
 	reverse_complement :
 		ui-name : |
-			Reverse complement
+			Reverse Complement
 		short-hint : |
-			Reverse complement the reverse reads during overlap check (default: Yes)
-		long-hint : |
-			Reverse complement the reverse reads during overlap check (default: Yes)
+			Reverse complement the reverse reads during overlap check (default is yes).
 	max_perc_dist :
 		ui-name : |
-			Max overlap mismatch (percentage)
+			Max Overlap Mismatch (Percentage)
 		short-hint : |
-			Maximum percentage (0-50) that overlap can mismatch (default: 8)
-		long-hint : |
-			Maximum percentage (0-50) that overlap can mismatch (default: 8)
+			The maximum percentage (0-50) that overlap can mismatch (default is 8).
 	min_base_overlap :
 		ui-name : |
-			Min base overlap
+			Min. Base Overlap
 		short-hint : |
-			Minimum number of bases to consider an overlap (default: 6)
-		long-hint : |
-			Minimum number of bases to consider an overlap (default: 6)
+			The minimum number of bases to consider an overlap (default is 6).
 
 
 #
 # Desc
 #
 description : |
-   <p>This method joins overlapping mate pairs into single reads using the FASTQ-JOIN program in the EA Utils package.</p>
-   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
-    Dylan Chivian</p>
+   <p>This App joins overlapping mate pairs into single reads using the FASTQ-JOIN program in the EA Utils package. Reads must be provided in an interleaved format, where reverse reads immediately follow their corresponding forward reads. The FASTQ-JOIN utility performs read pairing based on the percent similarity and length of the overlap. Ideally, the length of overlap should be at least ten base pairs; otherwise there is insufficient information with which to perform the read pairing. Note: depending on how the libraries were prepared there may be little to no expected overlap. In rare instances, the reverse reads may not be available, and read pairing would serve no purpose.</p>
+
+   <p>If successful, this App will produce a SingleEndLibrary object (joined reads) useful for downstream applications, such as assembly. In addition, this App will produce a PairedEndLibrary object (unjoined reads). Summary statistics are also provided, and include the total number of input reads, total number of joined reads, average length of the joined region, standard deviation of the length of the joined region, and the ea-utils version used.</p>
+
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Dylan Chivian. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
 
 
 #

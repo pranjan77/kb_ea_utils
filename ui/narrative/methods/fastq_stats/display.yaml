@@ -1,9 +1,9 @@
 #
 # Define basic display information
 #
-name     : Compute Simple Read Library Stats with ea-utils
+name     : Compute Simple Read Library Stats
 tooltip  : |
-    Run the ea-utils program fastq-stats to compute and print basic summary stats.
+    Run the EA Utils program fastq-stats to compute and print basic summary stats.
 
 screenshots :
     []
@@ -35,13 +35,12 @@ parameters :
         ui-name : |
             Read Library
         short-hint : |
-            The read library (Single or Paired end) to analyze
+            The read library (SingleEnd or PairedEnd) to compute stats on.
 
 
 description : |
-   <p>This method generates a fastq statistics report using the EA Utils package.</p>
-   <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
-    Priya Ranjan</p>
+   <p>This App generates a fastq statistics report using the EA Utils package.</p>
+   <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Priya Ranjan. For questions, please <a href="http://kbase.us/contact-us/">contact us</a>.</p>
 
 publications :
     -
