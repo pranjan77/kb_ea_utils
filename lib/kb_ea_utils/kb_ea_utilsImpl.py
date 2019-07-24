@@ -285,6 +285,8 @@ class kb_ea_utils:
         #BEGIN calculate_fastq_stats
         read_library_path = input_params['read_library_path']
         ea_report = self.get_report_string (read_library_path)
+        print('ea_report')
+        print(ea_report)
         ea_stats = {}
         report_lines = ea_report.splitlines()
         report_to_object_mappings = {'reads': 'read_count',
