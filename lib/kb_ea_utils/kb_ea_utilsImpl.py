@@ -11,6 +11,7 @@ import re
 from datetime import datetime
 from pprint import pprint, pformat
 import uuid
+import numpy as np
 
 from ReadsUtils.ReadsUtilsClient import ReadsUtils as ReadsUtils
 from SetAPI.SetAPIServiceClient import SetAPI
@@ -313,13 +314,13 @@ class kb_ea_utils:
                 elif report_to_object_mappings[line_key] in integer_fields:
                     value_to_use = int(line_value.strip())
                 else:
-                    value_to_use = float(line_value.strip())
+                    value_to_use = np.nan_to_num(float(line_value.strip()))
                 ea_stats[report_to_object_mappings[line_key]] = value_to_use
             elif line_key.startswith("%") and not line_key.startswith("%dup"):
                 if 'base_percentages' not in ea_stats:
                     ea_stats['base_percentages'] = dict()
                 dict_key = line_key.strip("%")
-                ea_stats['base_percentages'][dict_key] = float(line_value.strip())
+                ea_stats['base_percentages'][dict_key] = np.nan_to_num(float(line_value.strip()))
         # populate the GC content (as a value betwwen 0 and 1)
         if 'base_percentages' in ea_stats:
             gc_content = 0
