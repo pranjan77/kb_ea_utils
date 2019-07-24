@@ -83,13 +83,13 @@ class kb_ea_utils:
 
 
     def get_ea_utils_result (self,refid, input_params):
-      ref = [refid] 
+      ref = [refid]
       DownloadReadsParams={'read_libraries':ref}
       dfUtil = ReadsUtils(self.callbackURL)
       x=dfUtil.download_reads(DownloadReadsParams)
       report = ''
-      fwd_file = None 
-      rev_file = None 
+      fwd_file = None
+      rev_file = None
 
       fwd_file    =  x['files'][ref[0]]['files']['fwd']
       otype =  x['files'][ref[0]]['files']['otype']
@@ -97,15 +97,15 @@ class kb_ea_utils:
       #case of interleaved
       if (otype == 'interleaved'):
           report += self.get_report_string (fwd_file)
-          
-      #case of separate pair 
+
+      #case of separate pair
       if (otype == 'paired'):
          report += self.get_report_string (fwd_file)
 
          rev_file    =  x['files'][ref[0]]['files']['rev']
          report += self.get_report_string (rev_file)
 
-      #case of single end 
+      #case of single end
       if (otype == 'single'):
          report += self.get_report_string (fwd_file)
       #print report
@@ -138,7 +138,7 @@ class kb_ea_utils:
 
     def get_fastq_ea_utils_stats(self, ctx, input_params):
         """
-        This function should be used for getting statistics on read library object types 
+        This function should be used for getting statistics on read library object types
         The results are returned as a string.
         :param input_params: instance of type
            "get_fastq_ea_utils_stats_params" (if read_library_ref is set,
@@ -155,7 +155,7 @@ class kb_ea_utils:
         wsClient = workspaceService(self.workspaceURL)
         # add additional info to provenance here, in this case the input data object reference
         input_reads_ref = self.get_reads_ref_from_params(input_params)
-        
+
         ea_utils_stats = ''
         ea_utils_stats = self.get_ea_utils_result(input_reads_ref, input_params)
 
@@ -217,9 +217,9 @@ class kb_ea_utils:
                   'hidden':1, # important!  make sure the report is hidden
                   'provenance':provenance
                  }
-            ] })[0]  
+            ] })[0]
         print('saved Report: '+pformat(report_info))
-        
+
         report = { "report_name" : reportName,"report_ref" : str(report_info[6]) + '/' + str(report_info[0]) + '/' + str(report_info[4]) }
 
         #print (report)
@@ -329,6 +329,9 @@ class kb_ea_utils:
         # set number of dups if no dups, but read_count
         if 'read_count' in ea_stats and 'number_of_duplicates' not in ea_stats:
             ea_stats["number_of_duplicates"] = 0
+
+        print('ea_stats')
+        print(ea_stats)
         #END calculate_fastq_stats
 
         # At some point might do deeper type checking...
@@ -367,13 +370,13 @@ class kb_ea_utils:
         report = ''
         self.log(console, 'Running run_Fastq_Multx() with parameters: ')
         self.log(console, "\n"+pformat(params))
-        
+
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-        
+
 
         # Instantiate Set API Client and Report API Client
         #SERVICE_VER = 'dev'  # DEBUG
@@ -392,7 +395,7 @@ class kb_ea_utils:
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
                 raise ValueError ("Must define required param: '"+arg+"'")
-            
+
         # combined param requirements
         if params['index_mode'] == 'manual':
             if 'index_info' not in params or params['index_info'] == None or params['index_info'] == '':
@@ -441,7 +444,7 @@ class kb_ea_utils:
         try:
             # object_info tuple
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
-            
+
             input_reads_ref = params['input_reads_ref']
             input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_reads_ref}]})[0]
             input_reads_obj_type = input_reads_obj_info[TYPE_I]
@@ -460,7 +463,7 @@ class kb_ea_utils:
             try:
                 # object_info tuple
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
-            
+
                 input_index_ref = params['input_index_ref']
                 input_index_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_index_ref}]})[0]
                 input_index_obj_type = input_index_obj_info[TYPE_I]
@@ -554,7 +557,7 @@ class kb_ea_utils:
                     if line == '':
                         continue
                     row = line.split()
-                    if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#"): 
+                    if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#"):
                         continue
                     manual_group_id_order.append(row[0])
 
@@ -574,7 +577,7 @@ class kb_ea_utils:
         #
         multx_cmd = []
         multx_cmd.append(self.FASTQ_MULTX)
-        
+
         if params['index_mode'] == 'auto-detect':
              multx_cmd.append('-l')
              multx_cmd.append(master_barcodes_path)
@@ -666,7 +669,7 @@ class kb_ea_utils:
 
         if p.returncode != 0:
             raise ValueError('Error running fastq-multx, return code: ' +
-                             str(retcode) + '\n')        
+                             str(retcode) + '\n')
 
         # determine group_id_order
         #
@@ -680,7 +683,7 @@ class kb_ea_utils:
                 if line == '':
                     continue
                 row = line.split()
-                if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"): 
+                if row[0] == "id" or row[0] == "ID" or row[0].startswith("#"):
                     continue
                 group_id_order.append(row[0])
         elif params['index_mode'] == 'index-lane':
@@ -690,7 +693,7 @@ class kb_ea_utils:
                     continue
                 row = line.split()
                 if row[0] == "id" or row[0] == "ID" or row[0] == '' or row[0].startswith("#") \
-                  or row[0] == 'unmatched' or row[0] == 'total': 
+                  or row[0] == 'unmatched' or row[0] == 'total':
                     continue
                 group_id_order.append(row[0])
         else:
@@ -705,7 +708,7 @@ class kb_ea_utils:
         unpaired_rev_files = dict()
         unmatched_fwd_file = None
         unmatched_rev_file = None
- 
+
         if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
             pass
         else:
@@ -718,7 +721,7 @@ class kb_ea_utils:
                 output_rev_file_path = out_rev_base_pattern + str(group_id) + '.fq'
                 rev_file_exists = os.path.isfile (output_rev_file_path) \
                                       and os.path.getsize (output_rev_file_path) != 0
-                
+
                 if input_reads_obj_type == "KBaseFile.PairedEndLibrary":
 
                     if fwd_file_exists and rev_file_exists:
@@ -752,7 +755,7 @@ class kb_ea_utils:
         # DO PAIRED LIB HYGEINE?
         #
 
-            
+
         # upload reads
         #
         if 'suggest_barcodes' in params and params['suggest_barcodes'] == 1:
@@ -827,7 +830,7 @@ class kb_ea_utils:
             # unmatched fwd
             if unmatched_fwd_file != None:
                 output_fwd_unmatched_file_path = unmatched_fwd_file
-                
+
                 output_obj_name = params['output_reads_name']+'_unmatched_fwd'
                 self.log(console, 'Uploading unmatched fwd reads: '+output_obj_name)
                 unmatched_fwd_obj_ref = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
@@ -842,7 +845,7 @@ class kb_ea_utils:
             # unmatched rev
             if unmatched_rev_file != None:
                 output_rev_unmatched_file_path = unmatched_rev_file
-                
+
                 output_obj_name = params['output_reads_name']+'_unmatched_rev'
                 self.log(console, 'Uploading unmatched rev reads: '+output_obj_name)
                 unmatched_rev_obj_ref = readsUtils_Client.upload_reads ({ 'wsname': str(params['workspace_name']),
@@ -865,9 +868,9 @@ class kb_ea_utils:
             unpaired_rev_readsSet_ref = None
             unmatched_fwd_obj_ref     = None
             unmatched_rev_obj_ref     = None
-            
+
             base_desc = params['desc']
-            
+
             # paired end
             if len(paired_obj_refs) == 0:
                 self.log (console, "No paired reads found with configured barcodes")
@@ -936,8 +939,8 @@ class kb_ea_utils:
 
         # build report
         #
-        self.log (console, "SAVING REPORT")  # DEBUG        
-        reportObj = {'objects_created':[], 
+        self.log (console, "SAVING REPORT")  # DEBUG
+        reportObj = {'objects_created':[],
                      'text_message': report}
 
         if paired_readsSet_ref != None:
@@ -1002,7 +1005,7 @@ class kb_ea_utils:
 
         # param checks
         required_params = ['workspace_name',
-                           'input_reads_ref', 
+                           'input_reads_ref',
                            'output_reads_name'
                           ]
         for arg in required_params:
@@ -1047,7 +1050,7 @@ class kb_ea_utils:
 
         # build report
         #
-        reportObj = {'objects_created':[], 
+        reportObj = {'objects_created':[],
                      'text_message':''}
 
         # text report
@@ -1119,7 +1122,7 @@ class kb_ea_utils:
 
         # param checks
         required_params = ['workspace_name',
-                           'input_reads_ref', 
+                           'input_reads_ref',
                            'output_reads_name'
                           ]
         for arg in required_params:
@@ -1213,7 +1216,7 @@ class kb_ea_utils:
             msg += "----------------------------------------------------------------------------\n"
             report += msg
             self.log (console, msg)
-                                                                                         
+
             # RUN
             exec_Fastq_Join_OneLibrary_retVal = self.exec_Fastq_Join_OneLibrary (ctx, exec_Fastq_Join_params)[0]
 
@@ -1356,7 +1359,7 @@ class kb_ea_utils:
 
         # param checks
         required_params = ['workspace_name',
-                           'input_reads_ref', 
+                           'input_reads_ref',
                            'output_reads_name'
                           ]
         for arg in required_params:
@@ -1404,7 +1407,7 @@ class kb_ea_utils:
         #
         try:
             readsUtils_Client = ReadsUtils (url=self.callbackURL, token=ctx['token'])  # SDK local
-            
+
             readsLibrary = readsUtils_Client.download_reads ({'read_libraries': [params['input_reads_ref']],
                                                              'interleaved': 'false'
                                                              })
@@ -1440,7 +1443,7 @@ class kb_ea_utils:
             verbose_stitch_len_report_path = output_dir+'/'+'verbose_stich_report.txt'
             cmd.append('-v')
             cmd.append(verbose_stitch_len_report_path)
-            
+
         if params['reverse_complement'] != 1:
             cmd.append('-R')
 
@@ -1486,9 +1489,9 @@ class kb_ea_utils:
         #read_count_forward_only = match.group(3)
         #read_count_reverse_only = match.group(4)
         #read_count_dropped = match.group(5)
-        
-        #report = "\n".join( ('Input Read Pairs: '+ input_read_count, 
-        #                     'Both Surviving: '+ read_count_paired, 
+
+        #report = "\n".join( ('Input Read Pairs: '+ input_read_count,
+        #                     'Both Surviving: '+ read_count_paired,
         #                     'Forward Only Surviving: '+ read_count_forward_only,
         #                     'Reverse Only Surviving: '+ read_count_reverse_only,
         #                     'Dropped: '+ read_count_dropped) )
@@ -1499,7 +1502,7 @@ class kb_ea_utils:
             report += "\n\nVERBOSE STITCH LENGTH REPORT:\n"
             with open (verbose_stich_len_report_path, 'r', 0) as verbose_file_handle:
                 report += "".join (verbose_file_handle.readlines())
-        
+
 
         # upload joined reads
         output_joined_file_path = out_base_pattern+'join.fq'
@@ -1574,20 +1577,20 @@ class kb_ea_utils:
         report = ''
         self.log(console, 'Running KButil_Determine_Phred() with parameters: ')
         self.log(console, "\n"+pformat(params))
-        
+
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-        
+
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
 
         # param checks
         if 'input_reads_ref' not in params and 'input_reads_file' not in params:
             raise ValueError ("Must define either param: 'input_reads_ref' or 'input_reads_file'")
-            
+
         # get file
         if 'input_reads_file' in params:
             this_input_fwd_path = params['input_reads_file']
@@ -1596,16 +1599,16 @@ class kb_ea_utils:
             try:
                 # object_info tuple
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)
-                
+
                 input_reads_ref = params['input_reads_ref']
                 input_reads_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_reads_ref}]})[0]
                 input_reads_obj_type = input_reads_obj_info[TYPE_I]
                 input_reads_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_reads_obj_type)  # remove trailing version
             #input_reads_obj_version = input_reads_obj_info[VERSION_I]  # this is object version, not type version
-                
+
             except Exception as e:
                 raise ValueError('Unable to get read library object info from workspace: (' + str(input_reads_ref) +')' + str(e))
-            
+
             acceptable_types = ["KBaseFile.PairedEndLibrary", "KBaseFile.SingleEndLibrary"]
             if input_reads_obj_type not in acceptable_types:
                 raise ValueError ("Input reads of type: '"+input_reads_obj_type+"'.  Must be one of "+", ".join(acceptable_types))
@@ -1623,10 +1626,10 @@ class kb_ea_utils:
                                                                   })
             except Exception as e:
                 raise ValueError('Unable to download read library sequences from workspace: (' + str(input_reads_ref) +")\n" + str(e))
-            
+
             this_input_fwd_path = readsLibrary['files'][this_input_reads_ref]['files']['fwd']
 
-        
+
         # Run determine-phred
         determine_phred_cmd = []
         determine_phred_cmd.append(self.DETERMINE_PHRED)
@@ -1644,7 +1647,7 @@ class kb_ea_utils:
         print('Return code: ' + str(retcode))
         if p.returncode != 0:
             raise ValueError('Error running Determine_Phred(), return code: ' +
-                             str(retcode) + '\n')        
+                             str(retcode) + '\n')
 
         returnVal = { 'phred_type': phred_regime }
         #END exec_Determine_Phred
@@ -1657,7 +1660,7 @@ class kb_ea_utils:
         return [returnVal]
     def status(self, ctx):
         #BEGIN_STATUS
-        returnVal = {'state': "OK", 'message': "", 'version': self.VERSION, 
+        returnVal = {'state': "OK", 'message': "", 'version': self.VERSION,
                      'git_url': self.GIT_URL, 'git_commit_hash': self.GIT_COMMIT_HASH}
         #END_STATUS
         return [returnVal]
