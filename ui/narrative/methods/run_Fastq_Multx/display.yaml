@@ -3,7 +3,7 @@
 #
 name     : Demultiplex with ea-utils FASTQ-MULTX
 tooltip  : |
-    Run the fastq-multx program from ea-utils to demultiplex a reads library into reads sets.
+    DEPRECATED - Run the fastq-multx program from ea-utils to demultiplex a reads library into reads sets.
 
 screenshots :
     []
@@ -126,10 +126,12 @@ parameter-groups:
 # Desc
 #
 description : |
+   <p>Deprecation Announcement:</p>
+   <p> This App is being deprecated due to a high fail rate: meeting the criteria for deactivation.</p>
+   <p> Demultiplex with ea-utils FASTQ-MULTX is in the process of being refactored and improved by the Kbase Team. If this app is needed for your work or analyses in KBase please contact our team.</p>
    <p>This App demultiplexes a reads library into a ReadsSet using the FASTQ-MULTX program in the EA Utils package. It is capable of automatically determining barcode IDs, and can verify that multiple reads are kept in-sync during demultiplexing.</p>
    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Dylan Chivian.</p>
 
-  
 #
 # Pubs
 #
