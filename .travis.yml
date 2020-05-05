@@ -23,5 +23,4 @@ install:
 - source src/sh/sdk-completion.sh
 - popd
 script:
-- kb-sdk test
-after_script:
+- kb-sdk validate
