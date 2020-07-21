@@ -12,12 +12,15 @@ before_install:
 - javac -version
 - java -version
 install:
+- pushd ..
 - pip install coveralls
 - git clone https://github.com/kbase/jars
 - git clone https://github.com/kbase/kb_sdk
 - cd kb_sdk
-- make
+- make bin
+- make sdkbase
 - export PATH=$(pwd)/bin:$PATH
-- cd ../
+- source src/sh/sdk-completion.sh
+- popd
 script:
 - kb-sdk validate
