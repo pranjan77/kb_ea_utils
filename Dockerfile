@@ -1,4 +1,4 @@
-FROM kbase/kbase:sdkbase.latest
+FROM kbase/kbase:sdkbase2.latest
 MAINTAINER KBase Developer
 # -----------------------------------------
 
@@ -8,11 +8,8 @@ MAINTAINER KBase Developer
 # RUN apt-get update
 
 # -----------------------------------------
-RUN pwd
-
-RUN mkdir -p /kb/module/work
-RUN mkdir -p /kb/module/third_party
-RUN chmod -R 777 /kb/module
+#
+#
 
 COPY ./third_party /kb/module/third_party
 RUN perl /kb/module/third_party/install_ea_utils.pl
@@ -29,7 +26,9 @@ RUN mkdir -p /kb/module && \
     rm -rf workspace_deluxe
 
 COPY ./ /kb/module
+RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
+
 WORKDIR /kb/module
 
 RUN make all
