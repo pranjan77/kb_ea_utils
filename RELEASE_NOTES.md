@@ -3,3 +3,6 @@
 
 ### Version 2.0.0
  - Major revision in module. Set category to deactivated in spec.json. Added deprecation announcement to display.yaml
+ 
+ ### Version 2.0.1
+ - Changed SHOCK upload in unit tests to DataFileUtil.file_to_shock()
