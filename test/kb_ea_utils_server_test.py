@@ -2,6 +2,7 @@
 import unittest
 import os
 import json
+import shutil
 import time
 import requests
 
@@ -19,7 +20,7 @@ from requests_toolbelt import MultipartEncoder
 
 from biokbase.workspace.client import Workspace as workspaceService
 from biokbase.AbstractHandle.Client import AbstractHandle as HandleService
-
+from installed_clients.DataFileUtilClient import DataFileUtil
 from kb_ea_utils.authclient import KBaseAuth as _KBaseAuth
 from kb_ea_utils.kb_ea_utilsImpl import kb_ea_utils
 from kb_ea_utils.kb_ea_utilsServer import MethodContext
@@ -65,6 +66,10 @@ class kb_ea_utilsTest(unittest.TestCase):
         cls.wsClient = workspaceService(cls.wsURL, token=token)
         cls.serviceImpl = kb_ea_utils(cls.cfg)
 
+        cls.scratch = cls.cfg['scratch']
+        cls.callback_url = os.environ['SDK_CALLBACK_URL']
+        cls.dfu = DataFileUtil(cls.callback_url)
+
     @classmethod
     def tearDownClass(cls):
         if hasattr(cls, 'wsName'):
@@ -95,38 +100,69 @@ class kb_ea_utilsTest(unittest.TestCase):
         return self.__class__.ctx
 
 
+    # @classmethod
+    # def upload_file_to_shock(cls, file_path):
+    #     """
+    #     Use HTTP multi-part POST to save a file to a SHOCK instance.
+    #     """
+    #
+    #     header = dict()
+    #     header["Authorization"] = "Oauth {0}".format(cls.ctx['token'])
+    #
+    #     if file_path is None:
+    #         raise Exception("No file given for upload to SHOCK!")
+    #
+    #     with open(os.path.abspath(file_path), 'rb') as dataFile:
+    #         files = {'upload': dataFile}
+    #         response = requests.post(
+    #             cls.shockURL + '/node', headers=header, files=files,
+    #             stream=True, allow_redirects=True, timeout=30)
+    #
+    #     if not response.ok:
+    #         response.raise_for_status()
+    #
+    #     result = response.json()
+    #
+    #     if result['error']:
+    #         raise Exception(result['error'][0])
+    #     else:
+    #         shock_id = result['data']['id']
+    #         if not hasattr(cls, 'shock_ids'):
+    #             cls.shock_ids = []
+    #         cls.shock_ids.append(shock_id)
+    #
+    #         return result["data"]
+
     @classmethod
     def upload_file_to_shock(cls, file_path):
         """
-        Use HTTP multi-part POST to save a file to a SHOCK instance.
+        Use DataFileUtil.file_to_shock() save a file to a SHOCK instance.
         """
-
-        header = dict()
-        header["Authorization"] = "Oauth {0}".format(cls.ctx['token'])
 
         if file_path is None:
             raise Exception("No file given for upload to SHOCK!")
 
-        with open(os.path.abspath(file_path), 'rb') as dataFile:
-            files = {'upload': dataFile}
-            response = requests.post(
-                cls.shockURL + '/node', headers=header, files=files,
-                stream=True, allow_redirects=True, timeout=30)
+        # copy file to where DFU can see it (can only see scratch)
+        src_file_basename = os.path.basename(file_path)
+        shared_file_path = os.path.join(cls.scratch, src_file_basename)
+        shutil.copy2(file_path, shared_file_path)
 
-        if not response.ok:
-            response.raise_for_status()
+        # Upload files to shock
+        try:
+            shock_info = cls.dfu.file_to_shock({
+                'file_path': shared_file_path,
+                'make_handle': 1
+            })
+        except Exception as e:
+            raise ValueError('Unable to store ' + file_path + str(e))
+            #traceback.format_exc() # to get the full stack trace
 
-        result = response.json()
-
-        if result['error']:
-            raise Exception(result['error'][0])
-        else:
-            shock_id = result['data']['id']
-            if not hasattr(cls, 'shock_ids'):
-                cls.shock_ids = []
-            cls.shock_ids.append(shock_id)
-
-            return result["data"]
+        # remember shock info
+        if not hasattr(cls, 'shock_ids'):
+            cls.shock_ids = []
+        cls.shock_ids.append(shock_info['shock_id'])
+        # print("!!!!shock_info",shock_info)
+        return shock_info
 
 
     @classmethod
@@ -167,26 +203,26 @@ class kb_ea_utilsTest(unittest.TestCase):
         # 2) create handle
         hs = HandleService(url=self.handleURL, token=token)
         forward_handle = hs.persist_handle({
-                                        'id' : forward_shock_file['id'], 
+                                        'id' : forward_shock_file['shock_id'],
                                         'type' : 'shock',
                                         'url' : self.shockURL,
-                                        'file_name': forward_shock_file['file']['name'],
-                                        'remote_md5': forward_shock_file['file']['checksum']['md5']})
+                                        'file_name': forward_shock_file['node_file_name'],
+                                        'remote_md5': forward_shock_file['handle']['remote_md5']})
 
         # 3) save to WS
         single_end_library = {
             'lib': {
                 'file': {
                     'hid':forward_handle,
-                    'file_name': forward_shock_file['file']['name'],
-                    'id': forward_shock_file['id'],
+                    'file_name': forward_shock_file['node_file_name'],
+                    'id': forward_shock_file['shock_id'],
                     'url': self.shockURL,
                     'type':'shock',
-                    'remote_md5':forward_shock_file['file']['checksum']['md5']
+                    'remote_md5':forward_shock_file['handle']['remote_md5']
                 },
                 'encoding':'UTF8',
                 'type':'fastq',
-                'size':forward_shock_file['file']['size']
+                'size':forward_shock_file['size']
             },
             'sequencing_tech':'artificial reads'
         }
@@ -248,46 +284,46 @@ class kb_ea_utilsTest(unittest.TestCase):
         # 2) create handle
         hs = HandleService(url=self.handleURL, token=token)
         forward_handle = hs.persist_handle({
-                                        'id' : forward_shock_file['id'], 
+                                        'id' : forward_shock_file['shock_id'],
                                         'type' : 'shock',
                                         'url' : self.shockURL,
-                                        'file_name': forward_shock_file['file']['name'],
-                                        'remote_md5': forward_shock_file['file']['checksum']['md5']})
+                                        'file_name': forward_shock_file['node_file_name'],
+                                        'remote_md5': forward_shock_file['handle']['remote_md5']})
 
         reverse_handle = hs.persist_handle({
-                                        'id' : reverse_shock_file['id'], 
+                                        'id' : reverse_shock_file['shock_id'],
                                         'type' : 'shock',
                                         'url' : self.shockURL,
-                                        'file_name': reverse_shock_file['file']['name'],
-                                        'remote_md5': reverse_shock_file['file']['checksum']['md5']})
+                                        'file_name': reverse_shock_file['node_file_name'],
+                                        'remote_md5': reverse_shock_file['handle']['remote_md5']})
 
         # 3) save to WS
         paired_end_library = {
             'lib1': {
                 'file': {
                     'hid':forward_handle,
-                    'file_name': forward_shock_file['file']['name'],
-                    'id': forward_shock_file['id'],
+                    'file_name': forward_shock_file['node_file_name'],
+                    'id': forward_shock_file['shock_id'],
                     'url': self.shockURL,
                     'type':'shock',
-                    'remote_md5':forward_shock_file['file']['checksum']['md5']
+                    'remote_md5':forward_shock_file['handle']['remote_md5']
                 },
                 'encoding':'UTF8',
                 'type':'fastq',
-                'size':forward_shock_file['file']['size']
+                'size':forward_shock_file['size']
             },
             'lib2': {
                 'file': {
                     'hid':reverse_handle,
-                    'file_name': reverse_shock_file['file']['name'],
-                    'id': reverse_shock_file['id'],
+                    'file_name': reverse_shock_file['node_file_name'],
+                    'id': reverse_shock_file['shock_id'],
                     'url': self.shockURL,
                     'type':'shock',
-                    'remote_md5':reverse_shock_file['file']['checksum']['md5']
+                    'remote_md5':reverse_shock_file['handle']['remote_md5']
                 },
                 'encoding':'UTF8',
                 'type':'fastq',
-                'size':reverse_shock_file['file']['size']
+                'size':reverse_shock_file['size']
             },
             'interleaved':0,
             'sequencing_tech':'artificial reads'
@@ -349,26 +385,26 @@ class kb_ea_utilsTest(unittest.TestCase):
         # 2) create handle
         hs = HandleService(url=self.handleURL, token=token)
         forward_handle = hs.persist_handle({
-                                        'id' : forward_shock_file['id'],
+                                        'id' : forward_shock_file['shock_id'],
                                         'type' : 'shock',
                                         'url' : self.shockURL,
-                                        'file_name': forward_shock_file['file']['name'],
-                                        'remote_md5': forward_shock_file['file']['checksum']['md5']})
+                                        'file_name': forward_shock_file['node_file_name'],
+                                        'remote_md5': forward_shock_file['handle']['remote_md5']})
 
         # 3) save to WS
         paired_end_library = {
             'lib1': {
                 'file': {
                     'hid':forward_handle,
-                    'file_name': forward_shock_file['file']['name'],
-                    'id': forward_shock_file['id'],
+                    'file_name': forward_shock_file['node_file_name'],
+                    'id': forward_shock_file['shock_id'],
                     'url': self.shockURL,
                     'type':'shock',
-                    'remote_md5':forward_shock_file['file']['checksum']['md5']
+                    'remote_md5':forward_shock_file['handle']['remote_md5']
                 },
                 'encoding':'UTF8',
                 'type':'fastq',
-                'size':forward_shock_file['file']['size']
+                'size':forward_shock_file['size']
             },
             'interleaved':1,
             'sequencing_tech':'artificial reads'
